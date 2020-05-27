@@ -30,7 +30,7 @@ export function initialize(apiKey: string): Promise<void> {
   return ExpoAmplitude.initialize(apiKey);
 }
 
-export function setUserId(userId: string): Promise<void> {
+export function setUserId(userId: string | null): Promise<void> {
   if (!ExpoAmplitude.setUserId) {
     throw new UnavailabilityError('Amplitude', 'setUserId');
   }
