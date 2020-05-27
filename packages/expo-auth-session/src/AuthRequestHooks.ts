@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { AuthRequest } from './AuthRequest';
 import { AuthRequestConfig, AuthRequestPromptOptions } from './AuthRequest.types';
@@ -14,9 +14,17 @@ export function useAutoDiscovery(issuerOrDiscovery: IssuerOrDiscovery): Discover
   const [discovery, setDiscovery] = useState<DiscoveryDocument | null>(null);
 
   useEffect(() => {
-    resolveDiscoveryAsync(issuerOrDiscovery).then(discovery => {
-      setDiscovery(discovery);
+    let isHookStillRelevant = true;
+
+    resolveDiscoveryAsync(issuerOrDiscovery).then((discovery) => {
+      if (isHookStillRelevant) {
+        setDiscovery(discovery);
+      }
     });
+
+    return () => {
+      isHookStillRelevant = false;
+    };
   }, [issuerOrDiscovery]);
 
   return discovery;
@@ -40,6 +48,15 @@ export function useAuthRequest(
 ] {
   const [request, setRequest] = useState<AuthRequest | null>(null);
   const [result, setResult] = useState<AuthSessionResult | null>(null);
+  const isMountedRef = useRef<boolean | null>(null);
+
+  useEffect(() => {
+    isMountedRef.current = true;
+
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
 
   const promptAsync = useCallback(
     async (options: AuthRequestPromptOptions = {}) => {
@@ -47,17 +64,29 @@ export function useAuthRequest(
         throw new Error('Cannot prompt to authenticate until the request has finished loading.');
       }
       const result = await request?.promptAsync(discovery, options);
-      setResult(result);
+      if (isMountedRef.current) {
+        setResult(result);
+      }
       return result;
     },
     [request?.url, discovery?.authorizationEndpoint]
   );
 
   useEffect(() => {
+    let isHookStillRelevant = true;
+
     if (config && discovery) {
       const request = new AuthRequest(config);
-      request.makeAuthUrlAsync(discovery).then(() => setRequest(request));
+      request.makeAuthUrlAsync(discovery).then(() => {
+        if (isHookStillRelevant) {
+          setRequest(request);
+        }
+      });
     }
+
+    return () => {
+      isHookStillRelevant = false;
+    };
   }, [
     discovery?.authorizationEndpoint,
     config.clientId,
