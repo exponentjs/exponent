@@ -18,9 +18,12 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import org.unimodules.core.interfaces.CodedThrowable;
 import org.unimodules.core.interfaces.services.EventEmitter;
 import org.unimodules.interfaces.barcodescanner.BarCodeScannerResult;
 import org.unimodules.interfaces.facedetector.FaceDetector;
+
+import expo.modules.camera.events.BarCodeScanErrorEvent;
 import expo.modules.camera.events.BarCodeScannedEvent;
 import expo.modules.camera.events.CameraMountErrorEvent;
 import expo.modules.camera.events.CameraReadyEvent;
@@ -47,6 +50,11 @@ public class CameraViewHelper {
 
   public static void emitBarCodeReadEvent(EventEmitter emitter, ViewGroup view, BarCodeScannerResult barCode) {
     BarCodeScannedEvent event = BarCodeScannedEvent.obtain(view.getId(), barCode);
+    emitter.emit(view.getId(), event);
+  }
+
+  public static void emitBarCodeScanError(EventEmitter emitter, ViewGroup view, CodedThrowable throwable) {
+    BarCodeScanErrorEvent event = BarCodeScanErrorEvent.obtain(view.getId(), throwable);
     emitter.emit(view.getId(), event);
   }
 

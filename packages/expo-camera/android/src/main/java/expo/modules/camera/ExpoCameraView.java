@@ -2,7 +2,6 @@ package expo.modules.camera;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.CamcorderProfile;
 import android.net.Uri;
@@ -15,6 +14,7 @@ import com.google.android.cameraview.Size;
 
 import org.unimodules.core.ModuleRegistry;
 import org.unimodules.core.Promise;
+import org.unimodules.core.interfaces.CodedThrowable;
 import org.unimodules.core.interfaces.LifecycleEventListener;
 import org.unimodules.core.interfaces.services.EventEmitter;
 import org.unimodules.core.interfaces.services.UIManager;
@@ -274,6 +274,15 @@ public class ExpoCameraView extends CameraView implements LifecycleEventListener
     }
 
     CameraViewHelper.emitBarCodeReadEvent(mModuleRegistry.getModule(EventEmitter.class), this, barCode);
+  }
+
+  @Override
+  public void onBarCodeScanError(CodedThrowable throwable) {
+    if (!mShouldScanBarCodes) {
+      return;
+    }
+
+    CameraViewHelper.emitBarCodeScanError(mModuleRegistry.getModule(EventEmitter.class), this, throwable);
   }
 
   public void onBarCodeScanningTaskCompleted() {

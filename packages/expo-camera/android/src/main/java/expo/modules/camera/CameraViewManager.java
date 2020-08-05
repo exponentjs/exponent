@@ -20,6 +20,7 @@ public class CameraViewManager extends ViewManager<ExpoCameraView> {
     EVENT_CAMERA_READY("onCameraReady"),
     EVENT_ON_MOUNT_ERROR("onMountError"),
     EVENT_ON_BAR_CODE_SCANNED("onBarCodeScanned"),
+    EVENT_ON_BAR_CODE_SCAN_ERROR("onBarCodeScanError"),
     EVENT_ON_FACES_DETECTED("onFacesDetected"),
     EVENT_ON_FACE_DETECTION_ERROR("onFaceDetectionError"),
     EVENT_ON_PICTURE_SAVED("onPictureSaved");

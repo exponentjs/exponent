@@ -336,6 +336,7 @@ export default class CameraScreen extends React.Component<{}, State> {
             BarCodeScanner.Constants.BarCodeType.pdf417,
           ],
         }}
+        onBarCodeScanError={({ nativeEvent }) => console.warn(nativeEvent)}
         onBarCodeScanned={this.state.barcodeScanning ? this.onBarCodeScanned : undefined}>
         {this.renderTopBar()}
         {this.renderBottomBar()}

@@ -33,6 +33,12 @@ export declare type BarCodeScanningResult = {
 export declare type FaceDetectionResult = {
     faces: any[];
 };
+export declare type BarCodeScanErrorResult = {
+    error: {
+        code: string;
+        message: string;
+    };
+};
 export declare type CameraProps = ViewProps & {
     zoom?: number;
     ratio?: string;
@@ -61,6 +67,9 @@ export declare type CameraNativeProps = {
     }) => void;
     onBarCodeScanned?: ({ nativeEvent }: {
         nativeEvent: BarCodeScanningResult;
+    }) => void;
+    onBarCodeScanError?: ({ nativeEvent }: {
+        nativeEvent: BarCodeScanErrorResult;
     }) => void;
     onFacesDetected?: ({ nativeEvent }: {
         nativeEvent: FaceDetectionResult;

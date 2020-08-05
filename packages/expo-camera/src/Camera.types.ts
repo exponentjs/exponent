@@ -38,6 +38,8 @@ export type BarCodeScanningResult = { type: string; data: string };
 
 export type FaceDetectionResult = { faces: any[] };
 
+export type BarCodeScanErrorResult = { error: { code: string; message: string } };
+
 export type CameraProps = ViewProps & {
   zoom?: number;
   ratio?: string;
@@ -64,6 +66,7 @@ export type CameraNativeProps = {
   onCameraReady?: Function;
   onMountError?: ({ nativeEvent }: { nativeEvent: CameraMountError }) => void;
   onBarCodeScanned?: ({ nativeEvent }: { nativeEvent: BarCodeScanningResult }) => void;
+  onBarCodeScanError?: ({ nativeEvent }: { nativeEvent: BarCodeScanErrorResult }) => void;
   onFacesDetected?: ({ nativeEvent }: { nativeEvent: FaceDetectionResult }) => void;
   onFaceDetectionError?: Function;
   onPictureSaved?: Function;

@@ -15,15 +15,15 @@ public class FaceDetectorTask {
   private FaceDetectorAsyncTaskDelegate mDelegate;
 
   public FaceDetectorTask(
-      FaceDetectorAsyncTaskDelegate delegate,
-      FaceDetector faceDetector,
-      byte[] imageData,
-      int width,
-      int height,
-      int rotation,
-      boolean mirrored,
-      double scaleX,
-      double scaleY
+    FaceDetectorAsyncTaskDelegate delegate,
+    FaceDetector faceDetector,
+    byte[] imageData,
+    int width,
+    int height,
+    int rotation,
+    boolean mirrored,
+    double scaleX,
+    double scaleY
   ) {
     mImageData = imageData;
     mWidth = width;
@@ -37,6 +37,11 @@ public class FaceDetectorTask {
   }
 
   public void execute() {
+    if (mFaceDetector == null) {
+      // onFaceDetectionError takes care of onFaceDetectingTaskCompleted
+      mDelegate.onFaceDetectionError(null);
+      return;
+    }
     mFaceDetector.detectFaces(mImageData, mWidth, mHeight, mRotation, mMirrored, mScaleX, mScaleY, result -> {
       if (result != null) {
         mDelegate.onFacesDetected(result);
