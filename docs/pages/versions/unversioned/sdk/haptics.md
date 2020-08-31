@@ -41,6 +41,14 @@ import * as Haptics from 'expo-haptics';
 
 ## Methods
 
+### `Haptics.isAvailableAsync()`
+
+Returns whether the Haptics API is enabled on the current device.
+
+#### Returns
+
+A `Promise` resolving to either `true` or `false`.
+
 ### `Haptics.selectionAsync()`
 
 Used to let a user know when a selection change has been registered

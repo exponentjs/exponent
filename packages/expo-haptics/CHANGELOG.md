@@ -6,6 +6,8 @@
 
 ### 🎉 New features
 
+- Added `isAvailableAsync` method. ([#9679](https://github.com/expo/expo/pull/9679) by [@bycedric](https://github.com/bycedric))
+
 ### 🐛 Bug fixes
 
 ## 8.3.0 — 2020-08-18

@@ -1,6 +1,12 @@
 import { UnavailabilityError } from '@unimodules/core';
 import ExpoHaptics from './ExpoHaptics';
 import { NotificationFeedbackType, ImpactFeedbackStyle } from './Haptics.types';
+/**
+ * Returns whether the Haptics API is enabled on the current device.
+ */
+export async function isAvailableAsync() {
+    return (!!ExpoHaptics.notificationAsync && !!ExpoHaptics.impactAsync && !!ExpoHaptics.selectionAsync);
+}
 export async function notification(type = NotificationFeedbackType.Success) {
     console.warn('`Haptics.notification` is deprecated. Use `Haptics.notificationAsync` instead.');
     await notificationAsync(type);
