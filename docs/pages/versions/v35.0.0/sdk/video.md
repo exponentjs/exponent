@@ -22,6 +22,8 @@ For [managed](../../introduction/managed-vs-bare/#managed-workflow) apps, you'll
 Here's a simple example of a video that autoplays and loops.
 
 ```javascript
+import { Video } from "expo-av";
+
 <Video
   source={{ uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
   rate={1.0}
