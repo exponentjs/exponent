@@ -14,27 +14,27 @@ When you run `expo build:web` the Webpack config reads your `app.config.js` (or 
 
 The following properties can be used to customize your PWA:
 
-| `app.config.js`                    | `manifest.json`               | `index.html`                                            |
-| ---------------------------------- | ----------------------------- | ------------------------------------------------------- |
-| `web.backgroundColor`              | `background_color`            |                                                         |
-| `web.description | description`    | `description`                 | `<meta name="description" />`                           |
-| `web.dir`                          | `dir`                         |                                                         |
-| `web.display`                      | `display`                     |                                                         |
-| `web.lang`                         | `lang`                        | `<html lang="">`                                        |
-| `web.name | name`                  | `name`                        | `<title />`                                             |
-| `web.orientation | orientation`    | `orientation`                 |                                                         |
-| `web.scope`                        | `scope`                       |                                                         |
-| `web.shortName | web.name`         | `short_name`                  | `<meta name="apple-mobile-web-app-title"/>`             |
-| `web.startUrl`                     | `start_url`                   |                                                         |
-| `web.themeColor | primaryColor`    | `theme_color`                 | `<meta name="theme-color" />`                           |
-| `web.crossorigin`                  | `crossorigin`                 |                                                         |
-| `web.relatedApplications`          | `related_applications`        |                                                         |
-| `web.preferRelatedApplications`    | `prefer_related_applications` |                                                         |
-| `android.icon | icon`              | `icons`                       |                                                         |
-| `ios.icon | icon`                  |                               | `<link rel="apple-touch-icon" >`                        |
-| `web.favicon | icon`               |                               | `<link rel="shortcut icon" >`                           |
-| `web.barStyle`                     |                               | `<meta name="apple-mobile-web-app-status-bar-style" />` |
-| `web.splash | ios.splash | splash` |                               | `<link rel="apple-touch-startup-image" >`               |
+| `app.config.js`                     | `manifest.json`               | `index.html`                                            |
+| ----------------------------------- | ----------------------------- | ------------------------------------------------------- |
+| `web.backgroundColor`               | `background_color`            |                                                         |
+| `web.description \| description`    | `description`                 | `<meta name="description" />`                           |
+| `web.dir`                           | `dir`                         |                                                         |
+| `web.display`                       | `display`                     |                                                         |
+| `web.lang`                          | `lang`                        | `<html lang="">`                                        |
+| `web.name \| name`                  | `name`                        | `<title />`                                             |
+| `web.orientation \| orientation`    | `orientation`                 |                                                         |
+| `web.scope`                         | `scope`                       |                                                         |
+| `web.shortName \| web.name`         | `short_name`                  | `<meta name="apple-mobile-web-app-title"/>`             |
+| `web.startUrl`                      | `start_url`                   |                                                         |
+| `web.themeColor \| primaryColor`    | `theme_color`                 | `<meta name="theme-color" />`                           |
+| `web.crossorigin`                   | `crossorigin`                 |                                                         |
+| `web.relatedApplications`           | `related_applications`        |                                                         |
+| `web.preferRelatedApplications`     | `prefer_related_applications` |                                                         |
+| `android.icon \| icon`              | `icons`                       |                                                         |
+| `ios.icon \| icon`                  |                               | `<link rel="apple-touch-icon" >`                        |
+| `web.favicon \| icon`               |                               | `<link rel="shortcut icon" >`                           |
+| `web.barStyle`                      |                               | `<meta name="apple-mobile-web-app-status-bar-style" />` |
+| `web.splash \| ios.splash \| splash`|                               | `<link rel="apple-touch-startup-image" >`               |
 
 If you need finer control on how the PWA is generated, you should eject the `web/index.html` and add it there.
 
