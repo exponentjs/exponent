@@ -238,6 +238,14 @@ This class represents an audio recording. After creating an instance of this cla
 
 Note that your experience must request audio recording permissions in order for recording to function. See the [`Permissions` module](../permissions/) for more details. Additionally, audio recording is [not supported in the iOS Simulator](../../workflow/ios-simulator/#limitations).
 
+For standalone iOS apps, you'll need to [customize the permission dialog](../../distribution/app-stores/#system-permissions-dialogs-on-ios) by adding the `NSMicrophoneUsageDescription` key under the `ios.infoPlist` key in your `app.json` or `app.config.js`. Failing to do so may result in Apple rejecting your app.
+
+```
+  "infoPlist": {
+    "NSMicrophoneUsageDescription": "your-custom-message-here."
+  }
+```
+
 #### Returns
 
 A newly constructed instance of `Audio.Recording`.

@@ -20,6 +20,15 @@ Provides an API for interacting with the device's system calendars, events, remi
 
 In managed apps, `Calendar` requires `Permissions.CALENDAR`. Interacting with reminders on iOS requires `Permissions.REMINDERS`.
 
+For standalone iOS apps, you'll need to [customize the permission dialog](../../distribution/app-stores/#system-permissions-dialogs-on-ios) by adding the `NSCalendarUsageDescription` key (and `NSRemindersUsageDescription` if you are utilizing reminders) under the `ios.infoPlist` key in your `app.json` or `app.config.js`. Failing to do so may result in Apple rejecting your app.
+
+```
+  "infoPlist": {
+    "NSCalendarUsageDescription": "your-custom-message-here.",
+    "NSRemindersUsageDescription": "another-custom-message-here"
+  }
+```
+
 ## Example Usage
 
 <SnackInline label='Basic Calendar usage' templateId='calendar' dependencies={['expo-calendar']}>

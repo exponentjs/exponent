@@ -20,6 +20,15 @@ import TableOfContentSection from '~/components/plugins/TableOfContentSection';
 
 In Managed apps, `Contacts` requires `Permissions.CONTACTS`.
 
+For standalone iOS apps, you'll need to [customize the permission dialog](../../distribution/app-stores/#system-permissions-dialogs-on-ios) by adding the `NSContactsUsageDescription` key under the `ios.infoPlist` key in your `app.json` or `app.config.js`. Failing to do so may result in Apple rejecting your app.
+
+```
+  "infoPlist": {
+    "NSContactsUsageDescription": "your-custom-message-here."
+  }
+```
+
+
 ## Example Usage
 
 <SnackInline label='Basic Contacts Usage' templateId='contacts' dependencies={['expo-contacts']}>

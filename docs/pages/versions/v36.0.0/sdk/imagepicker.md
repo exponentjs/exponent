@@ -18,6 +18,17 @@ import SnackInline from '~/components/plugins/SnackInline';
 
 <InstallSection packageName="expo-image-picker" />
 
+## Configuration
+
+For standalone iOS apps, you'll need to [customize the permission dialog](../../distribution/app-stores/#system-permissions-dialogs-on-ios) by adding the `NSCamerasUsageDescription` and `NSPhotoLibraryUsageDescription` keys under the `ios.infoPlist` key in your `app.json` or `app.config.js`. Failing to do so may result in Apple rejecting your app.
+
+```
+  "infoPlist": {
+    "NSCameraUsageDescription": "your-custom-message-here.",
+    "NSPhotoLibraryUsageDescription": "another-custom-message-here"
+  }
+```
+
 ## Example Usage
 
 <SnackInline label='Image Picker' dependencies={['expo-constants', 'expo-permissions', 'expo-image-picker']}>

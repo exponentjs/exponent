@@ -25,6 +25,15 @@ import TableOfContentSection from '~/components/plugins/TableOfContentSection';
 
 In managed apps, `Camera` requires `Permissions.CAMERA`. Video recording requires `Permissions.AUDIO_RECORDING`.
 
+For standalone iOS apps, you'll need to [customize the permission dialog](../../distribution/app-stores/#system-permissions-dialogs-on-ios) by adding the `NSCamerasUsageDescription` key (and `NSMicrophoneUsageDescription` if you are recording video) under the `ios.infoPlist` key in your `app.json` or `app.config.js`. Failing to do so may result in Apple rejecting your app.
+
+```
+  "infoPlist": {
+    "NSCameraUsageDescription": "your-custom-message-here.",
+    "NSMicrophoneUsageDescription": "another-custom-message-here"
+  }
+```
+
 ## Example Usage
 
 <SnackInline label='Basic Camera usage' templateId='camera' dependencies={['expo-camera']}>
