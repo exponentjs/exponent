@@ -58,17 +58,17 @@ The following table shows you which permissions correspond to which packages.
 
 | Permission type             | Packages                                  |
 | --------------------------- | ----------------------------------------- |
-| `NOTIFICATIONS`             | `expo-notifications`                      |
-| `USER_FACING_NOTIFICATIONS` | `expo-notifications`                      |
-| `LOCATION`                  | `expo-location`                           |
-| `CAMERA`                    | `expo-barcode-scanner` <br /> `expo-camera` <br /> `expo-face-detector` <br /> `expo-image-picker` <br /> `expo-media-library` |
 | `AUDIO_RECORDING`           | `expo-av`                                 |
-| `CONTACTS`                  | `expo-contacts`                           |
-| `CAMERA_ROLL`               | `expo-image-picker`<br /> `expo-media-library` |
 | `CALENDAR`                  | `expo-calendar`                           |
+| `CAMERA_ROLL`               | `expo-image-picker`<br /> `expo-media-library` |
+| `CAMERA`                    | `expo-barcode-scanner` <br /> `expo-camera` <br /> `expo-face-detector` <br /> `expo-image-picker` <br /> `expo-media-library` |
+| `CONTACTS`                  | `expo-contacts`                           |
+| `LOCATION`                  | `expo-location`                           |
+| `MOTION`                    | `expo-sensors`                            |
+| `NOTIFICATIONS`             | `expo-notifications`                      |
 | `REMINDERS`                 | `expo-calendar`                           |
 | `SYSTEM_BRIGHTNESS`         | `expo-brightness`                         |
-| `MOTION`                    | `expo-sensors`                            |
+| `USER_FACING_NOTIFICATIONS` | `expo-notifications`                      |
 
 ### Excluding Android permissions in bare workflow
 
