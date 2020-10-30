@@ -98,7 +98,7 @@ import * as Location from 'expo-location';
 
 <TableOfContentSection title='Types' contents={['LocationPermissionResponse', 'LocationObject', 'LocationProviderStatus', 'LocationHeadingObject', 'LocationRegion']} />
 
-<TableOfContentSection title='Enums' contents={['LocationAccuracy', 'LocationActivityType', 'LocationGeofencingEventType', 'LocationGeofencingRegionState']} />
+<TableOfContentSection title='Enums' contents={['Accuracy', 'ActivityType', 'GeofencingEventType', 'GeofencingRegionState']} />
 
 ## Methods
 
@@ -149,7 +149,7 @@ Requests for one-time delivery of the user's current location. Depending on give
 #### Arguments
 
 - **options (_object_)** — A map of options:
-  - **accuracy : [LocationAccuracy](#locationaccuracy)** — Location manager accuracy. Pass one of [LocationAccuracy](#locationaccuracy) enum values. For low-accuracy the implementation can avoid geolocation providers that consume a significant amount of power (such as GPS).
+  - **accuracy : [Accuracy](#locationaccuracy)** — Location manager accuracy. Pass one of [Accuracy](#locationaccuracy) enum values. For low-accuracy the implementation can avoid geolocation providers that consume a significant amount of power (such as GPS).
 
 #### Returns
 
@@ -163,7 +163,7 @@ Subscribe to location updates from the device. Please note that updates will onl
 
 - **options (_object_)** — A map of options:
 
-  - **accuracy : [LocationAccuracy](#locationaccuracy)** — Location manager accuracy. Pass one of [LocationAccuracy](#locationaccuracy) enum values. For low accuracy the implementation can avoid geolocation providers that consume a significant amount of power (such as GPS).
+  - **accuracy : [Accuracy](#locationaccuracy)** — Location manager accuracy. Pass one of [Accuracy](#locationaccuracy) enum values. For low accuracy the implementation can avoid geolocation providers that consume a significant amount of power (such as GPS).
   - **timeInterval (_number_)** — Minimum time to wait between each update in milliseconds.
   - **distanceInterval (_number_)** — Receive updates only when the location has changed by at least this distance in meters.
   - **mayShowUserSettingsDialog (_boolean_)** — (**Android only**) Specifies whether to ask the user to turn on improved accuracy location mode which uses Wi-Fi, cell networks and GPS sensor. The dialog can be shown only when the location mode is set to **Device only**. Defaults to `true`.
@@ -292,7 +292,7 @@ Registers for receiving location updates that can also come when the app is in t
 
 - **taskName (_string_)** -- Name of the task receiving location updates.
 - **options (_object_)** -- An object of options passed to the location manager.
-  - **accuracy : [LocationAccuracy](#locationaccuracy)** -- Location manager accuracy. Pass one of [LocationAccuracy](#locationaccuracy) enum values. For low-accuracy the implementation can avoid geolocation providers that consume a significant amount of power (such as GPS).
+  - **accuracy : [Accuracy](#locationaccuracy)** -- Location manager accuracy. Pass one of [Accuracy](#locationaccuracy) enum values. For low-accuracy the implementation can avoid geolocation providers that consume a significant amount of power (such as GPS).
   - **timeInterval (_number_)** -- Minimum time to wait between each update in milliseconds. Default value depends on `accuracy` option. (**Android only**)
   - **distanceInterval (_number_)** -- Receive updates only when the location has changed by at least this distance in meters. Default value may depend on `accuracy` option.
   - **deferredUpdatesInterval (_number_)** -- Minimum time interval in miliseconds that must pass since last reported location before all later locations are reported in a batched update. Defaults to `0`.
@@ -303,7 +303,7 @@ Registers for receiving location updates that can also come when the app is in t
     - **notificationBody (_string_)** -- Subtitle of the foreground service notification. _required_
     - **notificationColor (_string_)** -- Color of the foreground service notification. Accepts `#RRGGBB` and `#AARRGGBB` hex formats. _optional_
   - **pausesUpdatesAutomatically (_boolean_)** -- A boolean value indicating whether the location manager can pause location updates to improve battery life without sacrificing location data. When this option is set to `true`, the location manager pauses updates (and powers down the appropriate hardware) at times when the location data is unlikely to change. You can help the determination of when to pause location updates by assigning a value to the `activityType` property. Defaults to `false`. (**iOS only**)
-  - **activityType : [LocationActivityType](#locationactivitytype)** -- The type of user activity associated with the location updates. See [Apple docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620567-activitytype) for more details. Defaults to `LocationActivityType.Other`. (**iOS only**)
+  - **activityType : [ActivityType](#locationactivitytype)** -- The type of user activity associated with the location updates. See [Apple docs](https://developer.apple.com/documentation/corelocation/cllocationmanager/1620567-activitytype) for more details. Defaults to `ActivityType.Other`. (**iOS only**)
 
 > Deferred updates provide a way to report locations in a batch when the app is in the background state. Location updates aren't being deferred in the foreground.
 
@@ -380,11 +380,11 @@ A promise resolving as soon as the task is registered.
 
 Geofencing task will be receiving following data:
 
-- **eventType : [LocationGeofencingEventType](#locationgeofencingeventtype)** -- Indicates the reason for calling the task, which can be triggered by entering or exiting the region. See [LocationGeofencingEventType](#locationgeofencingeventtype).
+- **eventType : [GeofencingEventType](#locationgeofencingeventtype)** -- Indicates the reason for calling the task, which can be triggered by entering or exiting the region. See [GeofencingEventType](#locationgeofencingeventtype).
 - **region : [LocationRegion](#locationregion)** -- Object containing details about updated region. See [LocationRegion](#locationregion) for more details.
 
 ```javascript
-import { LocationGeofencingEventType } from 'expo-location';
+import { GeofencingEventType } from 'expo-location';
 import * as TaskManager from 'expo-task-manager';
 
 TaskManager.defineTask(YOUR_TASK_NAME, ({ data: { eventType, region }, error }) => {
@@ -392,9 +392,9 @@ TaskManager.defineTask(YOUR_TASK_NAME, ({ data: { eventType, region }, error }) 
     // check `error.message` for more details.
     return;
   }
-  if (eventType === LocationGeofencingEventType.Enter) {
+  if (eventType === GeofencingEventType.Enter) {
     console.log("You've entered region:", region);
-  } else if (eventType === LocationGeofencingEventType.Exit) {
+  } else if (eventType === GeofencingEventType.Exit) {
     console.log("You've left region:", region);
   }
 });
@@ -464,7 +464,7 @@ Object of type `LocationRegion` includes following fields:
 - **latitude (_number_)** -- The latitude in degress of region's center point.
 - **longitude (_number_)** -- The longitude in degress of region's center point.
 - **radius (_number_)** -- The radius measured in meters that defines the region's outer boundary.
-- **state : [LocationGeofencingRegionState](#locationgeofencingregionstate)** -- One of [LocationGeofencingRegionState](#locationgeofencingregionstate) region state. Determines whether the device is inside or outside a region.
+- **state : [GeofencingRegionState](#locationgeofencingregionstate)** -- One of [GeofencingRegionState](#locationgeofencingregionstate) region state. Determines whether the device is inside or outside a region.
 
 ### `LocationHeadingObject`
 
@@ -476,7 +476,7 @@ Object of type `LocationRegion` includes following fields:
 
 ## Enums
 
-### `LocationAccuracy`
+### `Accuracy`
 
 | Accuracy                     | Value | Description                                                                                   |
 | ---------------------------- | :---: | --------------------------------------------------------------------------------------------- |
@@ -487,7 +487,7 @@ Object of type `LocationRegion` includes following fields:
 | `Accuracy.Highest`           |   5   | The best level of accuracy available.                                                         |
 | `Accuracy.BestForNavigation` |   6   | The highest possible accuracy that uses additional sensor data to facilitate navigation apps. |
 
-### `LocationActivityType`
+### `ActivityType`
 
 | ActivityType                        | Value | Description                                                                                                           |
 | ----------------------------------- | :---: | --------------------------------------------------------------------------------------------------------------------- |
@@ -497,14 +497,14 @@ Object of type `LocationRegion` includes following fields:
 | `ActivityType.OtherNavigation`      |   4   | Activity type for movements for other types of vehicular navigation that are not automobile related.                  |
 | `ActivityType.Airborne`             |   5   | Intended for airborne activities. **Available since iOS 12.0, fall backs to `ActivityType.Other` otherwise.**         |
 
-### `LocationGeofencingEventType`
+### `GeofencingEventType`
 
 | Event type                  | Value | Description                                        |
 | --------------------------- | :---: | -------------------------------------------------- |
 | `GeofencingEventType.Enter` |   1   | Emitted when the device entered observed region.   |
 | `GeofencingEventType.Exit`  |   2   | Occurs as soon as the device left observed region. |
 
-### `LocationGeofencingRegionState`
+### `GeofencingRegionState`
 
 | Region state                    | Value | Description                                     |
 | ------------------------------- | :---: | ----------------------------------------------- |
