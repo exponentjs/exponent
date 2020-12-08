@@ -24,74 +24,52 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Gyroscope } from 'expo-sensors';
 
-export default function App() {
+function useGyroscope(isEnabled, updateInterval) {
   const [data, setData] = useState({});
-
+  
   useEffect(() => {
-    _toggle();
-  }, []);
-
-  useEffect(() => {
-    return () => {
-      _unsubscribe();
-    };
-  }, []);
-
-  const _toggle = () => {
-    if (this._subscription) {
-      _unsubscribe();
-    } else {
-      _subscribe();
+    if(isEnabled) {
+      const subscription = Gyroscope.addListener(gyroscopeData => {
+        setData(gyroscopeData);
+      });
+      
+      return () => subscription.remove();
     }
-  };
+  }, [isEnabled, setData]);
 
-  const _slow = () => {
-    Gyroscope.setUpdateInterval(1000);
-  };
+  useEffect(() => {
+    Gyroscope.setUpdateInterval(updateInterval);
+  }, [updateInterval]);
+  
+  return data;
+}
 
-  const _fast = () => {
-    Gyroscope.setUpdateInterval(16);
-  };
-
-  const _subscribe = () => {
-    this._subscription = Gyroscope.addListener(gyroscopeData => {
-      setData(gyroscopeData);
-    });
-  };
-
-  const _unsubscribe = () => {
-    this._subscription && this._subscription.remove();
-    this._subscription = null;
-  };
+export default function App() {
+  const [isEnabled, setIsEnabled] = useState(true);
+  const [updateInterval, setUpdateInterval] = useState(1000);
+  
+  const data = useGyroscope(isEnabled, updateInterval);
 
   let { x, y, z } = data;
   return (
     <View style={styles.sensor}>
       <Text style={styles.text}>Gyroscope:</Text>
       <Text style={styles.text}>
-        x: {round(x)} y: {round(y)} z: {round(z)}
+        x: {Math.round(x)} y: {Math.round(y)} z: {Math.round(z)}
       </Text>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={_toggle} style={styles.button}>
+        <TouchableOpacity onPress={() => setIsEnabled(wasEnabled => !wasEnabled)} style={styles.button}>
           <Text>Toggle</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={_slow} style={[styles.button, styles.middleButton]}>
+        <TouchableOpacity onPress={() => setUpdateInterval(1000)} style={[styles.button, styles.middleButton]}>
           <Text>Slow</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={_fast} style={styles.button}>
+        <TouchableOpacity onPress={() => setUpdateInterval(300)} style={styles.button}>
           <Text>Fast</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
-}
-
-function round(n) {
-  if (!n) {
-    return 0;
-  }
-
-  return Math.floor(n * 100) / 100;
 }
 ```
 
