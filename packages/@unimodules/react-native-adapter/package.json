@@ -40,7 +40,6 @@
   "unimodulePeerDependencies": {
     "@unimodules/core": "*",
     "unimodules-app-loader": "*",
-    "unimodules-font-interface": "*",
     "unimodules-image-loader-interface": "*",
     "unimodules-permissions-interface": "*"
   },

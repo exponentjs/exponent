@@ -83,7 +83,6 @@
     "unimodules-constants-interface": "~5.4.0",
     "unimodules-face-detector-interface": "~5.4.0",
     "unimodules-file-system-interface": "~5.4.0",
-    "unimodules-font-interface": "~5.4.0",
     "unimodules-image-loader-interface": "~5.4.0",
     "unimodules-permissions-interface": "~5.4.0",
     "unimodules-sensors-interface": "~5.4.0",

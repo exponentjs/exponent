@@ -2251,7 +2251,6 @@ PODS:
   - UMCore (7.0.0)
   - UMFaceDetectorInterface (5.4.0)
   - UMFileSystemInterface (5.4.0)
-  - UMFontInterface (5.4.0)
   - UMImageLoaderInterface (5.4.0)
   - UMPermissionsInterface (5.4.0):
     - UMCore
@@ -2678,7 +2677,6 @@ DEPENDENCIES:
   - "UMCore (from `../packages/@unimodules/core/ios`)"
   - UMFaceDetectorInterface (from `../packages/unimodules-face-detector-interface/ios`)
   - UMFileSystemInterface (from `../packages/unimodules-file-system-interface/ios`)
-  - UMFontInterface (from `../packages/unimodules-font-interface/ios`)
   - UMImageLoaderInterface (from `../packages/unimodules-image-loader-interface/ios`)
   - UMPermissionsInterface (from `../packages/unimodules-permissions-interface/ios`)
   - "UMReactNativeAdapter (from `../packages/@unimodules/react-native-adapter/ios`)"
@@ -3506,8 +3504,6 @@ EXTERNAL SOURCES:
     :path: "../packages/unimodules-face-detector-interface/ios"
   UMFileSystemInterface:
     :path: "../packages/unimodules-file-system-interface/ios"
-  UMFontInterface:
-    :path: "../packages/unimodules-font-interface/ios"
   UMImageLoaderInterface:
     :path: "../packages/unimodules-image-loader-interface/ios"
   UMPermissionsInterface:
@@ -3947,7 +3943,6 @@ SPEC CHECKSUMS:
   UMCore: 6d61fd607665328831115744e18e1db6b4a061eb
   UMFaceDetectorInterface: 72beeead8c494612730939aaef58ebd38725dedb
   UMFileSystemInterface: 05c4255c0b670b7c567abcafaab6ba181f331875
-  UMFontInterface: 66a5a5260d08632470bf14aa4fd83c69abf80cbe
   UMImageLoaderInterface: 1161185ac1ddd1993b1109708627c060e0093a3b
   UMPermissionsInterface: f451df3df33c11eb6e878f01e5db121c362ad279
   UMReactNativeAdapter: 03b229297e8f7d421d5fafa780117760a6b9b369

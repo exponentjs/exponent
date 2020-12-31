@@ -9577,8 +9577,8 @@ CACHE_KEYS:
       - nanopb/encode (0.3.9011)
   Pods-Exponent:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: c34ed200c8f0a177b0b71a31a63cc265
-      Release: c34ed200c8f0a177b0b71a31a63cc265
+      Debug: a1766a97f789475f90eac7006c9e5182
+      Release: a1766a97f789475f90eac7006c9e5182
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/ABI39_0_0React-Core/ABI39_0_0AccessibilityResources.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/ABI40_0_0React-Core/ABI40_0_0AccessibilityResources.bundle"
@@ -9590,12 +9590,12 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-ExponentIntegrationTests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 6d9ea74e17279dcc206f369c11af603e
-      Release: 6d9ea74e17279dcc206f369c11af603e
+      Debug: d1e670e7bbb64a4e143ffc85e2fd41e8
+      Release: d1e670e7bbb64a4e143ffc85e2fd41e8
   Pods-Tests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 6d9ea74e17279dcc206f369c11af603e
-      Release: 6d9ea74e17279dcc206f369c11af603e
+      Debug: d1e670e7bbb64a4e143ffc85e2fd41e8
+      Release: d1e670e7bbb64a4e143ffc85e2fd41e8
   PromisesObjC:
     BUILD_SETTINGS_CHECKSUM:
       PromisesObjC:
@@ -10532,20 +10532,6 @@ CACHE_KEYS:
     PROJECT_NAME: UMFileSystemInterface
     SPECS:
       - UMFileSystemInterface (5.4.0)
-  UMFontInterface:
-    BUILD_SETTINGS_CHECKSUM:
-      UMFontInterface:
-        :debug: 8f6245ccbac327fb5160947be6fac098
-        :release: 8f6245ccbac327fb5160947be6fac098
-    CHECKSUM: 66a5a5260d08632470bf14aa4fd83c69abf80cbe
-    FILES:
-      - "../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontManagerInterface.h"
-      - "../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontProcessorInterface.h"
-      - "../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontScalerInterface.h"
-      - "../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontScalersManagerInterface.h"
-    PROJECT_NAME: UMFontInterface
-    SPECS:
-      - UMFontInterface (5.4.0)
   UMImageLoaderInterface:
     BUILD_SETTINGS_CHECKSUM:
       UMImageLoaderInterface:

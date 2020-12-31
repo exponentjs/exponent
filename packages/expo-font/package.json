@@ -36,8 +36,7 @@
   "unimodulePeerDependencies": {
     "@unimodules/core": "*",
     "expo-asset": "*",
-    "expo-constants": "*",
-    "unimodules-font-interface": "*"
+    "expo-constants": "*"
   },
   "peerDependencies": {
     "react": "*",

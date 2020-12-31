@@ -1589,8 +1589,8 @@ CACHE_KEYS:
       - OpenSSL-Universal/Static (1.0.2.20)
   Pods-BareExpoMain-BareExpo:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 877ce0e8e6463584617fddce28690ce4
-      Release: 1d4c90d06175ff45bd9e2da0cfb19fd3
+      Debug: b8ce0580ff161d8098289a56f53b615d
+      Release: f9cfc15bb3f8fc828cdc3b401d19b8fb
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
@@ -1600,8 +1600,8 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-BareExpoMain-BareExpoDetox:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 367aa70f33d76b29ed5101412ee45005
-      Release: 2d0a3e3c4dfa6655b2cc06f970bf2237
+      Debug: b0776c70c87a09f341e42b667076895f
+      Release: 152eab29a7c1f1206ab6de07fbd1139e
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
@@ -1611,8 +1611,8 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-BareExpoTests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: f411f8663373fe028066c95ceedf3390
-      Release: f411f8663373fe028066c95ceedf3390
+      Debug: c6ce6cbfc3babae124dec082025c618a
+      Release: c6ce6cbfc3babae124dec082025c618a
   PromisesObjC:
     BUILD_SETTINGS_CHECKSUM:
       PromisesObjC:
@@ -3082,20 +3082,6 @@ CACHE_KEYS:
     PROJECT_NAME: UMFileSystemInterface
     SPECS:
       - UMFileSystemInterface (5.4.0)
-  UMFontInterface:
-    BUILD_SETTINGS_CHECKSUM:
-      UMFontInterface:
-        :debug: 4abe433273f7b4fdd21eb941a9ce5474
-        :release: 4abe433273f7b4fdd21eb941a9ce5474
-    CHECKSUM: 66a5a5260d08632470bf14aa4fd83c69abf80cbe
-    FILES:
-      - "../../../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontManagerInterface.h"
-      - "../../../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontProcessorInterface.h"
-      - "../../../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontScalerInterface.h"
-      - "../../../../packages/unimodules-font-interface/ios/UMFontInterface/UMFontScalersManagerInterface.h"
-    PROJECT_NAME: UMFontInterface
-    SPECS:
-      - UMFontInterface (5.4.0)
   UMImageLoaderInterface:
     BUILD_SETTINGS_CHECKSUM:
       UMImageLoaderInterface:
