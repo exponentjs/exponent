@@ -1095,9 +1095,9 @@ CACHE_KEYS:
   EXSensors:
     BUILD_SETTINGS_CHECKSUM:
       EXSensors:
-        :debug: a5a4008fefda4679b965ad5dd6256951
-        :release: a5a4008fefda4679b965ad5dd6256951
-    CHECKSUM: e32f3764530071ca587911b0b020f23b675f9fc1
+        :debug: 139840f263a8494fa156185c3567cfde
+        :release: 139840f263a8494fa156185c3567cfde
+    CHECKSUM: 681a9644f32a86457ac7f7311f1ac0f1177c722b
     FILES:
       - "../../../../packages/expo-sensors/ios/EXSensors/EXSensorsManager.h"
       - "../../../../packages/expo-sensors/ios/EXSensors/EXSensorsManager.m"
@@ -1585,8 +1585,8 @@ CACHE_KEYS:
       - OpenSSL-Universal/Static (1.0.2.20)
   Pods-BareExpoMain-BareExpo:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 877ce0e8e6463584617fddce28690ce4
-      Release: 1d4c90d06175ff45bd9e2da0cfb19fd3
+      Debug: a61a6814e3c11c2170e8075fbf863a52
+      Release: 738c4b5b322dd88595b81c2f695acc0d
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
@@ -1596,8 +1596,8 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-BareExpoMain-BareExpoDetox:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 367aa70f33d76b29ed5101412ee45005
-      Release: 2d0a3e3c4dfa6655b2cc06f970bf2237
+      Debug: a7e679b24030abb5fa8fd9ccc39cbef1
+      Release: 283442641e8103601f96dda8c84116ac
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
@@ -1607,8 +1607,8 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-BareExpoTests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: f411f8663373fe028066c95ceedf3390
-      Release: f411f8663373fe028066c95ceedf3390
+      Debug: 80991440a904a7a9f839d0b9e5445bdf
+      Release: 80991440a904a7a9f839d0b9e5445bdf
   PromisesObjC:
     BUILD_SETTINGS_CHECKSUM:
       PromisesObjC:
@@ -3146,22 +3146,6 @@ CACHE_KEYS:
     PROJECT_NAME: UMReactNativeAdapter
     SPECS:
       - UMReactNativeAdapter (6.0.0)
-  UMSensorsInterface:
-    BUILD_SETTINGS_CHECKSUM:
-      UMSensorsInterface:
-        :debug: 5da9cbcf222c644f2592d04eadc21b7b
-        :release: 5da9cbcf222c644f2592d04eadc21b7b
-    CHECKSUM: ee77144787aa11f3adb4668f6dc3fbfb5d810992
-    FILES:
-      - "../../../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMAccelerometerInterface.h"
-      - "../../../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMBarometerInterface.h"
-      - "../../../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMDeviceMotionInterface.h"
-      - "../../../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMGyroscopeInterface.h"
-      - "../../../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMMagnetometerInterface.h"
-      - "../../../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMMagnetometerUncalibratedInterface.h"
-    PROJECT_NAME: UMSensorsInterface
-    SPECS:
-      - UMSensorsInterface (5.4.0)
   UMTaskManagerInterface:
     BUILD_SETTINGS_CHECKSUM:
       UMTaskManagerInterface:

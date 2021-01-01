@@ -9052,9 +9052,9 @@ CACHE_KEYS:
   EXSensors:
     BUILD_SETTINGS_CHECKSUM:
       EXSensors:
-        :debug: ef13594b4436a8dc067bf2e55262b18a
-        :release: ef13594b4436a8dc067bf2e55262b18a
-    CHECKSUM: e32f3764530071ca587911b0b020f23b675f9fc1
+        :debug: 29762527daed9d07673187a432b5f71d
+        :release: 29762527daed9d07673187a432b5f71d
+    CHECKSUM: 681a9644f32a86457ac7f7311f1ac0f1177c722b
     FILES:
       - "../../packages/expo-sensors/ios/EXSensors/EXSensorsManager.h"
       - "../../packages/expo-sensors/ios/EXSensors/EXSensorsManager.m"
@@ -9573,8 +9573,8 @@ CACHE_KEYS:
       - nanopb/encode (0.3.9011)
   Pods-Exponent:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: c34ed200c8f0a177b0b71a31a63cc265
-      Release: c34ed200c8f0a177b0b71a31a63cc265
+      Debug: caaee21a1f8707d3edde4f99e97d293b
+      Release: caaee21a1f8707d3edde4f99e97d293b
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/ABI39_0_0React-Core/ABI39_0_0AccessibilityResources.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/ABI40_0_0React-Core/ABI40_0_0AccessibilityResources.bundle"
@@ -9586,12 +9586,12 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-ExponentIntegrationTests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 6d9ea74e17279dcc206f369c11af603e
-      Release: 6d9ea74e17279dcc206f369c11af603e
+      Debug: f16623e581e6f57d62d43206b28dac62
+      Release: f16623e581e6f57d62d43206b28dac62
   Pods-Tests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 6d9ea74e17279dcc206f369c11af603e
-      Release: 6d9ea74e17279dcc206f369c11af603e
+      Debug: f16623e581e6f57d62d43206b28dac62
+      Release: f16623e581e6f57d62d43206b28dac62
   PromisesObjC:
     BUILD_SETTINGS_CHECKSUM:
       PromisesObjC:
@@ -10596,22 +10596,6 @@ CACHE_KEYS:
     PROJECT_NAME: UMReactNativeAdapter
     SPECS:
       - UMReactNativeAdapter (6.0.0)
-  UMSensorsInterface:
-    BUILD_SETTINGS_CHECKSUM:
-      UMSensorsInterface:
-        :debug: 5fe3599d7e8e234175fdb456c96d3554
-        :release: 5fe3599d7e8e234175fdb456c96d3554
-    CHECKSUM: ee77144787aa11f3adb4668f6dc3fbfb5d810992
-    FILES:
-      - "../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMAccelerometerInterface.h"
-      - "../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMBarometerInterface.h"
-      - "../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMDeviceMotionInterface.h"
-      - "../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMGyroscopeInterface.h"
-      - "../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMMagnetometerInterface.h"
-      - "../../packages/unimodules-sensors-interface/ios/UMSensorsInterface/UMMagnetometerUncalibratedInterface.h"
-    PROJECT_NAME: UMSensorsInterface
-    SPECS:
-      - UMSensorsInterface (5.4.0)
   UMTaskManagerInterface:
     BUILD_SETTINGS_CHECKSUM:
       UMTaskManagerInterface:

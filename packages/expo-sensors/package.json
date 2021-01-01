@@ -40,8 +40,7 @@
     "preset": "expo-module-scripts"
   },
   "unimodulePeerDependencies": {
-    "@unimodules/core": "*",
-    "unimodules-sensors-interface": "*"
+    "@unimodules/core": "*"
   },
   "dependencies": {
     "invariant": "^2.2.4"

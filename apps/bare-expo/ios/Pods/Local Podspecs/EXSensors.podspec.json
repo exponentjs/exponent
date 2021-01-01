@@ -15,9 +15,6 @@
   "dependencies": {
     "UMCore": [
 
-    ],
-    "UMSensorsInterface": [
-
     ]
   },
   "source_files": "EXSensors/**/*.{h,m}"

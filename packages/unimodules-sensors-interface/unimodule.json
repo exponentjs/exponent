@@ -1,4 +1,4 @@
 {
   "name": "unimodules-sensors-interface",
-  "platforms": ["ios", "android"]
+  "platforms": []
 }

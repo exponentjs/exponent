@@ -86,7 +86,6 @@
     "unimodules-font-interface": "~5.4.0",
     "unimodules-image-loader-interface": "~5.4.0",
     "unimodules-permissions-interface": "~5.4.0",
-    "unimodules-sensors-interface": "~5.4.0",
     "unimodules-task-manager-interface": "~5.4.0",
     "uuid": "^3.4.0"
   },

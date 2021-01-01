@@ -5,6 +5,7 @@
 ### 🛠 Breaking changes
 
 - Dropped support for iOS 10.0 ([#11344](https://github.com/expo/expo/pull/11344) by [@tsapeta](https://github.com/tsapeta))
+- ⚠️ Deprecated the package in favor of keeping all relevant interfaces directly in `expo-sensors`. It should not be needed in projects depending on `expo-sensors@>9.2.0`. If you depend on it directly you should be safe to remove the dependency requirement. ([#11491](https://github.com/expo/expo/pull/11491) by [@sjchmiela](https://github.com/sjchmiela))
 
 ### 🎉 New features
 
