@@ -3,6 +3,7 @@
 #import <UMCore/UMExportedModule.h>
 #import <UMCore/UMEventEmitter.h>
 #import <UMCore/UMModuleRegistryConsumer.h>
+#import <EXSensors/EXSensorsManager.h>
 
 @interface EXBaseSensorModule : UMExportedModule <UMEventEmitter, UMModuleRegistryConsumer>
 

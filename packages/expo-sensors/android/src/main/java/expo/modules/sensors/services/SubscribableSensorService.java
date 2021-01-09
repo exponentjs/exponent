@@ -7,14 +7,11 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener2;
 
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import org.unimodules.core.interfaces.InternalModule;
-import org.unimodules.interfaces.sensors.SensorService;
+import expo.modules.sensors.interfaces.SensorService;
 
 public abstract class SubscribableSensorService extends BaseSensorService implements SensorService {
   protected static int DEFAULT_UPDATE_INTERVAL = 100;
@@ -38,7 +35,7 @@ public abstract class SubscribableSensorService extends BaseSensorService implem
 
   // Modules API
 
-  public org.unimodules.interfaces.sensors.SensorServiceSubscription createSubscriptionForListener(SensorEventListener2 listener) {
+  public expo.modules.sensors.interfaces.SensorServiceSubscription createSubscriptionForListener(SensorEventListener2 listener) {
     SensorServiceSubscription sensorServiceSubscription = new SensorServiceSubscription(this, listener);
     mSensorEventListenerLastUpdateMap.put(sensorServiceSubscription, 0L);
     return sensorServiceSubscription;

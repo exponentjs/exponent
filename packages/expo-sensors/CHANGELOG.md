@@ -12,6 +12,8 @@
 
 ### 🎉 New features
 
+- Remove dependency on (now) deprecated `unimodules-sensors-interface`. ([#9943](https://github.com/expo/expo/pull/9943) by [@sjchmiela](https://github.com/sjchmiela))
+
 ### 🐛 Bug fixes
 
 - Removed `fbjs` dependency ([#11396](https://github.com/expo/expo/pull/11396) by [@cruzach](https://github.com/cruzach))

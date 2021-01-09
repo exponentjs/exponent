@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.unimodules.core.interfaces.InternalModule;
-import org.unimodules.interfaces.sensors.services.MagnetometerUncalibratedService;
+import expo.modules.sensors.interfaces.services.MagnetometerUncalibratedService;
 import host.exp.exponent.kernel.ExperienceId;
 import host.exp.exponent.kernel.services.sensors.SubscribableSensorKernelService;
 

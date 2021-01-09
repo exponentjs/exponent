@@ -23,8 +23,7 @@
 
 - (id)getSensorServiceFromModuleRegistry:(UMModuleRegistry *)moduleRegistry
 {
-  NSAssert(false, @"You've subclassed EXBaseSensorModule, but didn't override the `getSensorServiceFromModuleRegistry` method.");
-  return nil;
+  return [moduleRegistry getModuleImplementingProtocol:@protocol(EXSensorsManager)];
 }
 
 - (void)setUpdateInterval:(double)updateInterval onSensorService:(id)sensorService

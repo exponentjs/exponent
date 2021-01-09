@@ -2,12 +2,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UMCore/UMInternalModule.h>
-#import <UMSensorsInterface/UMAccelerometerInterface.h>
-#import <UMSensorsInterface/UMBarometerInterface.h>
-#import <UMSensorsInterface/UMDeviceMotionInterface.h>
-#import <UMSensorsInterface/UMGyroscopeInterface.h>
-#import <UMSensorsInterface/UMMagnetometerInterface.h>
-#import <UMSensorsInterface/UMMagnetometerUncalibratedInterface.h>
 
 @protocol EXSensorsManagerBindingDelegate
 
@@ -46,35 +40,14 @@
 
 @end
 
-@interface EXSensorsManagerBinding : NSObject <UMInternalModule, UMAccelerometerInterface, UMBarometerInterface, UMDeviceMotionInterface, UMGyroscopeInterface, UMMagnetometerInterface, UMMagnetometerUncalibratedInterface>
+#if __has_include(<EXSensors/EXSensorsManager.h>)
+
+#import <EXSensors/EXSensorsManager.h>
+
+@interface EXSensorsManagerBinding : EXSensorsManager
 
 - (instancetype)initWithExperienceId:(NSString *)experienceId andKernelService:(id<EXSensorsManagerBindingDelegate>)kernelService;
 
-- (void)sensorModuleDidSubscribeForAccelerometerUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock;
-- (void)sensorModuleDidSubscribeForDeviceMotionUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock;
-- (void)sensorModuleDidSubscribeForGyroscopeUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock;
-- (void)sensorModuleDidSubscribeForMagnetometerUncalibratedUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock;
-- (void)sensorModuleDidSubscribeForMagnetometerUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock;
-- (void)sensorModuleDidSubscribeForBarometerUpdates:(id)scopedSensorModule withHandler:(void (^)(NSDictionary *))handlerBlock;
-- (void)sensorModuleDidUnsubscribeForAccelerometerUpdates:(id)scopedSensorModule;
-- (void)sensorModuleDidUnsubscribeForDeviceMotionUpdates:(id)scopedSensorModule;
-- (void)sensorModuleDidUnsubscribeForGyroscopeUpdates:(id)scopedSensorModule;
-- (void)sensorModuleDidUnsubscribeForMagnetometerUncalibratedUpdates:(id)scopedSensorModule;
-- (void)sensorModuleDidUnsubscribeForMagnetometerUpdates:(id)scopedSensorModule;
-- (void)sensorModuleDidUnsubscribeForBarometerUpdates:(id)scopedSensorModule;
-- (void)setAccelerometerUpdateInterval:(NSTimeInterval)intervalMs;
-- (void)setDeviceMotionUpdateInterval:(NSTimeInterval)intervalMs;
-- (void)setGyroscopeUpdateInterval:(NSTimeInterval)intervalMs;
-- (void)setMagnetometerUncalibratedUpdateInterval:(NSTimeInterval)intervalMs;
-- (void)setMagnetometerUpdateInterval:(NSTimeInterval)intervalMs;
-- (void)setBarometerUpdateInterval:(NSTimeInterval)intervalMs;
-
-- (BOOL)isBarometerAvailable;
-
-- (BOOL)isAccelerometerAvailable;
-- (BOOL)isDeviceMotionAvailable;
-- (BOOL)isGyroAvailable;
-- (BOOL)isMagnetometerAvailable;
-- (BOOL)isMagnetometerUncalibratedAvailable;
-
 @end
+
+#endif

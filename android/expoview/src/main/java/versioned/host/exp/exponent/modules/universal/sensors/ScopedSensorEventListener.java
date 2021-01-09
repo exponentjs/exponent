@@ -11,6 +11,7 @@ public class ScopedSensorEventListener implements SensorEventListener {
   ScopedSensorEventListener(SensorEventListener2 eventListener) {
     mEventListener = eventListener;
   }
+
   @Override
   public void onSensorDataChanged(SensorEvent sensorEvent) {
     mEventListener.onSensorChanged(sensorEvent);

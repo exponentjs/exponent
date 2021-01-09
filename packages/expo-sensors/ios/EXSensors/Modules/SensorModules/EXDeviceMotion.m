@@ -1,7 +1,6 @@
 // Copyright 2015-present 650 Industries. All rights reserved.
 
 #import <EXSensors/EXDeviceMotion.h>
-#import <UMSensorsInterface/UMDeviceMotionInterface.h>
 
 @implementation EXDeviceMotion
 
@@ -19,11 +18,6 @@ UM_EXPORT_MODULE(ExponentDeviceMotion);
 - (const NSString *)updateEventName
 {
   return @"deviceMotionDidUpdate";
-}
-
-- (id)getSensorServiceFromModuleRegistry:(UMModuleRegistry *)moduleRegistry
-{
-  return [moduleRegistry getModuleImplementingProtocol:@protocol(UMDeviceMotionInterface)];
 }
 
 - (void)setUpdateInterval:(double)updateInterval onSensorService:(id)sensorService

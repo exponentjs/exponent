@@ -1,4 +1,6 @@
-# unimodules-sensors-interface
+# unimodules-sensors-interface (deprecated)
+
+> ⚠️ This package has been deprecated in favor of keeping all relevant interfaces directly in `expo-sensors`. It should not be needed in projects depending on `expo-sensors@>9.2.0`. If you depend on it directly you should be safe to remove the dependency requirement. ⚠️
 
 An interface for sensors modules.
 

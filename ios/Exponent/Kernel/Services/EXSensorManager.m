@@ -4,6 +4,9 @@
 #import "EXSensorManager.h"
 #import <CoreMotion/CoreMotion.h>
 
+// Gravity on the planet this module supports (currently just Earth) represented as m/s^2.
+static const float EXGravity = 9.80665;
+
 @interface EXSensorManager ()
 
 @property (nonatomic, strong) CMMotionManager *manager;

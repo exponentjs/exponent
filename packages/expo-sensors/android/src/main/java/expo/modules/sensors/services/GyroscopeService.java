@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.unimodules.core.interfaces.InternalModule;
 
-public class GyroscopeService extends SubscribableSensorService implements InternalModule, org.unimodules.interfaces.sensors.services.GyroscopeService {
+public class GyroscopeService extends SubscribableSensorService implements InternalModule, expo.modules.sensors.interfaces.services.GyroscopeService {
   public GyroscopeService(Context context) {
     super(context);
   }
@@ -23,6 +23,6 @@ public class GyroscopeService extends SubscribableSensorService implements Inter
 
   @Override
   public List<Class> getExportedInterfaces() {
-    return Collections.<Class>singletonList(org.unimodules.interfaces.sensors.services.GyroscopeService.class);
+    return Collections.<Class>singletonList(expo.modules.sensors.interfaces.services.GyroscopeService.class);
   }
 }

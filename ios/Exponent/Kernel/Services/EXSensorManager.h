@@ -2,8 +2,6 @@
 
 #import "EXSensorsManagerBinding.h"
 
-static const float EXGravity = 9.81;
-
 @interface EXSensorManager : NSObject <EXSensorsManagerBindingDelegate>
 
 @end

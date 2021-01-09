@@ -10,6 +10,8 @@
 
 ### 🐛 Bug fixes
 
+- Added deprecation notice to README. ([#9943](https://github.com/expo/expo/pull/9943) by [@sjchmiela](https://github.com/sjchmiela))
+
 ## 5.4.0 — 2020-11-17
 
 _This version does not introduce any user-facing changes._

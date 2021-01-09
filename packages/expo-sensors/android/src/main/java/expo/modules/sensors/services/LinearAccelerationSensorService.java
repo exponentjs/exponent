@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.unimodules.core.interfaces.InternalModule;
 
-public class LinearAccelerationSensorService extends SubscribableSensorService implements InternalModule, org.unimodules.interfaces.sensors.services.LinearAccelerationSensorService {
+public class LinearAccelerationSensorService extends SubscribableSensorService implements InternalModule, expo.modules.sensors.interfaces.services.LinearAccelerationSensorService {
   public LinearAccelerationSensorService(Context reactContext) {
     super(reactContext);
   }
@@ -22,6 +22,6 @@ public class LinearAccelerationSensorService extends SubscribableSensorService i
 
   @Override
   public List<Class> getExportedInterfaces() {
-    return Collections.<Class>singletonList(org.unimodules.interfaces.sensors.services.LinearAccelerationSensorService.class);
+    return Collections.<Class>singletonList(expo.modules.sensors.interfaces.services.LinearAccelerationSensorService.class);
   }
 }

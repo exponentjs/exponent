@@ -12,8 +12,8 @@ import org.unimodules.core.ModuleRegistry;
 import org.unimodules.core.interfaces.LifecycleEventListener;
 import org.unimodules.core.interfaces.services.EventEmitter;
 import org.unimodules.core.interfaces.services.UIManager;
-import org.unimodules.interfaces.sensors.SensorService;
-import org.unimodules.interfaces.sensors.SensorServiceSubscription;
+import expo.modules.sensors.interfaces.SensorService;
+import expo.modules.sensors.interfaces.SensorServiceSubscription;
 
 public abstract class BaseSensorModule extends ExportedModule implements SensorEventListener2, LifecycleEventListener {
   private SensorServiceSubscription mSensorServiceSubscription;

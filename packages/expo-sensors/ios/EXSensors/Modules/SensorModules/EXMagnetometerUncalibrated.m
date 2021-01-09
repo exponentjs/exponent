@@ -1,7 +1,6 @@
 // Copyright 2015-present 650 Industries. All rights reserved.
 
 #import <EXSensors/EXMagnetometerUncalibrated.h>
-#import <UMSensorsInterface/UMMagnetometerUncalibratedInterface.h>
 
 @implementation EXMagnetometerUncalibrated
 
@@ -10,11 +9,6 @@ UM_EXPORT_MODULE(ExponentMagnetometerUncalibrated);
 - (const NSString *)updateEventName
 {
   return @"magnetometerUncalibratedDidUpdate";
-}
-
-- (id)getSensorServiceFromModuleRegistry:(UMModuleRegistry *)moduleRegistry
-{
-  return [moduleRegistry getModuleImplementingProtocol:@protocol(UMMagnetometerUncalibratedInterface)];
 }
 
 - (void)setUpdateInterval:(double)updateInterval onSensorService:(id)sensorService

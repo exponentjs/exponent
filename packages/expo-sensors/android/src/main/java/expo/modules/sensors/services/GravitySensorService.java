@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.unimodules.core.interfaces.InternalModule;
 
-public class GravitySensorService extends SubscribableSensorService implements InternalModule, org.unimodules.interfaces.sensors.services.GravitySensorService {
+public class GravitySensorService extends SubscribableSensorService implements InternalModule, expo.modules.sensors.interfaces.services.GravitySensorService {
   public GravitySensorService(Context reactContext) {
     super(reactContext);
   }
@@ -22,6 +22,6 @@ public class GravitySensorService extends SubscribableSensorService implements I
 
   @Override
   public List<Class> getExportedInterfaces() {
-    return Collections.<Class>singletonList(org.unimodules.interfaces.sensors.services.GravitySensorService.class);
+    return Collections.<Class>singletonList(expo.modules.sensors.interfaces.services.GravitySensorService.class);
   }
 }

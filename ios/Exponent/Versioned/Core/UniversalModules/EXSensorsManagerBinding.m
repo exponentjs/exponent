@@ -1,3 +1,5 @@
+#if __has_include(<EXSensors/EXSensorsManager.h>)
+
 // Copyright © 2018 650 Industries. All rights reserved.
 
 #import "EXSensorsManagerBinding.h"
@@ -120,9 +122,6 @@
   return [_kernelService isBarometerAvailable];
 }
 
-
-+ (const NSArray<Protocol *> *)exportedInterfaces {
-  return @[@protocol(UMAccelerometerInterface), @protocol(UMBarometerInterface),  @protocol(UMDeviceMotionInterface), @protocol(UMGyroscopeInterface), @protocol(UMMagnetometerInterface), @protocol(UMMagnetometerUncalibratedInterface)];
-}
-
 @end
+
+#endif
