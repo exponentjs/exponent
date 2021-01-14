@@ -20,6 +20,9 @@
     ],
     "SDWebImage": [
       "~> 5.0"
+    ],
+    "SDWebImageSVGKitPlugin": [
+      "~> 1.2"
     ]
   }
 }

@@ -6,6 +6,7 @@ import EventTests from './events';
 import IOSTests from './ios';
 import ShadowsTests from './shadows';
 import SourcesTests from './sources';
+import SVGTests from './svg';
 
 const tests: ImageTestGroup = {
   name: 'Image',
@@ -14,6 +15,7 @@ const tests: ImageTestGroup = {
     BorderTests,
     ShadowsTests,
     SourcesTests,
+    SVGTests,
     EventTests,
     IOSTests,
     AndroidTests,

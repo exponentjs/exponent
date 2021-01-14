@@ -58,6 +58,16 @@ CACHE_KEYS:
     PROJECT_NAME: CocoaLibEvent
     SPECS:
       - CocoaLibEvent (1.0.0)
+  CocoaLumberjack:
+    BUILD_SETTINGS_CHECKSUM:
+      CocoaLumberjack:
+        :debug: 0d4813f102175b795641190a04fa9594
+        :release: 0d4813f102175b795641190a04fa9594
+    CHECKSUM: e8955b9d337ac307103b0a34fd141c32f27e53c5
+    PROJECT_NAME: CocoaLumberjack
+    SPECS:
+      - CocoaLumberjack (3.7.0)
+      - CocoaLumberjack/Core (3.7.0)
   DoubleConversion:
     BUILD_SETTINGS_CHECKSUM:
       DoubleConversion:
@@ -990,9 +1000,9 @@ CACHE_KEYS:
   expo-image:
     BUILD_SETTINGS_CHECKSUM:
       expo-image:
-        :debug: c70070a4832fdd505cd079254e6663aa
-        :release: c70070a4832fdd505cd079254e6663aa
-    CHECKSUM: 07527eb7a57f5ac939c5ded392bcf64c975b9c87
+        :debug: b6c5a45dbd60333372380630ef43374a
+        :release: b6c5a45dbd60333372380630ef43374a
+    CHECKSUM: 55eda77adcb65c25739970afbdbb67e655fcd118
     FILES:
       - "../../../../packages/expo-image/ios/EXImageBorders.h"
       - "../../../../packages/expo-image/ios/EXImageBorders.m"
@@ -1585,8 +1595,8 @@ CACHE_KEYS:
       - OpenSSL-Universal/Static (1.0.2.20)
   Pods-BareExpoMain-BareExpo:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 877ce0e8e6463584617fddce28690ce4
-      Release: 1d4c90d06175ff45bd9e2da0cfb19fd3
+      Debug: 21b7cbc73d9c707c431a54f67f4f6e28
+      Release: 7893ceb7bb379500daec72f6f9827871
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
@@ -1596,8 +1606,8 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-BareExpoMain-BareExpoDetox:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: 367aa70f33d76b29ed5101412ee45005
-      Release: 2d0a3e3c4dfa6655b2cc06f970bf2237
+      Debug: 642992d8f7a010537a08866cf7e135e9
+      Release: 71e4b180235a74d9a5f348d916646990
     FILES:
       - "${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle"
       - "${PODS_CONFIGURATION_BUILD_DIR}/FirebaseMLVisionFaceModel/GoogleMVFaceDetectorResources.bundle"
@@ -1607,8 +1617,8 @@ CACHE_KEYS:
       - "${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle"
   Pods-BareExpoTests:
     BUILD_SETTINGS_CHECKSUM:
-      Debug: f411f8663373fe028066c95ceedf3390
-      Release: f411f8663373fe028066c95ceedf3390
+      Debug: b81fd8a5785ea45df77845a7feecfe75
+      Release: b81fd8a5785ea45df77845a7feecfe75
   PromisesObjC:
     BUILD_SETTINGS_CHECKSUM:
       PromisesObjC:
@@ -2965,6 +2975,24 @@ CACHE_KEYS:
     SPECS:
       - SDWebImage (5.8.1)
       - SDWebImage/Core (5.8.1)
+  SDWebImageSVGKitPlugin:
+    BUILD_SETTINGS_CHECKSUM:
+      SDWebImageSVGKitPlugin:
+        :debug: 3e8a675e9317f23cf2b32e5f6b0b26c0
+        :release: 3e8a675e9317f23cf2b32e5f6b0b26c0
+    CHECKSUM: 06a811c05b9e839982baeb5251d15fe7a79abb82
+    PROJECT_NAME: SDWebImageSVGKitPlugin
+    SPECS:
+      - SDWebImageSVGKitPlugin (1.2.0)
+  SVGKit:
+    BUILD_SETTINGS_CHECKSUM:
+      SVGKit:
+        :debug: c48b0070785243c6d92261eb1a90aa89
+        :release: c48b0070785243c6d92261eb1a90aa89
+    CHECKSUM: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
+    PROJECT_NAME: SVGKit
+    SPECS:
+      - SVGKit (2.1.1)
   UMAppLoader:
     BUILD_SETTINGS_CHECKSUM:
       UMAppLoader:

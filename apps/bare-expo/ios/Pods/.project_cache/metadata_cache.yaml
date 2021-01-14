@@ -22,6 +22,10 @@ CocoaLibEvent:
   LABEL: CocoaLibEvent
   PROJECT_PATH: CocoaLibEvent.xcodeproj
   UUID: 0E4F8F3811F0945641866082B5F12145
+CocoaLumberjack:
+  LABEL: CocoaLumberjack
+  PROJECT_PATH: CocoaLumberjack.xcodeproj
+  UUID: 85392ABCB5967FC7F189FA544F4E883D
 DoubleConversion:
   LABEL: DoubleConversion
   PROJECT_PATH: DoubleConversion.xcodeproj
@@ -594,6 +598,14 @@ SDWebImage:
   LABEL: SDWebImage
   PROJECT_PATH: SDWebImage.xcodeproj
   UUID: 4ECF4E662EEBE4FA58102FF984D920CC
+SDWebImageSVGKitPlugin:
+  LABEL: SDWebImageSVGKitPlugin
+  PROJECT_PATH: SDWebImageSVGKitPlugin.xcodeproj
+  UUID: FA58565F770339D4895C202AB5B30D4E
+SVGKit:
+  LABEL: SVGKit
+  PROJECT_PATH: SVGKit.xcodeproj
+  UUID: 1A3836177B5D4E99F4E935D1479ECB0C
 UMAppLoader:
   LABEL: UMAppLoader
   PROJECT_PATH: UMAppLoader.xcodeproj

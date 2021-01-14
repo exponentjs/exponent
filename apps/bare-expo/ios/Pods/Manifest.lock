@@ -9,6 +9,9 @@ PODS:
   - boost-for-react-native (1.63.0)
   - CocoaAsyncSocket (7.6.4)
   - CocoaLibEvent (1.0.0)
+  - CocoaLumberjack (3.7.0):
+    - CocoaLumberjack/Core (= 3.7.0)
+  - CocoaLumberjack/Core (3.7.0)
   - DoubleConversion (1.1.6)
   - EXAmplitude (9.0.0):
     - Amplitude (~> 6.0.0)
@@ -163,6 +166,7 @@ PODS:
   - expo-image (1.0.0-alpha.0):
     - React-Core
     - SDWebImage (~> 5.0)
+    - SDWebImageSVGKitPlugin (~> 1.2)
   - EXPrint (9.2.0):
     - UMCore
     - UMFileSystemInterface
@@ -669,6 +673,11 @@ PODS:
   - SDWebImage (5.8.1):
     - SDWebImage/Core (= 5.8.1)
   - SDWebImage/Core (5.8.1)
+  - SDWebImageSVGKitPlugin (1.2.0):
+    - SDWebImage/Core (~> 5.6)
+    - SVGKit (>= 2.1)
+  - SVGKit (2.1.1):
+    - CocoaLumberjack (~> 3.0)
   - UMAppLoader (1.4.0)
   - UMBarCodeScannerInterface (5.4.0):
     - UMCore
@@ -850,6 +859,7 @@ SPEC REPOS:
     - boost-for-react-native
     - CocoaAsyncSocket
     - CocoaLibEvent
+    - CocoaLumberjack
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -882,6 +892,8 @@ SPEC REPOS:
     - PromisesObjC
     - Protobuf
     - SDWebImage
+    - SDWebImageSVGKitPlugin
+    - SVGKit
     - YogaKit
     - ZXingObjC
 
@@ -1132,6 +1144,7 @@ SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
+  CocoaLumberjack: e8955b9d337ac307103b0a34fd141c32f27e53c5
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   EXAmplitude: f4fe548682f1c2c95133dc0b1557512368e6c91b
   EXAppAuth: 0f1d0d7582d87fc700910907ab6b85a15e3d7d5f
@@ -1179,7 +1192,7 @@ SPEC CHECKSUMS:
   expo-dev-launcher: 5ffc81f9c05b723a494ed6538410b15954a42dd4
   expo-dev-menu: 03d796111cbbe837d64cbd20e2430048921f9acf
   expo-dev-menu-interface: e2534e9e6d5c333ef0a0bee02e459f310ddf810b
-  expo-image: 07527eb7a57f5ac939c5ded392bcf64c975b9c87
+  expo-image: 55eda77adcb65c25739970afbdbb67e655fcd118
   EXPrint: d2fa3a6ac93758bbb597426b729c9a33e3c5a63b
   EXRandom: 492160fc4833e9557824ec897faded9e297508ec
   EXScreenCapture: 9cbb3995e4dec9a74d3d6b117761acde41cf3557
@@ -1269,6 +1282,8 @@ SPEC CHECKSUMS:
   RNSharedElement: 00b1a1420d213a34459bb9a5aacabb38107d7948
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   SDWebImage: e3eae2eda88578db0685a0c88597fdadd9433f05
+  SDWebImageSVGKitPlugin: 06a811c05b9e839982baeb5251d15fe7a79abb82
+  SVGKit: 652cdf7bef8bec8564d04a8511d3ab50c7595fac
   UMAppLoader: bee14c578914554aa8cfb0b0c77b4906b6278189
   UMBarCodeScannerInterface: d24d7bfca41008b5da35b2132a1fac9e75720ea0
   UMCameraInterface: c4ceed954023beeb36e54a7107ceee0e8c00f6c8

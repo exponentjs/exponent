@@ -6,10 +6,19 @@ package = JSON.parse(File.read(File.join(__dir__, 'package.json')))
 # https://github.com/invertase/react-native-firebase/blob/bf5271ef46b534d3363206f816d114f9ac5c59ee/packages/app/RNFBApp.podspec#L5-L10
 
 sd_web_image_version = '~> 5.0'
+sd_web_image_svgkit_plugin_version = '~> 1.2'
+
 using_custom_sd_web_image_version = defined? $SDWebImageVersion
+using_custom_sd_web_image_svgkit_plugin_version = defined? $SDWebImageSVGKitPluginVersion
+
 if using_custom_sd_web_image_version
   sd_web_image_version = $SDWebImageVersion
-  Pod::UI.puts "expo-image: Using user specified SDWebImage version '#{$sd_web_image_version}'"
+  Pod::UI.info "expo-image: Using user specified SDWebImage version '#{sd_web_image_version}'"
+end
+
+if using_custom_sd_web_image_svgkit_plugin_version
+  sd_web_image_svgkit_plugin_version = $SDWebImageSVGKitPluginVersion
+  Pod::UI.info "expo-image: Using user specified SDWebImageSVGKitPlugin version '#{sd_web_image_svgkit_plugin_version}'"
 end
 
 Pod::Spec.new do |s|
@@ -29,5 +38,6 @@ Pod::Spec.new do |s|
   s.dependency 'React-Core'
 
   s.dependency 'SDWebImage', sd_web_image_version
+  s.dependency 'SDWebImageSVGKitPlugin', sd_web_image_svgkit_plugin_version
 
 end

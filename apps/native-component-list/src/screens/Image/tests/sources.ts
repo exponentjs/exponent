@@ -59,6 +59,19 @@ const imageTests: ImageTestGroup = {
         source: images.uri_ico,
       },
     },
+    {
+      name: `uri:.svg with text`,
+      props: {
+        source: images.uri_text_svg,
+      },
+    },
+    {
+      name: `uri:.svg`,
+      props: {
+        source: images.uri_youtube_svg,
+        resizeMode: 'contain', // It just looks nicer :)
+      },
+    },
   ],
 };
 

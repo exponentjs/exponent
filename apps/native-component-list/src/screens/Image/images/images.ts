@@ -10,6 +10,13 @@ const images = {
   uri_jpg: { uri: 'https://docs.expo.io/static/images/flappy_00.jpg' },
   uri_gif: { uri: 'https://docs.expo.io/static/images/flappy_03.gif' },
   uri_ico: { uri: 'https://docs.expo.io/static/images/favicon.ico' },
+  require_svg: require('../../../../assets/images/exponent-icon.svg'),
+  uri_text_svg: { uri: 'https://reactnative.dev/img/homepage/cross-platform.svg' },
+  uri_snack_svg: { uri: 'https://snack.expo.io/dist/assets/bc351fd24f9bd32bc131f122d42c1a77.svg' },
+  uri_youtube_svg: {
+    uri:
+      'https://www.youtube.com/about/static/svgs/icons/brand-resources/YouTube-logo-full_color_light.svg?cache=72a5d9c',
+  },
 };
 
 export default images;

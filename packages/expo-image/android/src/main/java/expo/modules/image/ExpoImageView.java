@@ -120,10 +120,15 @@ public class ExpoImageView extends AppCompatImageView {
       mRequestManager
         .load(sourceToLoad)
         .apply(options)
-        .listener(eventsManager)
+        .addListener(eventsManager)
         .into(this);
       mRequestManager
         .as(BitmapFactory.Options.class)
+        // Remove any default listeners from this request
+        // (an example would be an SVGSoftwareLayerSetter
+        // added in ExpoImageViewManager).
+        // This request won't load the image, only the size.
+        .listener(null)
         .load(sourceToLoad)
         .into(eventsManager);
     }
