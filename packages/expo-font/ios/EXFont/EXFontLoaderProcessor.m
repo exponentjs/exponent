@@ -1,33 +1,31 @@
 // Copyright 2015-present 650 Industries. All rights reserved.
 
 #import <EXFont/EXFontLoaderProcessor.h>
-#import <EXFont/EXFontLoader.h>
 #import <EXFont/EXFont.h>
-#import <EXFont/EXFontManager.h>
 #import <objc/runtime.h>
 
 @interface EXFontLoaderProcessor ()
 
 @property (nonatomic, copy) NSString *fontFamilyPrefix;
-@property (nonatomic, strong) EXFontManager *manager;
+@property (nonatomic, strong) EXFontRegistry *registry;
 
 @end
 
 @implementation EXFontLoaderProcessor
 
 - (instancetype)initWithFontFamilyPrefix:(NSString *)prefix
-                                 manager:(EXFontManager *)manager
+                                registry:(EXFontRegistry *)registry
 {
   if (self = [super init]) {
     _fontFamilyPrefix = prefix;
-    _manager = manager;
+    _registry = registry;
   }
   return self;
 }
 
-- (instancetype)initWithManager:(EXFontManager *)manager
+- (instancetype)initWithRegistry:(EXFontRegistry *)registry
 {
-  return [self initWithFontFamilyPrefix:nil manager:manager];
+  return [self initWithFontFamilyPrefix:nil registry:registry];
 }
 
 - (UIFont *)updateFont:(UIFont *)uiFont
@@ -44,9 +42,9 @@
   // Did we get a new family, and if so, is it associated with an EXFont?
   if (_fontFamilyPrefix && [family hasPrefix:_fontFamilyPrefix]) {
     NSString *suffix = [family substringFromIndex:_fontFamilyPrefix.length];
-    exFont = [_manager fontForName:suffix];
+    exFont = [_registry fontForName:suffix];
   } else if (!_fontFamilyPrefix) {
-    exFont = [_manager fontForName:family];
+    exFont = [_registry fontForName:family];
   }
 
   // Did the passed-in UIFont come from an EXFont?

@@ -2,18 +2,18 @@
 
 #import <EXFont/EXFontLoader.h>
 #import <EXFont/EXFontLoaderProcessor.h>
-#import <UMFontInterface/UMFontManagerInterface.h>
+#import <EXFont/EXFontManagerInterface.h>
 #import <EXFont/EXFontScaler.h>
 #import <EXFont/EXFont.h>
 #import <objc/runtime.h>
-#import <EXFont/EXFontManager.h>
+#import <EXFont/EXFontRegistry.h>
 #import <EXFont/EXFontScalersManager.h>
 
 @interface EXFontLoader ()
 
 @property (nonatomic, strong) EXFontScaler *scaler;
 @property (nonatomic, strong) EXFontLoaderProcessor *processor;
-@property (nonatomic, strong) EXFontManager *manager;
+@property (nonatomic, strong) EXFontRegistry *registry;
 
 @end
 
@@ -25,8 +25,8 @@ UM_EXPORT_MODULE(ExpoFontLoader);
 {
   if (self = [super init]) {
     _scaler = [[EXFontScaler alloc] init];
-    _manager = [[EXFontManager alloc] init];
-    _processor = [[EXFontLoaderProcessor alloc] initWithManager:_manager];
+    _registry = [[EXFontRegistry alloc] init];
+    _processor = [[EXFontLoaderProcessor alloc] initWithRegistry:_registry];
   }
   return self;
 }
@@ -35,8 +35,8 @@ UM_EXPORT_MODULE(ExpoFontLoader);
 {
   if (self = [super init]) {
     _scaler = [[EXFontScaler alloc] init];
-    _manager = [[EXFontManager alloc] init];
-    _processor = [[EXFontLoaderProcessor alloc] initWithFontFamilyPrefix:prefix manager:_manager];
+    _registry = [[EXFontRegistry alloc] init];
+    _processor = [[EXFontLoaderProcessor alloc] initWithFontFamilyPrefix:prefix registry:_registry];
   }
   return self;
 }
@@ -45,10 +45,10 @@ UM_EXPORT_MODULE(ExpoFontLoader);
 - (void)setModuleRegistry:(UMModuleRegistry *)moduleRegistry
 {
   if (moduleRegistry) {
-    id<UMFontManagerInterface> manager = [moduleRegistry getModuleImplementingProtocol:@protocol(UMFontManagerInterface)];
+    id<EXFontManagerInterface> manager = [moduleRegistry getModuleImplementingProtocol:@protocol(EXFontManagerInterface)];
     [manager addFontProcessor:_processor];
 
-    id<UMFontScalersManagerInterface> scalersManager = [moduleRegistry getSingletonModuleForName:@"FontScalersManager"];
+    id<EXFontScalersManager> scalersManager = [moduleRegistry getSingletonModuleForName:@"FontScalersManager"];
     [scalersManager registerFontScaler:_scaler];
   }
 }
@@ -59,18 +59,17 @@ UM_EXPORT_METHOD_AS(loadAsync,
                     resolver:(UMPromiseResolveBlock)resolve
                     rejecter:(UMPromiseRejectBlock)reject)
 {
-  if ([_manager fontForName:fontFamilyName]) {
-    reject(@"E_FONT_ALREADY_EXISTS",
-           [NSString stringWithFormat:@"Font with family name '%@' already loaded", fontFamilyName],
+  if ([_registry fontForName:fontFamilyName]) {
+    reject(@"ERR_FONT_ALREADY_LOADED",
+           [NSString stringWithFormat:@"Font with family name '%@' has already been loaded.", fontFamilyName],
            nil);
     return;
   }
 
-  // TODO(nikki): make sure path is in experience's scope
   NSURL *uriString = [[NSURL alloc] initWithString:path];
   NSData *data = [[NSFileManager defaultManager] contentsAtPath:[uriString path]];
   if (!data) {
-    reject(@"E_FONT_FILE_NOT_FOUND",
+    reject(@"ERR_FONT_FILE_NOT_FOUND",
            [NSString stringWithFormat:@"File '%@' for font '%@' doesn't exist", path, fontFamilyName],
            nil);
     return;
@@ -80,13 +79,13 @@ UM_EXPORT_METHOD_AS(loadAsync,
   CGFontRef font = CGFontCreateWithDataProvider(provider);
   CGDataProviderRelease(provider);
   if (!font) {
-    reject(@"E_FONT_CREATION_FAILED",
-           [NSString stringWithFormat:@"Could not create font from loaded data for '%@'", fontFamilyName],
+    reject(@"ERR_FONT_FILE_INVALID",
+           [NSString stringWithFormat:@"File '%@' isn't a valid font file.", path],
            nil);
     return;
   }
 
-  [_manager setFont:[[EXFont alloc] initWithCGFont:font] forName:fontFamilyName];
+  [_registry setFont:[[EXFont alloc] initWithCGFont:font] forName:fontFamilyName];
   resolve(nil);
 }
 

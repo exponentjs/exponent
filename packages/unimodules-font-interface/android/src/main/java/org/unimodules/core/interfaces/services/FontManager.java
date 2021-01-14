@@ -1,4 +1,4 @@
-package org.unimodules.interfaces.font;
+package org.unimodules.core.interfaces.services;
 
 import android.graphics.Typeface;
 

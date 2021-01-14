@@ -449,9 +449,9 @@ CACHE_KEYS:
   EXFont:
     BUILD_SETTINGS_CHECKSUM:
       EXFont:
-        :debug: 297943a06109176cfd7a052128223ee5
-        :release: 297943a06109176cfd7a052128223ee5
-    CHECKSUM: 14aabf82e9f32b5d80914b7368dc8a9150ac9863
+        :debug: 347cb473aa6603ea7fc78264e03025b4
+        :release: 347cb473aa6603ea7fc78264e03025b4
+    CHECKSUM: f96d6a2fadda1eb16c08002eb66a1261ae117c00
     FILES:
       - "../../../../packages/expo-font/ios/EXFont/EXFont.h"
       - "../../../../packages/expo-font/ios/EXFont/EXFont.m"
@@ -459,10 +459,14 @@ CACHE_KEYS:
       - "../../../../packages/expo-font/ios/EXFont/EXFontLoader.m"
       - "../../../../packages/expo-font/ios/EXFont/EXFontLoaderProcessor.h"
       - "../../../../packages/expo-font/ios/EXFont/EXFontLoaderProcessor.m"
-      - "../../../../packages/expo-font/ios/EXFont/EXFontManager.h"
-      - "../../../../packages/expo-font/ios/EXFont/EXFontManager.m"
+      - "../../../../packages/expo-font/ios/EXFont/EXFontRegistry.h"
+      - "../../../../packages/expo-font/ios/EXFont/EXFontRegistry.m"
       - "../../../../packages/expo-font/ios/EXFont/EXFontScaler.h"
       - "../../../../packages/expo-font/ios/EXFont/EXFontScaler.m"
+      - "../../../../packages/expo-font/ios/EXFont/EXReactFontManager.h"
+      - "../../../../packages/expo-font/ios/EXFont/EXReactFontManager.m"
+      - "../../../../packages/expo-font/ios/EXFont/Protocols/EXFontManagerInterface.h"
+      - "../../../../packages/expo-font/ios/EXFont/Protocols/EXFontProcessorInterface.h"
       - "../../../../packages/expo-font/ios/EXFont/Singletons/EXFontScalersManager.h"
       - "../../../../packages/expo-font/ios/EXFont/Singletons/EXFontScalersManager.m"
     PROJECT_NAME: EXFont
@@ -3120,12 +3124,10 @@ CACHE_KEYS:
   UMReactNativeAdapter:
     BUILD_SETTINGS_CHECKSUM:
       UMReactNativeAdapter:
-        :debug: b1cd206ebbc6c6226d82c17dfee9db93
-        :release: b1cd206ebbc6c6226d82c17dfee9db93
-    CHECKSUM: 76bba69d275c4c25c66f64b8776e96fcb34649bd
+        :debug: 4bee71ddac27dec61b0458c5ded8a38c
+        :release: 4bee71ddac27dec61b0458c5ded8a38c
+    CHECKSUM: 03b229297e8f7d421d5fafa780117760a6b9b369
     FILES:
-      - "../../../../packages/@unimodules/react-native-adapter/ios/UMReactNativeAdapter/Services/UMReactFontManager.h"
-      - "../../../../packages/@unimodules/react-native-adapter/ios/UMReactNativeAdapter/Services/UMReactFontManager.m"
       - "../../../../packages/@unimodules/react-native-adapter/ios/UMReactNativeAdapter/Services/UMReactLogHandler.h"
       - "../../../../packages/@unimodules/react-native-adapter/ios/UMReactNativeAdapter/Services/UMReactLogHandler.m"
       - "../../../../packages/@unimodules/react-native-adapter/ios/UMReactNativeAdapter/Services/UMReactNativeAdapter.h"

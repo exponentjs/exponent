@@ -4,6 +4,8 @@
 
 ### 🛠 Breaking changes
 
+- Moved font managing logic to `expo-font`. ([#9957](https://github.com/expo/expo/pull/9957) by [@sjchmiela](https://github.com/sjchmiela))
+
 ### 🎉 New features
 
 - Added `Platform.canUseEventListeners` and `Platform.canUseViewport` methods. ([#11398](https://github.com/expo/expo/pull/11398) by [@cruzach](https://github.com/cruzach))

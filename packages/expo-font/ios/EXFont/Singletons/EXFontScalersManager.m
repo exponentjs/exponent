@@ -13,7 +13,7 @@ static NSPointerArray *currentFontScalers;
 
 - (UIFont *)EXFontWithSize:(CGFloat)fontSize
 {
-  for (id<UMFontScalerInterface> fontScaler in currentFontScalers) {
+  for (id<EXFontScaler> fontScaler in currentFontScalers) {
     UIFont *scaledFont = [fontScaler scaledFont:self toSize:fontSize];
     if (scaledFont) {
       return scaledFont;
@@ -52,7 +52,7 @@ UM_REGISTER_SINGLETON_MODULE(FontScalersManager);
   });
 }
 
-- (void)registerFontScaler:(id<UMFontScalerInterface>)fontScaler
+- (void)registerFontScaler:(id<EXFontScaler>)fontScaler
 {
   [currentFontScalers compact];
   [currentFontScalers addPointer:(__bridge void * _Nullable)(fontScaler)];

@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 import host.exp.exponent.kernel.ExperienceId;
-import versioned.host.exp.exponent.modules.api.notifications.channels.ScopedNotificationsChannelsProvider;
 import host.exp.exponent.utils.ScopedContext;
 import versioned.host.exp.exponent.modules.api.notifications.ScopedNotificationsCategoriesSerializer;
+import versioned.host.exp.exponent.modules.api.notifications.channels.ScopedNotificationsChannelsProvider;
 import versioned.host.exp.exponent.modules.universal.av.SharedCookiesDataSourceFactoryProvider;
 import versioned.host.exp.exponent.modules.universal.notifications.ScopedExpoNotificationCategoriesModule;
 import versioned.host.exp.exponent.modules.universal.notifications.ScopedExpoNotificationPresentationModule;
@@ -95,6 +95,8 @@ public class ExpoModuleRegistryAdapter extends ModuleRegistryAdapter implements 
 
     // Overriding ScopedUIManagerModuleWrapper from ReactAdapterPackage
     moduleRegistry.registerInternalModule(new ScopedUIManagerModuleWrapper(reactContext));
+
+    moduleRegistry.registerExportedModule(new ScopedFontLoaderModule(reactContext));
 
     // Adding other modules (not universal) to module registry as consumers.
     // It allows these modules to refer to universal modules.

@@ -7,17 +7,13 @@ import com.facebook.react.bridge.ReactContext;
 import java.util.Arrays;
 import java.util.List;
 
-import org.unimodules.adapters.react.apploader.RNHeadlessAppLoader;
 import org.unimodules.adapters.react.services.CookieManagerModule;
 import org.unimodules.adapters.react.services.EventEmitterModule;
-import org.unimodules.adapters.react.services.FontManagerModule;
 import org.unimodules.adapters.react.services.RuntimeEnvironmentModule;
 import org.unimodules.adapters.react.services.UIManagerModuleWrapper;
 import org.unimodules.core.BasePackage;
 import org.unimodules.core.interfaces.InternalModule;
 import org.unimodules.core.interfaces.Package;
-
-import org.unimodules.apploader.AppLoaderProvider;
 
 /**
  * A {@link Package} creating modules provided with the @unimodules/react-native-adapter package.
@@ -32,7 +28,6 @@ public class ReactAdapterPackage extends BasePackage {
         new CookieManagerModule(reactContext),
         new UIManagerModuleWrapper(reactContext),
         new EventEmitterModule(reactContext),
-        new FontManagerModule(),
         new RuntimeEnvironmentModule()
     );
   }

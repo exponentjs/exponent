@@ -6,5 +6,9 @@
 @interface EXFontLoader : UMExportedModule <UMModuleRegistryConsumer>
 
 - (instancetype)initWithFontFamilyPrefix:(NSString *)prefix;
+- (void)loadAsyncWithFontFamilyName:(NSString *)fontFamilyName
+                       withLocalUri:(NSString *)path
+                           resolver:(UMPromiseResolveBlock)resolve
+                           rejecter:(UMPromiseRejectBlock)reject;
 
 @end

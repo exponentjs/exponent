@@ -13,10 +13,10 @@
     "git": "https://github.com/expo/expo.git"
   },
   "dependencies": {
-    "UMCore": [
+    "React": [
 
     ],
-    "UMFontInterface": [
+    "UMCore": [
 
     ]
   },

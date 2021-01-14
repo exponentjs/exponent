@@ -1,14 +1,14 @@
 // Copyright 2015-present 650 Industries. All rights reserved.
 
-#import <EXFont/EXFontManager.h>
+#import <EXFont/EXFontRegistry.h>
 
-@interface EXFontManager ()
+@interface EXFontRegistry ()
 
 @property (nonatomic, strong, readonly) NSMutableDictionary *registry;
 
 @end
 
-@implementation EXFontManager
+@implementation EXFontRegistry
 
 - (instancetype)init
 {

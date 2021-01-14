@@ -18,9 +18,6 @@
     ],
     "UMCore": [
 
-    ],
-    "UMFontInterface": [
-
     ]
   },
   "source_files": "UMReactNativeAdapter/**/*.{h,m}"

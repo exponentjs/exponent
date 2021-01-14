@@ -2,5 +2,5 @@
 
 #import <UMCore/UMInternalModule.h>
 
-@interface UMReactFontManager : NSObject <UMInternalModule>
+@interface EXReactFontManager : NSObject <UMInternalModule>
 @end

@@ -8,6 +8,8 @@
 
 ### 🎉 New features
 
+- Removed dependency on `unimodules-font-interface`. ([#9957](https://github.com/expo/expo/pull/9957) by [@sjchmiela](https://github.com/sjchmiela))
+
 ### 🐛 Bug fixes
 
 - Remove Expo.AppLoading reference in error. ([#11204](https://github.com/expo/expo/pull/11204) by [@brentvatne](https://github.com/brentvatne))

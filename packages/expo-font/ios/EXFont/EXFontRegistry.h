@@ -3,7 +3,7 @@
 #import <Foundation/Foundation.h>
 #import <EXFont/EXFont.h>
 
-@interface EXFontManager : NSObject
+@interface EXFontRegistry : NSObject
 
 - (instancetype)init;
 - (EXFont *)fontForName:(NSString *)name;
