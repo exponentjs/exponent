@@ -41,6 +41,7 @@
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <EXMediaLibrary/EXMediaLibraryImageLoader.h>
 #import <EXFileSystem/EXFileSystem.h>
+#import <UMReactNativeAdapter/UMExportedModuleSpecJSI.h>
 #import "EXScopedModuleRegistry.h"
 #import "EXScopedModuleRegistryAdapter.h"
 #import "EXScopedModuleRegistryDelegate.h"
@@ -56,6 +57,42 @@
 #import <strings.h>
 
 RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *EXGetScopedModuleClasses(void);
+
+// Copied from RCTTUrboModuleManager
+namespace {
+class MethodQueueNativeCallInvoker : public facebook::react::CallInvoker {
+private:
+  dispatch_queue_t methodQueue_;
+  
+public:
+  MethodQueueNativeCallInvoker(dispatch_queue_t methodQueue) : methodQueue_(methodQueue) {}
+  void invokeAsync(std::function<void()> &&work) override
+  {
+    if (methodQueue_ == RCTJSThread) {
+      work();
+      return;
+    }
+    
+    __block auto retainedWork = std::move(work);
+    dispatch_async(methodQueue_, ^{
+      retainedWork();
+    });
+  }
+  
+  void invokeSync(std::function<void()> &&work) override
+  {
+    if (methodQueue_ == RCTJSThread) {
+      work();
+      return;
+    }
+    
+    __block auto retainedWork = std::move(work);
+    dispatch_sync(methodQueue_, ^{
+      retainedWork();
+    });
+  }
+};
+}
 
 @interface RCTEventDispatcher (REAnimated)
 
@@ -83,6 +120,8 @@ RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *EXGetScopedModuleClasses(vo
 // is this the first time this ABI has been touched at runtime?
 @property (nonatomic, assign) BOOL isFirstLoad;
 @property (nonatomic, strong) NSDictionary *params;
+@property (nonatomic, weak) RCTBridge *lastBridge;
+@property (nonatomic, weak) UMModuleRegistry *lastModuleRegistry;
 @property (nonatomic, strong) RCTTurboModuleManager *turboModuleManager;
 
 @end
@@ -339,6 +378,10 @@ RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *EXGetScopedModuleClasses(vo
     [extraModules addObject:[self getModuleInstanceFromClass:RCTAsyncLocalStorageCls()]];
   }
 
+  // Save last instances for TurboModules lookup
+  _lastBridge = bridge;
+  _lastModuleRegistry = moduleRegistry;
+
   return extraModules;
 }
 
@@ -400,6 +443,20 @@ RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *EXGetScopedModuleClasses(vo
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:(const std::string &)name
                                                       jsInvoker:(std::shared_ptr<facebook::react::CallInvoker>)jsInvoker
 {
+  if (RCTTurboModuleEnabled()) {
+    NSString *moduleName = [[NSString alloc] initWithUTF8String:name.c_str()];
+    if (UMExportedModule *exportedModule = [_lastModuleRegistry getExportedModuleForName:moduleName]) {
+      // Copied from RCTTurboModuleManager
+      dispatch_queue_t methodQueue = [exportedModule methodQueue];
+
+      std::shared_ptr<facebook::react::CallInvoker> nativeInvoker = std::make_shared<MethodQueueNativeCallInvoker>(methodQueue);
+      if ([_lastBridge respondsToSelector:@selector(decorateNativeCallInvoker:)]) {
+        nativeInvoker = [_lastBridge decorateNativeCallInvoker:nativeInvoker];
+      }
+
+      return std::make_shared<unimodules::ExportedModuleSpecJSI>(exportedModule, jsInvoker, nativeInvoker, nil);
+    }
+  }
   return nullptr;
 }
 
@@ -454,7 +511,6 @@ RCT_EXTERN NSDictionary<NSString *, NSDictionary *> *EXGetScopedModuleClasses(vo
                                                   nativeInvoker:(std::shared_ptr<facebook::react::CallInvoker>)nativeInvoker
                                                      perfLogger:(id<RCTTurboModulePerformanceLogger>)perfLogger
 {
-  // TODO: ADD
   return nullptr;
 }
 

@@ -12,8 +12,17 @@
   "source": {
     "git": "https://github.com/expo/expo.git"
   },
+  "compiler_flags": "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1 -Wno-comma -Wno-shorten-64-to-32",
+  "pod_target_xcconfig": {
+    "USE_HEADERMAP": "YES",
+    "CLANG_CXX_LANGUAGE_STANDARD": "c++14",
+    "HEADER_SEARCH_PATHS": "\"$(PODS_ROOT)/Folly\""
+  },
   "dependencies": {
     "React-Core": [
+
+    ],
+    "ReactCommon/turbomodule/core": [
 
     ],
     "UMCore": [
@@ -21,7 +30,10 @@
     ],
     "UMFontInterface": [
 
+    ],
+    "Folly": [
+
     ]
   },
-  "source_files": "UMReactNativeAdapter/**/*.{h,m}"
+  "source_files": "UMReactNativeAdapter/**/*.{h,m,mm}"
 }

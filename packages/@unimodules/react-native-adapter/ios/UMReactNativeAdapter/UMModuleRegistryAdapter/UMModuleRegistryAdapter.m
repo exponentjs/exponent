@@ -2,6 +2,7 @@
 
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMViewManagerAdapter.h>
+#import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <UMReactNativeAdapter/UMViewManagerAdapterClassesRegistry.h>
 #import <UMReactNativeAdapter/UMModuleRegistryHolderReactModule.h>
