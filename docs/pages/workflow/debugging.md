@@ -116,6 +116,7 @@ If you right-click anywhere in the React Native Debugger, you'll get some handy 
 It's easy to use the React Native Debugger to debug your network requests. Simple right-click to `Enable Network Inspect`, which allows you to open the Network tab and inspect requests of `fetch` and `XMLHttpRequest`. There are [some limitations](https://github.com/jhen0409/react-native-debugger/blob/master/docs/network-inspect-of-chrome-devtools.md#limitations), so there are a few other alternatives, all require using a proxy. The following options will all work:
 
 - [Charles Proxy](https://www.charlesproxy.com/documentation/configuration/browser-and-system-configuration/) (\$50 USD, our preferred tool)
+- [Proxyman](https://proxyman.io) (Free version available or $49 to $59 USD)
 - [mitmproxy](https://medium.com/@rotxed/how-to-debug-http-s-traffic-on-android-7fbe5d2a34#.hnhanhyoz)
 - [Fiddler](http://www.telerik.com/fiddler)
 
