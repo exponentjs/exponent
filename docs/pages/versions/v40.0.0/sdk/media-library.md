@@ -90,10 +90,10 @@ Fetches a page of assets matching the provided criteria.
   - **first (_number_)** -- The maximum number of items on a single page. Defaults to 20.
   - **after (_string_)** -- Asset ID of the last item returned on the previous page.
   - **album (_string_ | _Album_)** -- [Album](#album) or its ID to get assets from specific album.
-  - **sortBy (_array_)** -- An array of [SortBy](#expomedialibrarysortby) keys. By default, all keys are sorted in descending order, however you can also pass a pair `[key, ascending]` where the second item is a `boolean` value that means whether to use ascending order. Note that if the `SortBy.default` key is used, then `ascending` argument will not matter.
+  - **sortBy (_array_)** -- An array of [SortBy](#medialibrarysortby) keys. By default, all keys are sorted in descending order, however you can also pass a pair `[key, ascending]` where the second item is a `boolean` value that means whether to use ascending order. Note that if the `SortBy.default` key is used, then `ascending` argument will not matter.
     Earlier items have higher priority when sorting out the results.
     If empty, this method will use the default sorting that is provided by the platform.
-  - **mediaType (_array_)** -- An array of [MediaType](#expomedialibrarymediatype) types. By default `MediaType.photo` is set.
+  - **mediaType (_array_)** -- An array of [MediaType](#medialibrarymediatype) types. By default `MediaType.photo` is set.
   - **createdAfter (_Date_ | _number_)** -- Date object or Unix timestamp in milliseconds limiting returned assets only to those that were created after this date.
   - **createdBefore (_Date_ | _number_)** -- Similarly as `createdAfter`, but limits assets only to those that were created before specified date.
 
@@ -195,7 +195,7 @@ In case they're copied you should keep in mind that `getAssetsAsync` will return
 
 #### Arguments
 
-- **assets (_array_)** -- Array of [assets](#assets) to add.
+- **assets (_array_)** -- Array of [assets](#asset) to add.
 - **album (_string_ | _Album_)** -- [Album](#album) or its ID, to which the assets will be added.
 - **copyAssets (_boolean_)** -- Whether to copy assets to the new album instead of move them. Defaults to `true`. (**Android only**)
 
@@ -211,7 +211,7 @@ On Android, album will be automatically deleted if there are no more assets insi
 
 #### Arguments
 
-- **assets (_array_)** -- Array of [assets](#assets) to remove from album.
+- **assets (_array_)** -- Array of [assets](#asset) to remove from album.
 - **album (_string_ | _Album_)** -- [Album](#album) or its ID, from which the assets will be removed.
 
 #### Returns
@@ -238,9 +238,9 @@ Subscribes for updates in user's media library.
 
   Available only if `hasIncrementalChanges` is `true`:
 
-  - **insertedAssets (_array_)** -- Array of [assets](#assets) that have been inserted to the library.
-  - **deletedAssets (_array_)** -- Array of [assets](#assets) that have been deleted from the library.
-  - **updatedAssets (_array_)** -- Array of [assets](#assets) that have been updated or completed downloading from network storage (iCloud in iOS).
+  - **insertedAssets (_array_)** -- Array of [assets](#asset) that have been inserted to the library.
+  - **deletedAssets (_array_)** -- Array of [assets](#asset) that have been deleted from the library.
+  - **updatedAssets (_array_)** -- Array of [assets](#asset) that have been updated or completed downloading from network storage (iCloud in iOS).
 
 #### Returns
 

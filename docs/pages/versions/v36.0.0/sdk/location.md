@@ -374,7 +374,7 @@ A promise resolving as soon as the task is registered.
 Geofencing task will be receiving following data:
 
 - **eventType : [Location.GeofencingEventType](#locationgeofencingeventtype)** -- Indicates the reason for calling the task, which can be triggered by entering or exiting the region. See [Location.GeofencingEventType](#locationgeofencingeventtype).
-- **region : [LocationRegion](#type-location-region)** -- Object containing details about updated region. See [LocationRegion](#type-region) for more details.
+- **region : [LocationRegion](#locationregion)** -- Object containing details about updated region. See [LocationRegion](#type-region) for more details.
 
 ```javascript
 import * as Location from 'expo-location';

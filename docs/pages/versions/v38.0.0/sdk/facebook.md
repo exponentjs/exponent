@@ -22,7 +22,7 @@ For ejected (see: [ExpoKit](../../../expokit/overview.md)) apps, here are links 
 
 > 💡 When following these steps you will find on the Facebook Developer site that there are many fields and steps that you don't actually care about. Just look for the information that we ask you for and you will be OK!
 
-Follow [Facebook's developer documentation](https://developers.facebook.com/docs/apps/register) to register an application with Facebook's API and get an application ID. Take note of this application ID because it will be used as the `appId` option in your [`Facebook.logInWithReadPermissionsAsync`](#expofacebookloginwithreadpermissionsasync 'Facebook.logInWithReadPermissionsAsync') call.
+Follow [Facebook's developer documentation](https://developers.facebook.com/docs/apps/register) to register an application with Facebook's API and get an application ID. Take note of this application ID because it will be used as the `appId` option in your [`Facebook.logInWithReadPermissionsAsync`](#facebookloginwithreadpermissionsasyncoptions 'Facebook.logInWithReadPermissionsAsync') call.
 
 Then follow these steps based on the platforms you're targetting. This will need to be done from the [Facebook developer site](https://developers.facebook.com/).
 
@@ -52,7 +52,7 @@ The Android Play Store Expo client will use the Facebook App ID that you provide
 
 #### Android standalone app
 
-- [Build your standalone app](../../../distribution/building-standalone-apps.md#building-standalone-apps) for Android.
+- [Build your standalone app](../../../distribution/building-standalone-apps.md) for Android.
 - Run `expo fetch:android:hashes`.
 - Copy `Facebook Key Hash` and paste it as a key hash in your Facebook developer page pictured below.
 

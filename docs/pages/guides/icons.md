@@ -50,7 +50,7 @@ First, make sure you import your custom icon font. [Read more about loading cust
 
 ### createIconSet
 
-Returns your own custom font based on the `glyphMap` where the key is the icon name and the value is either a UTF-8 character or it's character code. `fontFamily` is the name of the font **NOT** the filename. The `expoAssetId` can be anything that you can pass in to [Font.loadAsync](../versions/latest/sdk/font.md#fontloadasyncobject). See [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons/blob/master/README.md#custom-fonts) for more details.
+Returns your own custom font based on the `glyphMap` where the key is the icon name and the value is either a UTF-8 character or it's character code. `fontFamily` is the name of the font **NOT** the filename. The `expoAssetId` can be anything that you can pass in to [Font.loadAsync](../versions/latest/sdk/font.md#loadasyncobject). See [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons/blob/master/README.md#custom-fonts) for more details.
 
 ```jsx
 import * as React from 'react';

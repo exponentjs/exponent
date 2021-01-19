@@ -107,7 +107,7 @@ Asks the user to grant permissions for accessing user's photo. Alias for `Permis
 
 #### Returns
 
-A promise that resolves to an object of type [MediaLibraryPermissionResponse](#imagepickercamerarollpermissionresponse).
+A promise that resolves to an object of type [MediaLibraryPermissionResponse](#imagepickermedialibrarypermissionresponse).
 
 ### `ImagePicker.getCameraPermissionsAsync()`
 
@@ -197,7 +197,7 @@ Display the system UI for taking a photo with the camera. Requires `Permissions.
     - **On Android**, effect of this option depends on support of installed camera app.
     - **On Web** this option has no effect - the limit is browser-dependant.
   - **videoExportPreset (_[ImagePicker.VideoExportPreset](#imagepickervideoexportpreset)_)** -- **Available on iOS 11+ only, but Deprecated.** Specify preset which will be used to compress selected video. Defaults to `ImagePicker.VideoExportPreset.Passthrough`.
-  - **videoQuality (\_[ImagePicker.UIImagePickerControllerQualityType](#imagepickeruiimagepickercontrollerqualitytype)\_)** -- **iOS only**. Specify the quality of recorded videos. Defaults to `ImagePicker.UIImagePickerControllerQualityType.High`, which is the highest available for the device.
+  - **videoQuality (\_[ImagePicker.UIImagePickerControllerQualityType](#imagepickeruiimagepickercontrollertype)\_)** -- **iOS only**. Specify the quality of recorded videos. Defaults to `ImagePicker.UIImagePickerControllerQualityType.High`, which is the highest available for the device.
 
 #### Returns
 

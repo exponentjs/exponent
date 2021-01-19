@@ -169,7 +169,7 @@ Returns true after the user successfully updates.
 
 Configures how the `GoogleSignIn` module will attempt to sign in. You can call this method multiple times.
 
-See all the available options under the [`GoogleSignInOptions`](#googlesigninoptions) type.
+See all the available options under the [`GoogleSignInOptions`](#types) type.
 
 ### `GoogleSignIn.isSignedInAsync()`
 

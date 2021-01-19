@@ -26,7 +26,7 @@ Images with paths matching the given patterns will be bundled into your native b
 
 Assets are cached differently depending on where they're stored and how they're used. This guide offers best practices for making sure you only download assets when you need to. In order to keep the loading screen visible while caching assets, it's also a good idea to render [AppLoading](../versions/latest/sdk/app-loading.md#app-loading) and only that component until everything is ready.
 
-For images that saved to the local filesytem, use [`Asset.fromModule(image).downloadAsync()`](../versions/latest/sdk/asset.md) to download and cache the image. There is also a [loadAsync()](../versions/latest/sdk/asset.md#expoassetloadasyncmodules) helper method to cache a batch of assets.
+For images that saved to the local filesytem, use [`Asset.fromModule(image).downloadAsync()`](../versions/latest/sdk/asset.md) to download and cache the image. There is also a [loadAsync()](../versions/latest/sdk/asset.md#assetloadasyncmodules) helper method to cache a batch of assets.
 
 For web images, use `Image.prefetch(image)`. Continue referencing the image normally, e.g. with `<Image source={require('path/to/image.png')} />`.
 

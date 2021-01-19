@@ -108,7 +108,7 @@ A `Promise` that is resolved when the brightness has been successfully set.
 
 #### Error Codes
 
-- [`ERR_BRIGHTNESS`](#errbrightness)
+- [`ERR_BRIGHTNESS`](#err_brightness)
 
 ---
 
@@ -132,7 +132,7 @@ A `Promise` that resolves with `true` when the current activity is using the sys
 
 #### Error Codes
 
-- [`ERR_BRIGHTNESS`](#errbrightness)
+- [`ERR_BRIGHTNESS`](#err_brightness)
 
 ---
 
@@ -146,7 +146,7 @@ A `Promise` that is resolved with a number between 0 and 1, inclusive, represent
 
 #### Error Codes
 
-- [`ERR_BRIGHTNESS_SYSTEM`](#errbrightnesssystem)
+- [`ERR_BRIGHTNESS_SYSTEM`](#err_brightness_system)
 
 ---
 
@@ -166,8 +166,8 @@ A `Promise` that is resolved when the brightness has been successfully set.
 
 #### Error Codes
 
-- [`ERR_BRIGHTNESS_MODE`](#errbrightnessmode)
-- [`ERR_BRIGHTNESS_PERMISSIONS_DENIED`](#errbrightnesspermissionsdenied)
+- [`ERR_BRIGHTNESS_MODE`](#err_brightness_mode)
+- [`ERR_BRIGHTNESS_PERMISSIONS_DENIED`](#err_brightness_permissions_denied)
 
 ### `Brightness.getSystemBrightnessModeAsync()`
 
@@ -179,7 +179,7 @@ A `Promise` that is resolved with a [`BrightnessMode`](#brightnessbrightnessmode
 
 #### Error Codes
 
-- [`ERR_BRIGHTNESS_MODE`](#errbrightnessmode)
+- [`ERR_BRIGHTNESS_MODE`](#err_brightness_mode)
 
 ---
 
@@ -197,9 +197,9 @@ A `Promise` that is resolved when the brightness mode has been successfully set.
 
 #### Error Codes
 
-- [`ERR_INVALID_ARGUMENT`](#errinvalidargument)
-- [`ERR_BRIGHTNESS_MODE`](#errbrightnessmode)
-- [`ERR_BRIGHTNESS_PERMISSIONS_DENIED`](#errbrightnesspermissionsdenied)
+- [`ERR_INVALID_ARGUMENT`](#err_invalid_argument)
+- [`ERR_BRIGHTNESS_MODE`](#err_brightness_mode)
+- [`ERR_BRIGHTNESS_PERMISSIONS_DENIED`](#err_brightness_permissions_denied)
 
 ## Enum Types
 

@@ -38,11 +38,11 @@ Starts the specified activity. The method will return a promise which resolves w
 #### Arguments
 
 - **activityAction (_string_)** -- The action to be performed, e.g. `IntentLauncher.ACTION_WIRELESS_SETTINGS`. There are a few pre-defined constants you can use for this parameter. You can find them at [expo-intent-launcher/src/IntentLauncher.ts](https://github.com/expo/expo/blob/master/packages/expo-intent-launcher/src/IntentLauncher.ts). **Required**
-- **intentParams ([`IntentLauncherParams`](#typeintentlauncherparams))** -- An object of intent parameters.
+- **intentParams ([`IntentLauncherParams`](#intentlauncherparams))** -- An object of intent parameters.
 
 #### Returns
 
-A promise resolving to an object of type [IntentLauncherResult](#typeintentlauncherresult).
+A promise resolving to an object of type [IntentLauncherResult](#intentlauncherresult).
 
 ## Types
 
@@ -62,7 +62,7 @@ A promise resolving to an object of type [IntentLauncherResult](#typeintentlaunc
 
 | Key        |  Type  | Description                                                                               |
 | ---------- | :----: | ----------------------------------------------------------------------------------------- |
-| resultCode | number | Result code returned by the activity. See [ResultCode](#enumresultcode) for more details. |
+| resultCode | number | Result code returned by the activity. See [ResultCode](#resultcode) for more details. |
 | data       | string | Optional data URI that can be returned by the activity.                                   |
 | extra      | object | Optional extras object that can be returned by the activity.                              |
 

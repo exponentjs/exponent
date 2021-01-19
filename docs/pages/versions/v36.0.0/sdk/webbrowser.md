@@ -72,7 +72,7 @@ Opens the url with Safari in a modal on iOS using [`SFSafariViewController`](htt
   - **showInRecents (_optional_) (_boolean_)** -- (_Android only_) a boolean determining whether browsed website should be shown as separate entry in Android recents/multitasking view. Default: `false`
   - **controlsColor (_optional_) (_string_)** -- (_iOS only_) tint color for controls in SKSafariViewController in `#AARRGGBB` or `#RRGGBB` format.
   - **showTitle (_optional_) (_boolean_)** -- (_Android only_) a boolean determining whether the browser should show the title of website on the toolbar
-  - **browserPackage (_optional_) (_string_)** -- (_Android only_). Package name of a browser to be used to handle Custom Tabs. List of available packages is to be queried by [getCustomTabsSupportingBrowsers](#webbrowsergetcustomtabssupportingbrowsers) method.
+  - **browserPackage (_optional_) (_string_)** -- (_Android only_). Package name of a browser to be used to handle Custom Tabs. List of available packages is to be queried by [getCustomTabsSupportingBrowsers](#webbrowsergetcustomtabssupportingbrowsersasync) method.
 
   Note that behavior customization options depend on the actual browser and its version. Some or all of the arguments may be ignored.
 
@@ -135,7 +135,7 @@ The promise resolves with `{ package: string }`.
 
 _Android only_
 
-This methods removes all bindings to services created by [`warmUpAsync`](#webbrowserwarmupasyncnbrowserpackage) or [`mayInitWithUrlAsync`](#webbrowseramayinitwithurlsyncurl-package). You should call this method once you don't need them to avoid potential memory leaks. However, those binding would be cleared once your application is destroyed, which might be sufficient in most cases.
+This methods removes all bindings to services created by [`warmUpAsync`](#webbrowserwarmupasyncbrowserpackage) or [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package). You should call this method once you don't need them to avoid potential memory leaks. However, those binding would be cleared once your application is destroyed, which might be sufficient in most cases.
 
 #### Arguments
 
@@ -167,9 +167,9 @@ The promise resolves with `{ browserPackages: string[], defaultBrowserPackage: s
 
 - **browserPackages (_string[]_)** : All packages recognized by `PackageManager` as capable of handling Custom Tabs. Empty array means there is no supporting browsers on device.
 - **defaultBrowserPackage (_string_ | null)** : Default package chosen by user. Null if there is no such packages. Null usually means, that user will be prompted to choose from available packages.
-- **servicePackages (_string[]_)** : All packages recognized by `PackageManager` as capable of handling Custom Tabs Service. This service is used by [`warmUpAsync`](#webbrowserwarmupasyncnbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage).
+- **servicePackages (_string[]_)** : All packages recognized by `PackageManager` as capable of handling Custom Tabs Service. This service is used by [`warmUpAsync`](#webbrowserwarmupasyncbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage).
 - **preferredBrowserPackage (_string_ | null)** : Package preferred by `CustomTabsClient` to be used to handle Custom Tabs. It favors browser chosen by user as default, as long as it is present on both `browserPackages` and `servicePackages` lists. Only such browsers are considered as fully supporting Custom Tabs. It might be `null` when there is no such browser installed or when default browser is not in `servicePackages` list.
 
-In general, services are used to perform background tasks. If a browser is available in `servicePackage` list, it should be capable of performing [`warmUpAsync`](#webbrowserwarmupasyncnbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage). For opening an actual web page, browser must be in `browserPackages` list. A browser has to be present in both lists to be considered as fully supporting Custom Tabs.
+In general, services are used to perform background tasks. If a browser is available in `servicePackage` list, it should be capable of performing [`warmUpAsync`](#webbrowserwarmupasyncbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage). For opening an actual web page, browser must be in `browserPackages` list. A browser has to be present in both lists to be considered as fully supporting Custom Tabs.
 
 #

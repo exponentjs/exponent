@@ -36,7 +36,7 @@ A function that will be called when the OpenGL ES context is created. The functi
 
 ### `takeSnapshotAsync(options)`
 
-Same as [GLView.takeSnapshotAsync](#expoglviewtakesnapshotasyncgl-options) but uses WebGL context that is associated with the view on which the method is called.
+Same as [GLView.takeSnapshotAsync](#glviewtakesnapshotasyncgl-options) but uses WebGL context that is associated with the view on which the method is called.
 
 ## Static methods
 

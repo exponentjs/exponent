@@ -29,7 +29,7 @@ If the users device is running a version of iOS lower than 10.3, or the user is 
 
 #### Error Codes
 
-- [`ERR_STORE_REVIEW_UNSUPPORTED`](#err_store_review_unsupported)
+- [`ERR_STORE_REVIEW_UNSUPPORTED`](#e_store_review_unsupported)
 
 #### Example
 

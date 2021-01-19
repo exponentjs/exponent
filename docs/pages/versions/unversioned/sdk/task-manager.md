@@ -139,7 +139,7 @@ Example:
 ### `TaskManager.unregisterTaskAsync(taskName)`
 
 Unregisters task from the app, so the app will not be receiving updates for that task anymore.
-_It is recommended to use methods specialized by modules that registered the task, eg. [Location.stopLocationUpdatesAsync](location.md#expolocationstoplocationupdatesasynctaskname)._
+_It is recommended to use methods specialized by modules that registered the task, eg. [Location.stopLocationUpdatesAsync](location.md#locationstoplocationupdatesasynctaskname)._
 
 #### Arguments
 

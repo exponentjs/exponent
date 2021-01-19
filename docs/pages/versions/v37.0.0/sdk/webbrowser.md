@@ -99,7 +99,7 @@ This will be done using a "custom Chrome tabs" browser, [AppState][d-appstate], 
 
 **On web:**
 
-> 🚨 This API can only be used in a secure environment (`https`). You can use `expo start:web --https` to test this. Otherwise an error with code [`ERR_WEB_BROWSER_CRYPTO`](#errwebbrowsercrypto) will be thrown.
+> 🚨 This API can only be used in a secure environment (`https`). You can use `expo start:web --https` to test this. Otherwise an error with code [`ERR_WEB_BROWSER_CRYPTO`](#err_web_browser_crypto) will be thrown.
 
 This will use the browser's [`window.open()`][d-windowopen] API.
 
@@ -113,7 +113,7 @@ How this works on web:
 - The state will be added to the window's `localstorage`. This ensures that auth cannot complete unless it's done from a page running with the same origin as it was started. Ex: if `openAuthSessionAsync` is invoked on `https://localhost:19006`, then `maybeCompleteAuthSession` must be invoked on a page hosted from the origin `https://localhost:19006`. Using a different website, or even a different host like `https://128.0.0.*:19006` for example will not work.
 - A timer will be started to check for every 1000 milliseconds (1 second) to detect if the window has been closed by the user. If this happens then a promise will resolve with `{ type: 'dismiss' }`.
 
-🚨 On mobile web, Chrome and Safari will block any call to [`window.open()`][d-windowopen] which takes too long to fire after a user interaction. This method must be invoked immediately after a user interaction. If the event is blocked, an error with code [`ERR_WEB_BROWSER_BLOCKED`](#errwebbrowserblocked) will be thrown.
+🚨 On mobile web, Chrome and Safari will block any call to [`window.open()`][d-windowopen] which takes too long to fire after a user interaction. This method must be invoked immediately after a user interaction. If the event is blocked, an error with code [`ERR_WEB_BROWSER_BLOCKED`](#err_web_browser_blocked) will be thrown.
 
 [d-windowopen]: https://developer.mozilla.org/en-US/docs/Web/API/Window/open
 [d-appstate]: https://docs.expo.io/versions/latest/react-native/appstate/
@@ -133,9 +133,9 @@ Returns a Promise:
 
 #### Error Codes
 
-- [`ERR_WEB_BROWSER_REDIRECT`](#errwebbrowserredirect)
-- [`ERR_WEB_BROWSER_BLOCKED`](#errwebbrowserblocked)
-- [`ERR_WEB_BROWSER_CRYPTO`](#errwebbrowsercrypto)
+- [`ERR_WEB_BROWSER_REDIRECT`](#err_web_browser_redirect)
+- [`ERR_WEB_BROWSER_BLOCKED`](#err_web_browser_blocked)
+- [`ERR_WEB_BROWSER_CRYPTO`](#err_web_browser_crypto)
 
 ### `WebBrowser.maybeCompleteAuthSession(options)`
 
@@ -190,7 +190,7 @@ The promise resolves with `{ package: string }`.
 
 _Android only_
 
-This methods removes all bindings to services created by [`warmUpAsync`](#webbrowserwarmupasyncnbrowserpackage) or [`mayInitWithUrlAsync`](#webbrowseramayinitwithurlsyncurl-package). You should call this method once you don't need them to avoid potential memory leaks. However, those binding would be cleared once your application is destroyed, which might be sufficient in most cases.
+This methods removes all bindings to services created by [`warmUpAsync`](#webbrowserwarmupasyncbrowserpackage) or [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package). You should call this method once you don't need them to avoid potential memory leaks. However, those binding would be cleared once your application is destroyed, which might be sufficient in most cases.
 
 #### Arguments
 
@@ -222,10 +222,10 @@ The promise resolves with `{ browserPackages: string[], defaultBrowserPackage: s
 
 - **browserPackages (_string[]_)** : All packages recognized by `PackageManager` as capable of handling Custom Tabs. Empty array means there is no supporting browsers on device.
 - **defaultBrowserPackage (_string_ | null)** : Default package chosen by user. Null if there is no such packages. Null usually means, that user will be prompted to choose from available packages.
-- **servicePackages (_string[]_)** : All packages recognized by `PackageManager` as capable of handling Custom Tabs Service. This service is used by [`warmUpAsync`](#webbrowserwarmupasyncnbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage).
+- **servicePackages (_string[]_)** : All packages recognized by `PackageManager` as capable of handling Custom Tabs Service. This service is used by [`warmUpAsync`](#webbrowserwarmupasyncbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage).
 - **preferredBrowserPackage (_string_ | null)** : Package preferred by `CustomTabsClient` to be used to handle Custom Tabs. It favors browser chosen by user as default, as long as it is present on both `browserPackages` and `servicePackages` lists. Only such browsers are considered as fully supporting Custom Tabs. It might be `null` when there is no such browser installed or when default browser is not in `servicePackages` list.
 
-In general, services are used to perform background tasks. If a browser is available in `servicePackage` list, it should be capable of performing [`warmUpAsync`](#webbrowserwarmupasyncnbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage). For opening an actual web page, browser must be in `browserPackages` list. A browser has to be present in both lists to be considered as fully supporting Custom Tabs.
+In general, services are used to perform background tasks. If a browser is available in `servicePackage` list, it should be capable of performing [`warmUpAsync`](#webbrowserwarmupasyncbrowserpackage), [`mayInitWithUrlAsync`](#webbrowsermayinitwithurlasyncurl-package) and [`coolDownAsync`](#webbrowsercooldownasyncbrowserpackage). For opening an actual web page, browser must be in `browserPackages` list. A browser has to be present in both lists to be considered as fully supporting Custom Tabs.
 
 ## Error Codes
 

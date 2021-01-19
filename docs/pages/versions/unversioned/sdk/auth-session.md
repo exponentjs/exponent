@@ -116,7 +116,7 @@ const [request, response, promptAsync] = useAuthRequest({ ... }, { ... });
 Load an authorization request for a code. Returns a loaded request, a response, and a prompt method.
 When the prompt method completes then the response will be fulfilled.
 
-> 🚨 In order to close the popup window on web, you need to invoke `WebBrowser.maybeCompleteAuthSession()`. See the [Identity example](../../../guides/authentication.md#identity-4) for more info.
+> 🚨 In order to close the popup window on web, you need to invoke `WebBrowser.maybeCompleteAuthSession()`. See the [Identity example](../../../guides/authentication.md#identityserver-4) for more info.
 
 If an Implicit grant flow was used, you can pass the `response.params` to `TokenResponse.fromQueryParams()` to get a `TokenResponse` instance which you can use to easily refresh the token.
 
@@ -506,7 +506,7 @@ Access token type [Section 7.1](https://tools.ietf.org/html/rfc6749#section-7.1)
 
 ### `GoogleAuthRequestConfig`
 
-An extension of the [`AuthRequestConfig`][#authrequestconfig] for use with the built-in Google provider.
+An extension of the [`AuthRequestConfig`](#authrequestconfig) for use with the built-in Google provider.
 
 | Name                   | Type       | Description                                                                           |
 | ---------------------- | ---------- | ------------------------------------------------------------------------------------- |
@@ -549,7 +549,7 @@ A hook used for opinionated Google authentication that works across platforms.
 
 #### Returns
 
-- **request (_GoogleAuthRequest | null_)** -- An instance of [`GoogleAuthRequest`](#googleauthrequest) that can be used to prompt the user for authorization. This will be `null` until the auth request has finished loading.
+- **request (_GoogleAuthRequest | null_)** -- An instance of [`GoogleAuthRequest`](#useauthrequest) that can be used to prompt the user for authorization. This will be `null` until the auth request has finished loading.
 - **response (_AuthSessionResult | null_)** -- This is `null` until `promptAsync` has been invoked. Once fulfilled it will return information about the authorization.
 - **promptAsync (_function_)** -- When invoked, a web browser will open up and prompt the user for authentication. Accepts an [`AuthRequestPromptOptions`](#authrequestpromptoptions) object with options about how the prompt will execute. This **should not** be used to enable the Expo proxy service `auth.expo.io`, as the proxy will be automatically enabled based on the platform.
 

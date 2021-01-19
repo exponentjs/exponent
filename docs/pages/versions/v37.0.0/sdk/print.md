@@ -41,7 +41,7 @@ Prints a document or HTML, on web this prints the HTML from the page.
 
 ### `Print.printToFileAsync(options)`
 
-Prints HTML to PDF file and saves it to [app's cache directory](filesystem.md#expofilesystemcachedirectory). On web this method opens the print dialog.
+Prints HTML to PDF file and saves it to [app's cache directory](filesystem.md#filesystemcachedirectory). On web this method opens the print dialog.
 
 #### Arguments
 

@@ -205,7 +205,7 @@ This would return something like `myapp:///path/into/app?hello=world&goodbye=now
 
 When your app is opened using the deep link, you can parse the link with `Linking.parse()` to get back the path and query parameters you passed in.
 
-When [handling the URL that is used to open/foreground your app](#handling-urls-in-your-app), it would look something like this:
+When [handling the URL that is used to open/foreground your app](#handling-links-into-your-app), it would look something like this:
 
 ```javascript
 _handleUrl = url => {

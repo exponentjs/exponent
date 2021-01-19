@@ -55,7 +55,7 @@ However, if you need something custom that isn't possible with the native module
 
 The fastest way to share your managed Expo project is to publish it. You can do this by clicking 'Publish' in Expo Dev Tools or running `expo publish` in your project. This gives your app a URL; you can share this URL with anybody who has the Expo client for Android and they can open your app immediately. [Read more about publishing on Expo](https://blog.expo.io/publishing-on-exponent-790493660d24). To share with iOS users, you can use Apple TestFlight or sign up for the [Priority Plan](https://expo.io/developer-services) in order to share your app with teammates through the Expo client.
 
-When you're ready, you can create a standalone app (`.ipa` and `.apk`) for submission to Apple and Google's app stores. Expo will build the binary for you when you run one command; see [Building Standalone Apps](../distribution/building-standalone-apps.md#building-standalone-apps). Apple charges $99/year to publish your app in the App Store and Google charges a $25 one-time fee for the Play Store.
+When you're ready, you can create a standalone app (`.ipa` and `.apk`) for submission to Apple and Google's app stores. Expo will build the binary for you when you run one command; see [Building Standalone Apps](../distribution/building-standalone-apps.md#3-start-the-build). Apple charges $99/year to publish your app in the App Store and Google charges a $25 one-time fee for the Play Store.
 
 </p>
 </details>

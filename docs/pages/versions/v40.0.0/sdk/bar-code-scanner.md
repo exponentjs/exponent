@@ -159,7 +159,7 @@ Object of type `BarCodeSize` contains following keys:
 - **height (_number_)** -- The height value.
 - **width (_number_)** -- The width value.
 
-### `BarCodeBounds`
+### `BarCodeScanner.BarCodeBounds`
 
 Object of type `BarCodeBounds` contains following keys:
 

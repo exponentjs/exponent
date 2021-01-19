@@ -60,7 +60,7 @@ Set properties for the current user. See [here for details](https://amplitude.ze
 
 ### `Amplitude.clearUserProperties()`
 
-Clear properties set by [`Amplitude.setUserProperties()`](#expoamplitudesetuserproperties 'Amplitude.setUserProperties').
+Clear properties set by [`Amplitude.setUserProperties()`](#amplitudeclearuserproperties 'Amplitude.setUserProperties').
 
 ### `Amplitude.logEvent(eventName)`
 

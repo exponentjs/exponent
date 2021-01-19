@@ -40,7 +40,7 @@ Open your `app.json` and add the following inside of the `"expo"` field:
 }
 ```
 
-Now re-open the Expo client and open your app, and you should see your beautiful splash screen. There may be a delay before it shows up, see ["Differences between environments" below](#differences-between-environments) for more information on that.
+Now re-open the Expo client and open your app, and you should see your beautiful splash screen. There may be a delay before it shows up, see ["Differences between environments" below](#differences-between-environments---ios) for more information on that.
 
 > **Note**: It's required to close and re-open the Expo client app on iOS in order to see changes to the splash screen in the manifest. This is a known issue that we are working to resolve. On Android, you need to press the refresh button from the notification drawer.
 

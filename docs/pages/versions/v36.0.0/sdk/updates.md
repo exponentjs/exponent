@@ -46,7 +46,7 @@ Downloads the most recent published version of your experience to the device's l
 
 An optional `params` object with the following keys:
 
-- **eventListener (_function_)** -- A callback to receive updates events. Will be called with the same events as a function passed into [`Updates.addListener`](#expoupdatesaddlistenereventlistener) but will be subscribed and unsubscribed from events automatically.
+- **eventListener (_function_)** -- A callback to receive updates events. Will be called with the same events as a function passed into [`Updates.addListener`](#updatesaddlistenereventlistener) but will be subscribed and unsubscribed from events automatically.
 
 #### Returns
 
