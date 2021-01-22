@@ -3,6 +3,12 @@ import invariant from 'invariant';
 import ExpoLocalAuthentication from './ExpoLocalAuthentication';
 import { AuthenticationType, } from './LocalAuthentication.types';
 export { AuthenticationType };
+/**
+ * Returns whether the Local Authentication API is enabled on the current device.
+ */
+export async function isAvailableAsync() {
+    return !!ExpoLocalAuthentication.hasHardwareAsync;
+}
 export async function hasHardwareAsync() {
     if (!ExpoLocalAuthentication.hasHardwareAsync) {
         throw new UnavailabilityError('expo-local-authentication', 'hasHardwareAsync');

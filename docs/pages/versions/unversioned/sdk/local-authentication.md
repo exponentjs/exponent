@@ -26,6 +26,14 @@ import * as LocalAuthentication from 'expo-local-authentication';
 
 ## Methods
 
+### `LocalAuthentication.isAvailableAsync()`
+
+Returns whether the Local Authentication API is enabled on the current device.
+
+#### Returns
+
+Async `boolean`, indicating whether the Local Authentication API is avaliable on the current device. Currently this resolves `true` on iOS and Android only.
+
 ### `LocalAuthentication.hasHardwareAsync()`
 
 Determine whether a face or fingerprint scanner is available on the device.

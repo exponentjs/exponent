@@ -10,6 +10,13 @@ import {
 
 export { LocalAuthenticationOptions, AuthenticationType, LocalAuthenticationResult };
 
+/**
+ * Returns whether the Local Authentication API is enabled on the current device.
+ */
+export async function isAvailableAsync(): Promise<boolean> {
+  return !!ExpoLocalAuthentication.hasHardwareAsync;
+}
+
 export async function hasHardwareAsync(): Promise<boolean> {
   if (!ExpoLocalAuthentication.hasHardwareAsync) {
     throw new UnavailabilityError('expo-local-authentication', 'hasHardwareAsync');

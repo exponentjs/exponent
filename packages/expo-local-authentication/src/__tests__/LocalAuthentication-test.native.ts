@@ -26,3 +26,9 @@ it(`throws when an invalid message is used`, async () => {
   expect(LocalAuthentication.authenticateAsync({ promptMessage: {} as any })).rejects.toThrow();
   expect(LocalAuthentication.authenticateAsync({ promptMessage: 123 as any })).rejects.toThrow();
 });
+
+describe(`isAvailableAsync`, () => {
+  it('resolves to true on native platforms', async () => {
+    await expect(LocalAuthentication.isAvailableAsync()).resolves.toBeTruthy();
+  });
+});

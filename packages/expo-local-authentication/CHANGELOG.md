@@ -6,6 +6,8 @@
 
 ### 🎉 New features
 
+- Added `isAvailableAsync` method. ([#10171](https://github.com/expo/expo/pull/10171) by [@akinncar](https://github.com/akinncar))
+
 ### 🐛 Bug fixes
 
 ## 10.0.0 — 2021-01-15

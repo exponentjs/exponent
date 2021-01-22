@@ -4,6 +4,9 @@ export default {
   get name(): string {
     return 'ExpoLocalAuthentication';
   },
+  async isAvailableAsync(): Promise<false> {
+    return false;
+  },
   async hasHardwareAsync(): Promise<boolean> {
     return false;
   },
