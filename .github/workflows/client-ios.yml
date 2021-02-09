@@ -35,6 +35,8 @@ jobs:
         with:
           submodules: true
           lfs: true
+      - name: Switch to Xcode 12.1
+        run: sudo xcode-select --switch /Applications/Xcode_12.1.app
       - run: brew install git-crypt
       - name: decrypt secrets if possible
         env:

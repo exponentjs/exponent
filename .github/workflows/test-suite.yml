@@ -59,6 +59,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Switch to Xcode 12.1
+        run: sudo xcode-select --switch /Applications/Xcode_12.1.app
       - run: brew tap wix/brew
       - run: brew install applesimutils
       - run: brew install watchman
