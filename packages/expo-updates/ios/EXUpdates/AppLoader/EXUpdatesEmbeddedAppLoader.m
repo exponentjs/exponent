@@ -113,6 +113,8 @@ static NSString * const EXUpdatesEmbeddedAppLoaderErrorDomain = @"EXUpdatesEmbed
 }
 
 - (void)loadUpdateFromUrl:(NSURL *)url
+       withLaunchedUpdate:(nullable EXUpdatesUpdate *)launchedUpdate
+               onManifest:(EXUpdatesAppLoaderManifestBlock)manifestBlock
                   success:(EXUpdatesAppLoaderSuccessBlock)success
                     error:(EXUpdatesAppLoaderErrorBlock)error
 {

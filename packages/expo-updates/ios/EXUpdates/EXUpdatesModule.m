@@ -82,6 +82,7 @@ UM_EXPORT_METHOD_AS(checkForUpdateAsync,
   EXUpdatesFileDownloader *fileDownloader = [[EXUpdatesFileDownloader alloc] initWithUpdatesConfig:_updatesService.config];
   [fileDownloader downloadManifestFromURL:_updatesService.config.updateUrl
                              withDatabase:_updatesService.database
+                       withLaunchedUpdate:_updatesService.launchedUpdate
                              successBlock:^(EXUpdatesUpdate *update) {
     EXUpdatesUpdate *launchedUpdate = self->_updatesService.launchedUpdate;
     id<EXUpdatesSelectionPolicy> selectionPolicy = self->_updatesService.selectionPolicy;
@@ -110,7 +111,7 @@ UM_EXPORT_METHOD_AS(fetchUpdateAsync,
   }
 
   EXUpdatesRemoteAppLoader *remoteAppLoader = [[EXUpdatesRemoteAppLoader alloc] initWithConfig:_updatesService.config database:_updatesService.database directory:_updatesService.directory completionQueue:self.methodQueue];
-  [remoteAppLoader loadUpdateFromUrl:_updatesService.config.updateUrl onManifest:^BOOL(EXUpdatesUpdate * _Nonnull update) {
+  [remoteAppLoader loadUpdateFromUrl:_updatesService.config.updateUrl withLaunchedUpdate:_updatesService.launchedUpdate onManifest:^BOOL(EXUpdatesUpdate * _Nonnull update) {
     return [self->_updatesService.selectionPolicy shouldLoadNewUpdate:update withLaunchedUpdate:self->_updatesService.launchedUpdate];
   } success:^(EXUpdatesUpdate * _Nullable update) {
     if (update) {

@@ -27,6 +27,7 @@ static NSString * const EXUpdatesRemoteAppLoaderErrorDomain = @"EXUpdatesRemoteA
 }
 
 - (void)loadUpdateFromUrl:(NSURL *)url
+       withLaunchedUpdate:(nullable EXUpdatesUpdate *)launchedUpdate
                onManifest:(EXUpdatesAppLoaderManifestBlock)manifestBlock
                   success:(EXUpdatesAppLoaderSuccessBlock)success
                     error:(EXUpdatesAppLoaderErrorBlock)error
@@ -34,7 +35,7 @@ static NSString * const EXUpdatesRemoteAppLoaderErrorDomain = @"EXUpdatesRemoteA
   self.manifestBlock = manifestBlock;
   self.successBlock = success;
   self.errorBlock = error;
-  [_downloader downloadManifestFromURL:url withDatabase:self.database successBlock:^(EXUpdatesUpdate *update) {
+  [_downloader downloadManifestFromURL:url withDatabase:self.database withLaunchedUpdate:launchedUpdate successBlock:^(EXUpdatesUpdate *update) {
     [self startLoadingFromManifest:update];
   } errorBlock:^(NSError *error, NSURLResponse *response) {
     if (self.errorBlock) {

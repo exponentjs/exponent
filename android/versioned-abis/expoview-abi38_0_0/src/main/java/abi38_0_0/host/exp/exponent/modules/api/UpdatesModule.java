@@ -80,7 +80,7 @@ public class UpdatesModule extends ReactContextBaseJavaModule {
     try {
       String manifestUrl = (String) mExperienceProperties.get(KernelConstants.MANIFEST_URL_KEY);
       ExpoUpdatesAppLoader appLoader = KernelProvider.getInstance().getAppLoaderForManifestUrl(manifestUrl);
-      FileDownloader.downloadManifest(appLoader.getUpdatesConfiguration(), getReactApplicationContext(), new FileDownloader.ManifestDownloadCallback() {
+      FileDownloader.downloadManifest(appLoader.getUpdatesConfiguration(), null, getReactApplicationContext(), new FileDownloader.ManifestDownloadCallback() {
         @Override
         public void onFailure(String message, Exception e) {
           promise.reject("E_FETCH_MANIFEST_FAILED", e);
@@ -123,8 +123,7 @@ public class UpdatesModule extends ReactContextBaseJavaModule {
     AsyncTask.execute(() -> {
       new RemoteLoader(getReactApplicationContext(), appLoader.getUpdatesConfiguration(), mDatabaseHolder.getDatabase(), appLoader.getUpdatesDirectory())
         .start(
-          appLoader.getUpdatesConfiguration().getUpdateUrl(),
-          new RemoteLoader.LoaderCallback() {
+          null, new RemoteLoader.LoaderCallback() {
             @Override
             public void onFailure(Exception e) {
               mDatabaseHolder.releaseDatabase();

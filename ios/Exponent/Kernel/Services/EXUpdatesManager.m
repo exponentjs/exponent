@@ -161,6 +161,7 @@ didRequestManifestWithCacheBehavior:(EXManifestCacheBehavior)cacheBehavior
   EXUpdatesFileDownloader *fileDownloader = [[EXUpdatesFileDownloader alloc] initWithUpdatesConfig:appLoader.config];
   [fileDownloader downloadManifestFromURL:appLoader.config.updateUrl
                              withDatabase:databaseKernelService.database
+                       withLaunchedUpdate:nil
                              successBlock:^(EXUpdatesUpdate *update) {
     success(update.rawManifest);
   } errorBlock:^(NSError *error, NSURLResponse *response) {
@@ -184,7 +185,7 @@ didRequestBundleWithCompletionQueue:(dispatch_queue_t)completionQueue
   EXAppLoader *appLoader = [self _appLoaderWithScopedModule:scopedModule];
 
   EXUpdatesRemoteAppLoader *remoteAppLoader = [[EXUpdatesRemoteAppLoader alloc] initWithConfig:appLoader.config database:databaseKernelService.database directory:databaseKernelService.updatesDirectory completionQueue:completionQueue];
-  [remoteAppLoader loadUpdateFromUrl:appLoader.config.updateUrl onManifest:^BOOL(EXUpdatesUpdate * _Nonnull update) {
+  [remoteAppLoader loadUpdateFromUrl:appLoader.config.updateUrl withLaunchedUpdate:nil onManifest:^BOOL(EXUpdatesUpdate * _Nonnull update) {
     BOOL shouldLoad = [appLoader.selectionPolicy shouldLoadNewUpdate:update withLaunchedUpdate:appLoader.appLauncher.launchedUpdate];
     if (shouldLoad) {
       startBlock();

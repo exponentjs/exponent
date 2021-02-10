@@ -1,12 +1,10 @@
 package expo.modules.updates.loader;
 
 import android.content.Context;
-import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import expo.modules.updates.UpdatesConfiguration;
-import expo.modules.updates.UpdatesController;
 import expo.modules.updates.db.enums.UpdateStatus;
 import expo.modules.updates.UpdatesUtils;
 import expo.modules.updates.db.UpdatesDatabase;
@@ -59,7 +57,7 @@ public class RemoteLoader {
 
   // lifecycle methods for class
 
-  public void start(Uri url, LoaderCallback callback) {
+  public void start(UpdateEntity launchedUpdate, LoaderCallback callback) {
     if (mCallback != null) {
       callback.onFailure(new Exception("RemoteLoader has already started. Create a new instance in order to load multiple URLs in parallel."));
       return;
@@ -67,7 +65,7 @@ public class RemoteLoader {
 
     mCallback = callback;
 
-    FileDownloader.downloadManifest(mConfiguration, mContext, new FileDownloader.ManifestDownloadCallback() {
+    FileDownloader.downloadManifest(mConfiguration, launchedUpdate, mContext, new FileDownloader.ManifestDownloadCallback() {
       @Override
       public void onFailure(String message, Exception e) {
         finishWithError(message, e);

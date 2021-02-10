@@ -247,8 +247,9 @@ public class LoaderTask {
   private void launchRemoteUpdateInBackground(Context context, Callback remoteUpdateCallback) {
     AsyncTask.execute(() -> {
       UpdatesDatabase database = mDatabaseHolder.getDatabase();
+      UpdateEntity launchedUpdate = mCandidateLauncher != null ? mCandidateLauncher.getLaunchedUpdate() : null;
       new RemoteLoader(context, mConfiguration, database, mDirectory)
-        .start(mConfiguration.getUpdateUrl(), new RemoteLoader.LoaderCallback() {
+        .start(launchedUpdate, new RemoteLoader.LoaderCallback() {
           @Override
           public void onFailure(Exception e) {
             mDatabaseHolder.releaseDatabase();

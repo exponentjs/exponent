@@ -26,6 +26,7 @@ typedef void (^EXUpdatesAppLoaderErrorBlock)(NSError *error);
  * update downloaded locally, and return the corresponding BOOL value.
  */
 - (void)loadUpdateFromUrl:(NSURL *)url
+       withLaunchedUpdate:(nullable EXUpdatesUpdate *)launchedUpdate
                onManifest:(EXUpdatesAppLoaderManifestBlock)manifestBlock
                   success:(EXUpdatesAppLoaderSuccessBlock)success
                     error:(EXUpdatesAppLoaderErrorBlock)error;

@@ -220,8 +220,9 @@ static NSString * const EXUpdatesAppLoaderTaskErrorDomain = @"EXUpdatesAppLoader
 
 - (void)_loadRemoteUpdateWithCompletion:(void (^)(NSError * _Nullable error, EXUpdatesUpdate * _Nullable update))completion
 {
+  EXUpdatesUpdate *launchedUpdate = _candidateLauncher ? _candidateLauncher.launchedUpdate : nil;
   _remoteAppLoader = [[EXUpdatesRemoteAppLoader alloc] initWithConfig:_config database:_database directory:_directory completionQueue:_loaderTaskQueue];
-  [_remoteAppLoader loadUpdateFromUrl:_config.updateUrl onManifest:^BOOL(EXUpdatesUpdate * _Nonnull update) {
+  [_remoteAppLoader loadUpdateFromUrl:_config.updateUrl withLaunchedUpdate:launchedUpdate onManifest:^BOOL(EXUpdatesUpdate * _Nonnull update) {
     if ([self->_selectionPolicy shouldLoadNewUpdate:update withLaunchedUpdate:self->_candidateLauncher.launchedUpdate]) {
       self->_isUpToDate = NO;
       if (self->_delegate) {

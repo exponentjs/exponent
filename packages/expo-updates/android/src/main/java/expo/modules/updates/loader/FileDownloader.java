@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.Map;
 
 import expo.modules.updates.db.entity.AssetEntity;
+import expo.modules.updates.db.entity.UpdateEntity;
 import expo.modules.updates.launcher.NoDatabaseLauncher;
 import expo.modules.updates.manifest.Manifest;
 import expo.modules.updates.manifest.ManifestFactory;
@@ -78,9 +79,9 @@ public class FileDownloader {
     });
   }
 
-  public static void downloadManifest(final UpdatesConfiguration configuration, final Context context, final ManifestDownloadCallback callback) {
+  public static void downloadManifest(final UpdatesConfiguration configuration, UpdateEntity launchedUpdate, final Context context, final ManifestDownloadCallback callback) {
     try {
-      downloadData(setHeadersForManifestUrl(configuration, context), new Callback() {
+      downloadData(setHeadersForManifestUrl(configuration, launchedUpdate, context), new Callback() {
         @Override
         public void onFailure(Call call, IOException e) {
           callback.onFailure("Failed to download manifest from URL: " + configuration.getUpdateUrl(), e);
@@ -243,7 +244,7 @@ public class FileDownloader {
     return requestBuilder.build();
   }
 
-  private static Request setHeadersForManifestUrl(UpdatesConfiguration configuration, Context context) {
+  /* package */ static Request setHeadersForManifestUrl(UpdatesConfiguration configuration, UpdateEntity launchedUpdate, Context context) {
     Request.Builder requestBuilder = new Request.Builder()
             .url(configuration.getUpdateUrl().toString())
             .header("Accept", "application/expo+json,application/json")
@@ -261,6 +262,10 @@ public class FileDownloader {
       requestBuilder = requestBuilder.header("Expo-Runtime-Version", runtimeVersion);
     } else {
       requestBuilder = requestBuilder.header("Expo-SDK-Version", sdkVersion);
+    }
+
+    if (launchedUpdate != null) {
+      requestBuilder = requestBuilder.header("Expo-Current-Update-ID", launchedUpdate.id.toString());
     }
 
     String releaseChannel = configuration.getReleaseChannel();

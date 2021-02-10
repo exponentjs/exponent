@@ -76,13 +76,14 @@ NSTimeInterval const EXUpdatesDefaultTimeoutInterval = 60;
 
 - (void)downloadManifestFromURL:(NSURL *)url
                    withDatabase:(EXUpdatesDatabase *)database
+             withLaunchedUpdate:(nullable EXUpdatesUpdate *)launchedUpdate
                    successBlock:(EXUpdatesFileDownloaderManifestSuccessBlock)successBlock
                      errorBlock:(EXUpdatesFileDownloaderErrorBlock)errorBlock
 {
   NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url
                                                          cachePolicy:NSURLRequestReloadIgnoringLocalCacheData
                                                      timeoutInterval:EXUpdatesDefaultTimeoutInterval];
-  [self _setManifestHTTPHeaderFields:request];
+  [self setManifestHTTPHeaderFields:request withLaunchedUpdate:launchedUpdate];
   [self _downloadDataWithRequest:request successBlock:^(NSData *data, NSURLResponse *response) {
     NSError *err;
     id parsedJson = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&err];
@@ -219,7 +220,7 @@ NSTimeInterval const EXUpdatesDefaultTimeoutInterval = 60;
   }
 }
 
-- (void)_setManifestHTTPHeaderFields:(NSMutableURLRequest *)request
+- (void)setManifestHTTPHeaderFields:(NSMutableURLRequest *)request withLaunchedUpdate:(nullable EXUpdatesUpdate *)launchedUpdate
 {
   [request setValue:@"application/expo+json,application/json" forHTTPHeaderField:@"Accept"];
   [request setValue:@"true" forHTTPHeaderField:@"Expo-JSON-Error"];
@@ -232,6 +233,10 @@ NSTimeInterval const EXUpdatesDefaultTimeoutInterval = 60;
     [request setValue:runtimeVersion forHTTPHeaderField:@"Expo-Runtime-Version"];
   } else {
     [request setValue:_config.sdkVersion forHTTPHeaderField:@"Expo-SDK-Version"];
+  }
+
+  if (launchedUpdate) {
+    [request setValue:launchedUpdate.updateId.UUIDString forHTTPHeaderField:@"Expo-Current-Update-ID"];
   }
 
   NSString *previousFatalError = [EXUpdatesAppLauncherNoDatabase consumeError];
