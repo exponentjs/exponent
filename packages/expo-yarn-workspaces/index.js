@@ -3,7 +3,7 @@
 const debug = require('debug')('workspaces');
 const findYarnWorkspaceRoot = require('find-yarn-workspace-root');
 const fs = require('fs');
-const blacklist = require('metro-config/src/defaults/blacklist');
+const exclusionList = require('metro-config/src/defaults/exclusionList');
 const { assetExts } = require('metro-config/src/defaults/defaults');
 const path = require('path');
 
@@ -55,7 +55,7 @@ exports.createMetroConfiguration = function createMetroConfiguration(projectPath
       providesModuleNodeModules: [],
 
       // Ignore JS files in the native Android and Xcode projects
-      blacklistRE: blacklist([
+      blacklistRE: exclusionList([
         /.*\/android\/React(Android|Common)\/.*/,
         /.*\/versioned-react-native\/.*/,
       ]),
