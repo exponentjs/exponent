@@ -84,18 +84,6 @@ Migration should include the addition of a `src/__tests__` which can be run with
 
 3. Run `yarn test` to run the tests.
 
-### Add the tests to CI
-
-In the root `.circleci/config.yaml` add a step to the job named `expo_sdk`. This should be in alphabetic order with the other testing steps.
-
-**`.circleci/config.yaml`**
-
-```yaml
-- yarn:
-    command: test --maxWorkers 1
-    working_directory: ~/expo/packages/expo-sms
-```
-
 ## Move native `dependencies` to `peerDependencies`
 
 In order to prevent overlapping native code in `node_modules`, we should move any `dependencies` containing native code to `peerDependencies`.

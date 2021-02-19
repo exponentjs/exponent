@@ -20,7 +20,7 @@ cd `which turtle`/../../shellTarballs
 
 You can replace specific `shellTarball` by replacing existing one with yours:
 
-> You can take a look at `/.circleci/config.yml` file and search for `shell_app_ios_build` or `shell_app_android_build` commands. There are responsible for preparing new `shellTarballs` that are used by `turtle` service to build standalone Expo apps from Managed Expo projects.
+> You can take a look at `/.github/workflows/shell-app-{ios,android}.yml` files. They are responsible for preparing new `shellTarballs` that are used by `turtle` service to build standalone Expo apps from Managed Expo projects.
 
 ## Replacing Android shellTarball
 
@@ -42,5 +42,5 @@ cat `<place where turtle is installed>/turtle-cli/shellTarballs/android/sdkXX > 
 
 ## Replacing iOS shellTarball
 
-1. Create new `shellTarball` by following commands from `/.circleci/config.yml` describing `shell_app_ios_build` task.
+1. Create new `shellTarball` by following commands from `/.github/workflows/shell-app-ios.yml` describing the build task.
 2. Replace current `shellTarball` with freshly built one (see Android section).

@@ -91,7 +91,6 @@ platform :ios do
     )
     save_original_info_plist
     set_bundle_version_from_commit_count
-    setup_circle_ci
   end
 
   lane :test do

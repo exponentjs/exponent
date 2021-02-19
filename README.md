@@ -22,6 +22,7 @@
 <a aria-label="expo downloads" href="http://www.npmtrends.com/expo" target="_blank">
     <img alt="Downloads" src="https://img.shields.io/npm/dm/expo.svg?style=flat-square&labelColor=gray&color=33CC12&label=Downloads" />
 </a>
+    <img alt="GitHub checks" src="https://flat.badgen.net/github/status/expo/expo?label=GitHub%20Checks&labelColor=555555&icon=github">
   
 </p>
 
