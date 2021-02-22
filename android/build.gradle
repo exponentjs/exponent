@@ -28,6 +28,7 @@ buildscript {
     classpath 'com.amazonaws:aws-devicefarm-gradle-plugin:1.3'
 
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+    classpath "com.github.ben-manes:gradle-versions-plugin:0.36.0"
   }
 }
 

@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions'
 
 group = 'org.unimodules'
 version = '6.0.0'

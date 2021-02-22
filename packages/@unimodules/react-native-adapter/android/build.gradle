@@ -16,6 +16,7 @@ buildscript {
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.ben-manes.versions'
 
 group = 'org.unimodules'
 version = '6.1.0'

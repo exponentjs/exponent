@@ -5,6 +5,7 @@ def safeExtGet(prop, fallback) {
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
   // Simple helper that allows the root project to override versions declared by this library.

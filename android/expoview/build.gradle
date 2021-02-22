@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven'
 apply plugin: 'com.jakewharton.butterknife'
 apply plugin: 'de.undercouch.download'
+apply plugin: 'com.github.ben-manes.versions'
 
 // WHEN_VERSIONING_REMOVE_FROM_HERE
 //maven repository info

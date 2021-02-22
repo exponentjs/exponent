@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'maven'
+apply plugin: 'com.github.ben-manes.versions'
 
 group = 'host.exp.exponent'
 version = '9.0.0'
