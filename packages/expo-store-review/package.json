@@ -31,7 +31,7 @@
   "homepage": "https://docs.expo.io/versions/latest/sdk/storereview/",
   "peerDependencies": {
     "@unimodules/core": "*",
-    "expo-constants": "~9.0.0",
+    "expo-constants": "*",
     "expo-linking": "~1.0.1",
     "react": "*",
     "react-native": "*"
