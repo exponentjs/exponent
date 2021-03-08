@@ -26,6 +26,9 @@
     <meta-data android:name="expo.modules.notifications.large_notification_icon" android:resource="@mipmap/ic_launcher_round"/>
     <meta-data android:name="expo.modules.notifications.default_notification_color" android:resource="@color/notification_icon_color"/>
     <meta-data android:name="com.facebook.sdk.ApplicationName" android:value="Expo APIs"/>
+    <meta-data android:name="expo.modules.splashscreen.ENABLED" android:value="true"/>
+    <meta-data android:name="expo.modules.splashscreen.STATUS_BAR_TRANSLUCENT" android:value="true"/>
+    <meta-data android:name="expo.modules.splashscreen.RESIZE_MODE" android:value="cover"/>
     <activity android:name=".MainActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenSize" android:label="@string/app_name" android:launchMode="singleTask" android:windowSoftInputMode="adjustResize" android:theme="@style/Theme.App.SplashScreen">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
