@@ -98,7 +98,8 @@ We'll give a quick look at it here, but check out their [documentation](https://
 You can install it via the [release page](https://github.com/jhen0409/react-native-debugger/releases), or if you're on a mac you can run:
 
 ```sh
-brew cask install react-native-debugger
+#brew cask install react-native-debugger # home brew < 2.6.x
+brew install react-native-debugger --cask
 ```
 
 ### Startup
