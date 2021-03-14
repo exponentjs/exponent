@@ -30,16 +30,16 @@ export const manifestBaseUrl = Constants.experienceUrl
     : null;
 // TODO: how should this behave in bare app with updates? re: hashAssetFiles
 export async function downloadAsync(uri, hash, type, name) {
-    if (IS_MANAGED_ENV) {
-        return _downloadAsyncManagedEnv(uri, hash, type, name);
+    if (IS_MANAGED_ENV || hash !== null) {
+        return _downloadAsyncWithIntegrityCheck(uri, hash, type, name);
     }
-    return _downloadAsyncUnmanagedEnv(uri, hash, type);
+    return _downloadAsyncWithoutIntegrityCheck(uri, hash, type);
 }
 /**
  * Check if the file exists on disk already, perform integrity check if so.
  * Otherwise, download it.
  */
-async function _downloadAsyncManagedEnv(uri, hash, type, name) {
+async function _downloadAsyncWithIntegrityCheck(uri, hash, type, name) {
     const cacheFileId = hash || computeMd5(uri);
     const localUri = `${FileSystem.cacheDirectory}ExponentAsset-${cacheFileId}.${type}`;
     let { exists, md5 } = await FileSystem.getInfoAsync(localUri, {
@@ -62,7 +62,7 @@ async function _downloadAsyncManagedEnv(uri, hash, type, name) {
  * the hash to compare it with (we don't have hashAssetFiles plugin). Hash is
  * only used for the file name.
  */
-async function _downloadAsyncUnmanagedEnv(uri, hash, type) {
+async function _downloadAsyncWithoutIntegrityCheck(uri, hash, type) {
     // TODO: does this make sense to bail out if it's already at a file URL
     // because it's already available locally?
     if (uri.startsWith('file://')) {
