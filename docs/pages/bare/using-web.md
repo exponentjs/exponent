@@ -1,6 +1,7 @@
 ---
 title: Using Expo for web in Bare Workflow
 sidebar_title: Using Expo for web
+hideTOC: true
 ---
 
 import Video from '~/components/plugins/Video'

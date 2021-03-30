@@ -1,5 +1,6 @@
 ---
 title: Overview
+hideTOC: true
 ---
 
 > **ExpoKit is deprecated and will no longer be supported after SDK 38. If you need to make customizations to your Expo project, we recommend using the [bare workflow](../bare/customizing.md) instead.**

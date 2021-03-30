@@ -1,5 +1,6 @@
 ---
 title: Using the documentation
+hideTOC: true
 ---
 
 **"The Basics"** section of the documentation is meant to introduce you to Expo and the various ways it can be used, along with the limitations, and get you up and running on your first app. Once you are confident with the information presented in this section, you can jump through the rest of the documentation in whatever order suits your needs.

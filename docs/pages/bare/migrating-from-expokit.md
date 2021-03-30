@@ -1,5 +1,6 @@
 ---
 title: Migrating from ExpoKit
+hideTOC: true
 ---
 
 Historically when you have run `expo eject`, you'd end up with an [ExpoKit](../expokit/overview.md) project. ExpoKit is a large library that includes the entire Expo SDK, and it leaves you in this place where you're not quite writing a vanilla React Native project and you're not quite using the Expo managed workflow. At Expo we decided to move away from the ExpoKit architecture towards the "bare workflow" model, where your project is a "bare" or "vanilla" React Native project with only the pieces of the Expo SDK that you need for your project, no more.

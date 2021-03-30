@@ -1,5 +1,6 @@
 ---
 title: ART
+hideTOC: true
 ---
 
 This library has been removed as of SDK 36. You likely want to use [Svg](svg.md) which is more feature complete, has better documentation, and is a more standard implementation of vector graphics.

@@ -1,5 +1,6 @@
 ---
 title: Ejecting from Managed Workflow
+hideTOC: true
 ---
 
 The [managed workflow](../introduction/managed-vs-bare.md#managed-workflow) has [its limitations](../introduction/why-not-expo.md), and if you find yourself running up against them then you can either attempt to work around the limitations by exploring alternate solutions that will work within the constraints (eg: moving work to a server if no API exists to do it on the client) or you can eject to the [bare workflow](../introduction/managed-vs-bare.md#bare-workflow) and have full access to the underlying native projects.
