@@ -1,0 +1,1 @@
+{"version":3,"file":"ExpoKeepAwake.types.js","sourceRoot":"","sources":["../src/ExpoKeepAwake.types.ts"],"names":[],"mappings":"AAAA,MAAM,CAAN,IAAY,kBAEX;AAFD,WAAY,kBAAkB;IAC5B,yCAAmB,CAAA;AACrB,CAAC,EAFW,kBAAkB,KAAlB,kBAAkB,QAE7B","sourcesContent":["export enum KeepAwakeEventType {\n  RELEASE = 'release',\n}\n"]}

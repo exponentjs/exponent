@@ -6,6 +6,9 @@
 
 ### 🎉 New features
 
+- Added web implementation. ([#9467](https://github.com/expo/expo/pull/9467) by [@jarvisluong](https://github.com/jarvisluong))
+- Added method `isAvailableAsync` to check if the keep-awake API is available. ([#9467](https://github.com/expo/expo/pull/9467) by [@jarvisluong](https://github.com/jarvisluong))
+
 ### 🐛 Bug fixes
 
 ## 9.1.0 — 2021-03-10

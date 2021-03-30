@@ -43,6 +43,13 @@ UM_EXPORT_MODULE(ExpoKeepAwake);
   }
 }
 
+UM_EXPORT_METHOD_AS(isAvailableAsync,
+                    isAvailableAsync:(UMPromiseResolveBlock)resolve
+                            rejecter:(UMPromiseRejectBlock)reject)
+{
+  resolve(@YES);
+}
+
 UM_EXPORT_METHOD_AS(activate, activate:(NSString *)tag
                     resolve:(UMPromiseResolveBlock)resolve
                     reject:(UMPromiseRejectBlock)reject)

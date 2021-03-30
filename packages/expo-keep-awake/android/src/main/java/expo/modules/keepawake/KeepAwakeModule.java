@@ -31,6 +31,10 @@ public class KeepAwakeModule extends ExportedModule {
     mKeepAwakeManager = moduleRegistry.getModule(KeepAwakeManager.class);
   }
 
+  @ExpoMethod
+  public void isAvailableAsync(final Promise promise) {
+    promise.resolve(true);
+  }
 
   @ExpoMethod
   public void activate(String tag, final Promise promise) {

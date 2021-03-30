@@ -9,7 +9,7 @@ import SnackInline from '~/components/plugins/SnackInline';
 
 **`expo-keep-awake`** provides a React hook that prevents the screen from sleeping and a pair of functions to enable this behavior imperatively.
 
-<PlatformsSection android emulator ios simulator web={{ pending: 'https://github.com/expo/expo/issues/6889' }} />
+<PlatformsSection android emulator ios simulator web />
 
 ## Installation
 
@@ -82,6 +82,10 @@ import KeepAwake from 'expo-keep-awake';
 ```
 
 ## Methods
+
+### `isAvailableAsync()`
+
+Resolves with whether this keep awake API is available on the current device. The value of this property is `true` on native platforms. On web, it depends on whether the browser supports the keep-awake API.
 
 ### `useKeepAwake(tag?)`
 
