@@ -1,6 +1,7 @@
 // Copyright 2015-present 650 Industries. All rights reserved.
 
 #import <UIKit/UIKit.h>
+#import <EXScreenOrientation/EXScreenOrientationViewController.h>
 
 @class EXViewController;
 @class EXKernelAppRecord;
@@ -11,7 +12,7 @@
 
 @end
 
-@interface EXViewController : UIViewController
+@interface EXViewController : EXScreenOrientationViewController
 
 /**
  *  Invoked from `viewDidLoad`
