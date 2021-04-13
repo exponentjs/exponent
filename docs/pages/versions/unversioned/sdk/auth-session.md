@@ -517,7 +517,7 @@ An extension of the [`AuthRequestConfig`][#authrequestconfig] for use with the b
 | webClientId            | `?string`  | Web client ID for use in the browser (web apps).                                      |
 | iosClientId            | `?string`  | iOS native client ID for use in standalone, bare-workflow, and custom clients.        |
 | androidClientId        | `?string`  | Android native client ID for use in standalone, bare-workflow, and custom clients.    |
-| shouldAutoExchangeCode | `?string`  | Should the hook automatically exchange the response code for an authentication token. |
+| shouldAutoExchangeCode | `?boolean` | Should the hook automatically exchange the response code for an authentication token. |
 
 ## Providers
 
