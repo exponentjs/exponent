@@ -10,6 +10,7 @@
 @property (nonatomic, strong) UIView *splashScreenView;
 
 @property (nonatomic, assign) BOOL autoHideEnabled;
+@property (nonatomic, assign) BOOL defaultAutoHideEnabled;
 @property (nonatomic, assign) BOOL splashScreenShown;
 @property (nonatomic, assign) BOOL appContentAppeared;
 
@@ -22,7 +23,8 @@
 {
   if (self = [super init]) {
     _viewController = viewController;
-    _autoHideEnabled = YES;
+    _defaultAutoHideEnabled = YES;
+    _autoHideEnabled = _defaultAutoHideEnabled;
     _splashScreenShown = NO;
     _appContentAppeared = NO;
     _splashScreenView = [splashScreenViewProvider createSplashScreenView];
@@ -34,11 +36,19 @@
 
 - (void)showWithCallback:(void (^)(void))successCallback failureCallback:(void (^)(NSString * _Nonnull))failureCallback
 {
+  _defaultAutoHideEnabled = YES;
+  [self showWithCallback:successCallback];
+}
+
+- (void)showWithCallback:(void (^)(void))successCallback failureCallback:(void (^)(NSString * _Nonnull))failureCallback autoHideEnabled:(BOOL)autoHideEnabled
+{
+  _defaultAutoHideEnabled = autoHideEnabled;
   [self showWithCallback:successCallback];
 }
 
 - (void)showWithCallback:(nullable void(^)(void))successCallback
 {
+  _autoHideEnabled = _defaultAutoHideEnabled;
   [UMUtilities performSynchronouslyOnMainThread:^{
     UIView *rootView = self.viewController.view;
     self.splashScreenView.frame = rootView.bounds;
@@ -80,7 +90,6 @@
     UM_ENSURE_STRONGIFY(self);
     [self.splashScreenView removeFromSuperview];
     self.splashScreenShown = NO;
-    self.autoHideEnabled = YES;
     if (successCallback) {
       successCallback(YES);
     }
@@ -98,7 +107,6 @@
 - (void)onAppContentWillReload
 {
   if (!_appContentAppeared) {
-    _autoHideEnabled = YES;
     _appContentAppeared = NO;
     [self showWithCallback:nil];
   }
