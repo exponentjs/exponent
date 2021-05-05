@@ -8,6 +8,11 @@ const works = Platform.OS !== 'web';
 
 jest.mock('../ExpoSplashScreen');
 
+
+it(`setSplashScreenAutoHideEnabled doesn't throw`, async () => {
+  expect(await SplashScreen.setSplashScreenAutoHideEnabled(false)).toBe(works);
+});
+
 it(`preventAutoHideAsync doesn't throw`, async () => {
   expect(await SplashScreen.preventAutoHideAsync()).toBe(works);
 });
