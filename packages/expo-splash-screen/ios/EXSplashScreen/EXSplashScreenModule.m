@@ -51,6 +51,15 @@ UM_EXPORT_METHOD_AS(preventAutoHideAsync,
   });
 }
 
+UM_EXPORT_METHOD_AS(setSplashScreenAutoHideEnabled,
+                    setSplashScreenAutoHideEnabled:(BOOL)splashScreenAutoHideEnabled
+                    resolve:(UMPromiseResolveBlock)resolve
+                    reject:(UMPromiseRejectBlock)reject)
+{
+  [[self splashScreenService] setSplashScreenAutoHideEnabled:splashScreenAutoHideEnabled];
+  resolve(nil);
+}
+
 # pragma mark - UMAppLifecycleListener
 
 - (void)onAppBackgrounded {}

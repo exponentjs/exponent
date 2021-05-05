@@ -4,6 +4,17 @@ import ExpoSplashScreen from './ExpoSplashScreen';
 
 // @needsAudit
 /**
+ * Controls whether the native splash screen (configured in `app.json`), not yet shown, will remain visible until `hideAsync` is called.
+ */
+export async function setSplashScreenAutoHideEnabled(splashScreenAutoHideEnabled: boolean): Promise<boolean> {
+  if (!ExpoSplashScreen.setSplashScreenAutoHideEnabled) {
+    throw new UnavailabilityError('expo-splash-screen', 'setSplashScreenAutoHideEnabled');
+  }
+  return await ExpoSplashScreen.setSplashScreenAutoHideEnabled(splashScreenAutoHideEnabled);
+}
+
+// @needsAudit
+/**
  * Makes the native splash screen (configured in `app.json`) remain visible until `hideAsync` is called.
  */
 export async function preventAutoHideAsync(): Promise<boolean> {

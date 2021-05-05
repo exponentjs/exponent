@@ -32,6 +32,12 @@ class SplashScreenModule(context: Context) : ExportedModule(context) {
   }
 
   @ExpoMethod
+  fun setSplashScreenAutoHideEnabled(splashScreenAutoHideEnabled: Boolean, promise: Promise) {
+    SplashScreen.setSplashScreenAutoHideEnabled(splashScreenAutoHideEnabled)
+    promise.resolve()
+  }
+
+  @ExpoMethod
   fun preventAutoHideAsync(promise: Promise) {
     val activity = activityProvider.currentActivity
     if (activity == null) {

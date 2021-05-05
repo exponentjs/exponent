@@ -18,6 +18,7 @@ object SplashScreen : SingletonModule {
   }
 
   private val controllers = WeakHashMap<Activity, SplashScreenController>()
+  private  var autoHideEnabled = true
 
   /**
    * Show SplashScreen by mounting it in ContentView.
@@ -51,7 +52,7 @@ object SplashScreen : SingletonModule {
 
     val controller = SplashScreenController(activity, rootViewClass, splashScreenViewProvider)
     controllers[activity] = controller
-    controller.showSplashScreen(successCallback)
+    controller.showSplashScreen(autoHideEnabled, successCallback)
   }
 
   /**
@@ -83,14 +84,25 @@ object SplashScreen : SingletonModule {
   }
 
   /**
+   * Configures whether SplashScreen will autoHide after showing.
+   * @param successCallback Callback to be called once SplashScreen has applied the configuration.
+   * @param failureCallback Callback to be called upon failure in applying the autohide configuration.
+   */
+  fun setSplashScreenAutoHideEnabled(
+    splashScreenAutoHideEnabled: Boolean,
+  ) {
+    autoHideEnabled = splashScreenAutoHideEnabled
+  }
+
+  /**
    * Prevents SplashScreen from autoHiding once App View Hierarchy is mounted for given activity.
    * @param successCallback Callback to be called once SplashScreen could be successfully prevented from autohinding.
    * @param failureCallback Callback to be called upon failure in preventing SplashScreen from autohiding.
    */
   fun preventAutoHide(
-    activity: Activity,
-    successCallback: (hasEffect: Boolean) -> Unit,
-    failureCallback: (reason: String) -> Unit
+          activity: Activity,
+          successCallback: (hasEffect: Boolean) -> Unit,
+          failureCallback: (reason: String) -> Unit
   ) {
     if (!controllers.containsKey(activity)) {
       return failureCallback("No native splash screen registered for provided activity. Please configure your application's main Activity to call 'SplashScreen.show' (https://github.com/expo/expo/tree/master/packages/expo-splash-screen#-configure-android).")
