@@ -2,7 +2,6 @@ import {
   ConfigPlugin,
   createRunOncePlugin,
   withAndroidManifest,
-  withPlugins,
   AndroidConfig,
 } from '@expo/config-plugins';
 
@@ -43,31 +42,36 @@ const withImagePickerManifestActivity: ConfigPlugin = config => {
 };
 
 const withImagePicker: ConfigPlugin<{
-  photosPermission?: string;
-  cameraPermission?: string;
-  microphonePermission?: string;
+  photosPermission?: string | false;
+  cameraPermission?: string | false;
+  microphonePermission?: string | false;
 } | void> = (config, { photosPermission, cameraPermission, microphonePermission } = {}) => {
   if (!config.ios) config.ios = {};
   if (!config.ios.infoPlist) config.ios.infoPlist = {};
-  config.ios.infoPlist.NSPhotoLibraryUsageDescription =
-    photosPermission || config.ios.infoPlist.NSPhotoLibraryUsageDescription || READ_PHOTOS_USAGE;
-  config.ios.infoPlist.NSCameraUsageDescription =
-    cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
-  config.ios.infoPlist.NSMicrophoneUsageDescription =
-    microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+  if (photosPermission !== false) {
+    config.ios.infoPlist.NSPhotoLibraryUsageDescription =
+      photosPermission || config.ios.infoPlist.NSPhotoLibraryUsageDescription || READ_PHOTOS_USAGE;
+  }
+  if (cameraPermission !== false) {
+    config.ios.infoPlist.NSCameraUsageDescription =
+      cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
+  }
+  if (microphonePermission !== false) {
+    config.ios.infoPlist.NSMicrophoneUsageDescription =
+      microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+  }
 
-  return withPlugins(config, [
+  config = AndroidConfig.Permissions.withPermissions(
+    config,
     [
-      AndroidConfig.Permissions.withPermissions,
-      [
-        'android.permission.CAMERA',
-        'android.permission.READ_EXTERNAL_STORAGE',
-        'android.permission.WRITE_EXTERNAL_STORAGE',
-        'android.permission.RECORD_AUDIO',
-      ],
-    ],
-    withImagePickerManifestActivity,
-  ]);
+      'android.permission.READ_EXTERNAL_STORAGE',
+      'android.permission.WRITE_EXTERNAL_STORAGE',
+      cameraPermission !== false && 'android.permission.CAMERA',
+      microphonePermission !== false && 'android.permission.RECORD_AUDIO',
+    ].filter(Boolean) as string[]
+  );
+  config = withImagePickerManifestActivity(config);
+  return config;
 };
 
 export default createRunOncePlugin(withImagePicker, pkg.name, pkg.version);

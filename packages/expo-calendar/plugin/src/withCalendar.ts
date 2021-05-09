@@ -6,20 +6,27 @@ const CALENDARS_USAGE = 'Allow $(PRODUCT_NAME) to access your calendars';
 const REMINDERS_USAGE = 'Allow $(PRODUCT_NAME) to access your reminders';
 
 const withCalendar: ConfigPlugin<{
-  calendarPermission?: string;
-  remindersPermission?: string;
+  calendarPermission?: string | false;
+  remindersPermission?: string | false;
 } | void> = (config, { calendarPermission, remindersPermission } = {}) => {
   if (!config.ios) config.ios = {};
   if (!config.ios.infoPlist) config.ios.infoPlist = {};
-  config.ios.infoPlist.NSCalendarsUsageDescription =
-    calendarPermission || config.ios.infoPlist.NSCalendarsUsageDescription || CALENDARS_USAGE;
-  config.ios.infoPlist.NSRemindersUsageDescription =
-    remindersPermission || config.ios.infoPlist.NSRemindersUsageDescription || REMINDERS_USAGE;
+  if (calendarPermission !== false) {
+    config.ios.infoPlist.NSCalendarsUsageDescription =
+      calendarPermission || config.ios.infoPlist.NSCalendarsUsageDescription || CALENDARS_USAGE;
+  }
+  if (remindersPermission !== false) {
+    config.ios.infoPlist.NSRemindersUsageDescription =
+      remindersPermission || config.ios.infoPlist.NSRemindersUsageDescription || REMINDERS_USAGE;
+  }
 
-  return AndroidConfig.Permissions.withPermissions(config, [
-    'android.permission.READ_CALENDAR',
-    'android.permission.WRITE_CALENDAR',
-  ]);
+  return AndroidConfig.Permissions.withPermissions(
+    config,
+    [
+      calendarPermission !== false && 'android.permission.READ_CALENDAR',
+      calendarPermission !== false && 'android.permission.WRITE_CALENDAR',
+    ].filter(Boolean) as string[]
+  );
 };
 
 export default createRunOncePlugin(withCalendar, pkg.name, pkg.version);

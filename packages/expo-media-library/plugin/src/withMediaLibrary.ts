@@ -1,6 +1,5 @@
 import {
   ConfigPlugin,
-  withPlugins,
   withAndroidManifest,
   AndroidConfig,
   createRunOncePlugin,
@@ -30,25 +29,33 @@ const withMediaLibraryExternalStorage: ConfigPlugin = config => {
 };
 
 const withMediaLibrary: ConfigPlugin<{
-  photosPermission?: string;
-  savePhotosPermission?: string;
+  photosPermission?: string | false;
+  savePhotosPermission?: string | false;
 } | void> = (config, { photosPermission, savePhotosPermission } = {}) => {
   if (!config.ios) config.ios = {};
   if (!config.ios.infoPlist) config.ios.infoPlist = {};
-  config.ios.infoPlist.NSPhotoLibraryUsageDescription =
-    photosPermission || config.ios.infoPlist.NSPhotoLibraryUsageDescription || READ_PHOTOS_USAGE;
-  config.ios.infoPlist.NSPhotoLibraryAddUsageDescription =
-    savePhotosPermission ||
-    config.ios.infoPlist.NSPhotoLibraryAddUsageDescription ||
-    WRITE_PHOTOS_USAGE;
+  if (photosPermission !== false) {
+    config.ios.infoPlist.NSPhotoLibraryUsageDescription =
+      photosPermission || config.ios.infoPlist.NSPhotoLibraryUsageDescription || READ_PHOTOS_USAGE;
+  }
+  if (savePhotosPermission !== false) {
+    config.ios.infoPlist.NSPhotoLibraryAddUsageDescription =
+      savePhotosPermission ||
+      config.ios.infoPlist.NSPhotoLibraryAddUsageDescription ||
+      WRITE_PHOTOS_USAGE;
+  }
 
-  return withPlugins(config, [
+  config = AndroidConfig.Permissions.withPermissions(
+    config,
     [
-      AndroidConfig.Permissions.withPermissions,
-      ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE'],
-    ],
-    withMediaLibraryExternalStorage,
-  ]);
+      photosPermission !== false && 'android.permission.READ_EXTERNAL_STORAGE',
+      savePhotosPermission !== false && 'android.permission.WRITE_EXTERNAL_STORAGE',
+    ].filter(Boolean) as string[]
+  );
+
+  config = withMediaLibraryExternalStorage(config);
+
+  return config;
 };
 
 export default createRunOncePlugin(withMediaLibrary, pkg.name, pkg.version);

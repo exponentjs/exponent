@@ -3,10 +3,13 @@ import { ConfigPlugin, createRunOncePlugin } from '@expo/config-plugins';
 const pkg = require('expo-sensors/package.json');
 const MOTION_USAGE = 'Allow $(PRODUCT_NAME) to access your device motion';
 
-const withSensors: ConfigPlugin<{ motionPermission?: string } | void> = (
+const withSensors: ConfigPlugin<{ motionPermission?: string | boolean } | void> = (
   config,
   { motionPermission } = {}
 ) => {
+  if (motionPermission === false) {
+    return config;
+  }
   if (!config.ios) config.ios = {};
   if (!config.ios.infoPlist) config.ios.infoPlist = {};
   config.ios.infoPlist.NSMotionUsageDescription =

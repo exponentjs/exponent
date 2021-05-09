@@ -4,6 +4,9 @@ const config_plugins_1 = require("@expo/config-plugins");
 const pkg = require('expo-sensors/package.json');
 const MOTION_USAGE = 'Allow $(PRODUCT_NAME) to access your device motion';
 const withSensors = (config, { motionPermission } = {}) => {
+    if (motionPermission === false) {
+        return config;
+    }
     if (!config.ios)
         config.ios = {};
     if (!config.ios.infoPlist)

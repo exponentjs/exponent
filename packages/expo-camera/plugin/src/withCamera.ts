@@ -39,24 +39,28 @@ export function setGradleMaven(buildGradle: string): string {
 }
 
 const withCamera: ConfigPlugin<{
-  cameraPermission?: string;
-  microphonePermission?: string;
+  cameraPermission?: string | false;
+  microphonePermission?: string | false;
 } | void> = (config, { cameraPermission, microphonePermission } = {}) => {
   if (!config.ios) config.ios = {};
   if (!config.ios.infoPlist) config.ios.infoPlist = {};
-  config.ios.infoPlist.NSCameraUsageDescription =
-    cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
-  config.ios.infoPlist.NSMicrophoneUsageDescription =
-    microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+  if (cameraPermission !== false) {
+    config.ios.infoPlist.NSCameraUsageDescription =
+      cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
+  }
+  if (microphonePermission !== false) {
+    config.ios.infoPlist.NSMicrophoneUsageDescription =
+      microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+  }
 
   return withPlugins(config, [
     [
       AndroidConfig.Permissions.withPermissions,
       [
-        'android.permission.CAMERA',
+        cameraPermission !== false && 'android.permission.CAMERA',
         // Optional
-        'android.permission.RECORD_AUDIO',
-      ],
+        microphonePermission !== false && 'android.permission.RECORD_AUDIO',
+      ].filter(Boolean) as string[],
     ],
     withAndroidCameraGradle,
   ]);

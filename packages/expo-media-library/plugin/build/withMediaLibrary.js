@@ -25,18 +25,21 @@ const withMediaLibrary = (config, { photosPermission, savePhotosPermission } = {
         config.ios = {};
     if (!config.ios.infoPlist)
         config.ios.infoPlist = {};
-    config.ios.infoPlist.NSPhotoLibraryUsageDescription =
-        photosPermission || config.ios.infoPlist.NSPhotoLibraryUsageDescription || READ_PHOTOS_USAGE;
-    config.ios.infoPlist.NSPhotoLibraryAddUsageDescription =
-        savePhotosPermission ||
-            config.ios.infoPlist.NSPhotoLibraryAddUsageDescription ||
-            WRITE_PHOTOS_USAGE;
-    return config_plugins_1.withPlugins(config, [
-        [
-            config_plugins_1.AndroidConfig.Permissions.withPermissions,
-            ['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.WRITE_EXTERNAL_STORAGE'],
-        ],
-        withMediaLibraryExternalStorage,
-    ]);
+    if (photosPermission !== false) {
+        config.ios.infoPlist.NSPhotoLibraryUsageDescription =
+            photosPermission || config.ios.infoPlist.NSPhotoLibraryUsageDescription || READ_PHOTOS_USAGE;
+    }
+    if (savePhotosPermission !== false) {
+        config.ios.infoPlist.NSPhotoLibraryAddUsageDescription =
+            savePhotosPermission ||
+                config.ios.infoPlist.NSPhotoLibraryAddUsageDescription ||
+                WRITE_PHOTOS_USAGE;
+    }
+    config = config_plugins_1.AndroidConfig.Permissions.withPermissions(config, [
+        photosPermission !== false && 'android.permission.READ_EXTERNAL_STORAGE',
+        savePhotosPermission !== false && 'android.permission.WRITE_EXTERNAL_STORAGE',
+    ].filter(Boolean));
+    config = withMediaLibraryExternalStorage(config);
+    return config;
 };
 exports.default = config_plugins_1.createRunOncePlugin(withMediaLibrary, pkg.name, pkg.version);

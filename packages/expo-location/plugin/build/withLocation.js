@@ -8,22 +8,28 @@ const withLocation = (config, { locationAlwaysAndWhenInUsePermission, locationAl
         config.ios = {};
     if (!config.ios.infoPlist)
         config.ios.infoPlist = {};
-    config.ios.infoPlist.NSLocationAlwaysAndWhenInUseUsageDescription =
-        locationAlwaysAndWhenInUsePermission ||
-            config.ios.infoPlist.NSLocationAlwaysAndWhenInUseUsageDescription ||
-            LOCATION_USAGE;
-    config.ios.infoPlist.NSLocationAlwaysUsageDescription =
-        locationAlwaysPermission ||
-            config.ios.infoPlist.NSLocationAlwaysUsageDescription ||
-            LOCATION_USAGE;
-    config.ios.infoPlist.NSLocationWhenInUseUsageDescription =
-        locationWhenInUsePermission ||
-            config.ios.infoPlist.NSLocationWhenInUseUsageDescription ||
-            LOCATION_USAGE;
+    if (locationAlwaysAndWhenInUsePermission !== false) {
+        config.ios.infoPlist.NSLocationAlwaysAndWhenInUseUsageDescription =
+            locationAlwaysAndWhenInUsePermission ||
+                config.ios.infoPlist.NSLocationAlwaysAndWhenInUseUsageDescription ||
+                LOCATION_USAGE;
+    }
+    if (locationAlwaysPermission !== false) {
+        config.ios.infoPlist.NSLocationAlwaysUsageDescription =
+            locationAlwaysPermission ||
+                config.ios.infoPlist.NSLocationAlwaysUsageDescription ||
+                LOCATION_USAGE;
+    }
+    if (locationWhenInUsePermission !== false) {
+        config.ios.infoPlist.NSLocationWhenInUseUsageDescription =
+            locationWhenInUsePermission ||
+                config.ios.infoPlist.NSLocationWhenInUseUsageDescription ||
+                LOCATION_USAGE;
+    }
     return config_plugins_1.AndroidConfig.Permissions.withPermissions(config, [
-        'android.permission.ACCESS_COARSE_LOCATION',
-        'android.permission.ACCESS_FINE_LOCATION',
         'android.permission.FOREGROUND_SERVICE',
+        locationWhenInUsePermission !== false && 'android.permission.ACCESS_COARSE_LOCATION',
+        locationWhenInUsePermission !== false && 'android.permission.ACCESS_FINE_LOCATION',
         // Optional
         isAndroidBackgroundLocationEnabled && 'android.permission.ACCESS_BACKGROUND_LOCATION',
     ].filter(Boolean));

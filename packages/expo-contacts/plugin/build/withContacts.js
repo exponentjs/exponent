@@ -4,6 +4,9 @@ const config_plugins_1 = require("@expo/config-plugins");
 const pkg = require('expo-contacts/package.json');
 const CONTACTS_USAGE = 'Allow $(PRODUCT_NAME) to access your contacts';
 const withContacts = (config, { contactsPermission } = {}) => {
+    if (contactsPermission === false) {
+        return config;
+    }
     if (!config.ios)
         config.ios = {};
     if (!config.ios.infoPlist)

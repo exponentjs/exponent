@@ -27,7 +27,7 @@ Run `npx pod-install` after installing the npm package.
 
 ### Configure for Android
 
-Add `android.permission.WRITE_SETTINGS` permission to your manifest (`android/app/src/main/AndroidManifest.xml`):
+Add [`android.permission.WRITE_SETTINGS`][write_settings] permission to your manifest (`android/app/src/main/AndroidManifest.xml`):
 
 ```xml
 <uses-permission android:name="android.permission.WRITE_SETTINGS" />
@@ -36,3 +36,5 @@ Add `android.permission.WRITE_SETTINGS` permission to your manifest (`android/ap
 # Contributing
 
 Contributions are very welcome! Please refer to guidelines described in the [contributing guide](https://github.com/expo/expo#contributing).
+
+[write_settings]: https://developer.android.com/reference/android/Manifest.permission#WRITE_SETTINGS

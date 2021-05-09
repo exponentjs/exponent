@@ -4,10 +4,14 @@ const pkg = require('expo-contacts/package.json');
 
 const CONTACTS_USAGE = 'Allow $(PRODUCT_NAME) to access your contacts';
 
-const withContacts: ConfigPlugin<{ contactsPermission?: string } | void> = (
+const withContacts: ConfigPlugin<{ contactsPermission?: string | false } | void> = (
   config,
   { contactsPermission } = {}
 ) => {
+  if (contactsPermission === false) {
+    return config;
+  }
+
   if (!config.ios) config.ios = {};
   if (!config.ios.infoPlist) config.ios.infoPlist = {};
   config.ios.infoPlist.NSContactsUsageDescription =

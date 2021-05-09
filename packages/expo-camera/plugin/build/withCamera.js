@@ -34,18 +34,22 @@ const withCamera = (config, { cameraPermission, microphonePermission } = {}) => 
         config.ios = {};
     if (!config.ios.infoPlist)
         config.ios.infoPlist = {};
-    config.ios.infoPlist.NSCameraUsageDescription =
-        cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
-    config.ios.infoPlist.NSMicrophoneUsageDescription =
-        microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+    if (cameraPermission !== false) {
+        config.ios.infoPlist.NSCameraUsageDescription =
+            cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
+    }
+    if (microphonePermission !== false) {
+        config.ios.infoPlist.NSMicrophoneUsageDescription =
+            microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+    }
     return config_plugins_1.withPlugins(config, [
         [
             config_plugins_1.AndroidConfig.Permissions.withPermissions,
             [
-                'android.permission.CAMERA',
+                cameraPermission !== false && 'android.permission.CAMERA',
                 // Optional
-                'android.permission.RECORD_AUDIO',
-            ],
+                microphonePermission !== false && 'android.permission.RECORD_AUDIO',
+            ].filter(Boolean),
         ],
         withAndroidCameraGradle,
     ]);

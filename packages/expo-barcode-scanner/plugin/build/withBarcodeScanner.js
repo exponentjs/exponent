@@ -9,10 +9,16 @@ const withBarcodeScanner = (config, { microphonePermission, cameraPermission } =
         config.ios = {};
     if (!config.ios.infoPlist)
         config.ios.infoPlist = {};
-    config.ios.infoPlist.NSCameraUsageDescription =
-        cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
-    config.ios.infoPlist.NSMicrophoneUsageDescription =
-        microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
-    return config_plugins_1.AndroidConfig.Permissions.withPermissions(config, ['android.permission.CAMERA']);
+    if (cameraPermission !== false) {
+        config.ios.infoPlist.NSCameraUsageDescription =
+            cameraPermission || config.ios.infoPlist.NSCameraUsageDescription || CAMERA_USAGE;
+    }
+    if (microphonePermission !== false) {
+        config.ios.infoPlist.NSMicrophoneUsageDescription =
+            microphonePermission || config.ios.infoPlist.NSMicrophoneUsageDescription || MICROPHONE_USAGE;
+    }
+    return config_plugins_1.AndroidConfig.Permissions.withPermissions(config, [
+        cameraPermission !== false && 'android.permission.CAMERA',
+    ].filter(Boolean));
 };
 exports.default = config_plugins_1.createRunOncePlugin(withBarcodeScanner, pkg.name, pkg.version);
