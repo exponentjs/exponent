@@ -36,11 +36,9 @@
     "preset": "expo-module-scripts/ios"
   },
   "dependencies": {
-    "@expo/websql": "^1.0.1",
-    "lodash": "^4.17.15"
+    "@expo/websql": "^1.0.1"
   },
   "devDependencies": {
-    "@types/lodash.zipobject": "^4.1.4",
     "expo-module-scripts": "^2.0.0"
   }
 }

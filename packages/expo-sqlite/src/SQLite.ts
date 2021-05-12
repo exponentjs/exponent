@@ -1,13 +1,21 @@
 import './polyfillNextTick';
 
 import customOpenDatabase from '@expo/websql/custom';
-import { NativeModulesProxy } from '@unimodules/core';
-import zipObject from 'lodash/zipObject';
-import { Platform } from 'react-native';
+import { NativeModulesProxy, Platform } from '@unimodules/core';
 
-import { Query, SQLiteCallback, ResultSet, ResultSetError, WebSQLDatabase } from './SQLite.types';
+import { Query, ResultSet, ResultSetError, SQLiteCallback, WebSQLDatabase } from './SQLite.types';
 
 const { ExponentSQLite } = NativeModulesProxy;
+
+function zipObject(keys: string[], values: any[]): Record<string, any> {
+  const output: Record<string, any> = {};
+
+  for (const index in keys) {
+    const key = keys[index];
+    output[key] = values[index];
+  }
+  return output;
+}
 
 class SQLiteDatabase {
   _name: string;

@@ -1,6 +1,7 @@
 import { Picker } from '@react-native-picker/picker';
 import * as Localization from 'expo-localization';
 import i18n from 'i18n-js';
+// @ts-ignore
 import chunk from 'lodash/chunk';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
