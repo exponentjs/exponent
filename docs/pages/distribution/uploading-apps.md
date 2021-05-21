@@ -61,6 +61,13 @@ Using the Submission Service is easy - it's just one additional flag: `expo uplo
 
 **Disclaimer:** This feature only works on macOS. If you want to upload an iOS app to the App Store you will need to have access to a macOS device.
 
+Start by creating an app profile in App Store Connect:
+
+1. Go to https://appstoreconnect.apple.com/apps and sign in. Make sure you've accepted the terms.
+2. Click the blue plus button by the Apps header, then click "New App". 
+3. Add your app's name, language, bundle ID (you'll need to create this separately, use the link below this field), and SKU (this isn't seen by end users, just needs to be unique. A common choice is your app's bundle ID, then something like "\_1", e.g. "com.exampleco.appname_1"). 
+4. Click create. You've created your application record! You can now proceed with the app upload using either method below.
+
 ### Using expo-cli
 
 To upload your iOS app to TestFlight, run `expo upload:ios`. You can set following options when uploading an iOS standalone app:
