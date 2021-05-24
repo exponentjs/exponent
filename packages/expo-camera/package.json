@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@expo/config-plugins": "^1.0.18",
-    "@koale/useworker": "^3.2.1",
+    "@koale/useworker": "^4.0.2",
     "invariant": "2.2.4",
     "unimodules-permissions-interface": "^6.2.0"
   },
