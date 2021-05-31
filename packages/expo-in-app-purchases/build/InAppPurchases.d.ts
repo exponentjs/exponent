@@ -3,8 +3,8 @@ export { InAppPurchase, InAppPurchaseState, IAPResponseCode, IAPErrorCode, IAPIt
 export declare function connectAsync(): Promise<void>;
 export declare function getProductsAsync(itemList: string[]): Promise<IAPQueryResponse>;
 export declare function getPurchaseHistoryAsync(refresh?: boolean): Promise<IAPQueryResponse>;
-export declare function purchaseItemAsync(itemId: string, oldItem?: string): Promise<void>;
-export declare function setPurchaseListener(callback: (result: any) => void): void;
+export declare function purchaseItemAsync(itemId: string, purchaseToken?: string): Promise<void>;
+export declare function setPurchaseListener(callback: (result: any) => void): Promise<void>;
 export declare function finishTransactionAsync(purchase: InAppPurchase, consumeItem: boolean): Promise<void>;
 export declare function getBillingResponseCodeAsync(): Promise<number>;
 export declare function disconnectAsync(): Promise<void>;

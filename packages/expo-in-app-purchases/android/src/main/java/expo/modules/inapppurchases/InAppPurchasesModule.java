@@ -62,8 +62,8 @@ public class InAppPurchasesModule extends ExportedModule implements RegistryLife
   }
 
   @ExpoMethod
-  public void purchaseItemAsync(String skuId, String oldSku, final Promise promise) {
-    mBillingManager.purchaseItemAsync(skuId, oldSku, promise);
+  public void purchaseItemAsync(String skuId, String purchaseToken, final Promise promise) {
+    mBillingManager.purchaseItemAsync(skuId, purchaseToken, promise);
   }
 
   @ExpoMethod

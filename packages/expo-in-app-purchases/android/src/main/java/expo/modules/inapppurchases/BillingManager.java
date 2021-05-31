@@ -131,9 +131,9 @@ public class BillingManager implements PurchasesUpdatedListener {
   /**
    * Start a purchase or subscription replace flow
    */
-  public void purchaseItemAsync(final String skuId, final String oldSku, final Promise promise) {
+  public void purchaseItemAsync(final String skuId, final String purchaseToken, final Promise promise) {
 
-    // oldSku is for subscription replacements and may be null.
+    // purchaseToken is for subscription replacements and may be null.
     Runnable purchaseFlowRequest = new Runnable() {
       @Override
       public void run() {
@@ -143,9 +143,17 @@ public class BillingManager implements PurchasesUpdatedListener {
           return;
         }
 
-        BillingFlowParams purchaseParams = BillingFlowParams.newBuilder()
-          .setSkuDetails(skuDetails).setOldSku(oldSku).build();
-        mBillingClient.launchBillingFlow(mActivity, purchaseParams);
+        BillingFlowParams.Builder purchaseParams = BillingFlowParams.newBuilder()
+          .setSkuDetails(skuDetails);
+
+        if (purchaseToken != null) {
+          BillingFlowParams.SubscriptionUpdateParams subscriptionUpdateParams = BillingFlowParams.SubscriptionUpdateParams.newBuilder()
+            .setOldSkuPurchaseToken(purchaseToken)
+            .build();
+          purchaseParams.setSubscriptionUpdateParams(subscriptionUpdateParams);
+        }
+
+        mBillingClient.launchBillingFlow(mActivity, purchaseParams.build());
       }
     };
 
@@ -225,7 +233,6 @@ public class BillingManager implements PurchasesUpdatedListener {
         ConsumeParams consumeParams =
           ConsumeParams.newBuilder()
             .setPurchaseToken(purchaseToken)
-            .setDeveloperPayload(null)
             .build();
         // Consume the purchase async
         mBillingClient.consumeAsync(consumeParams, onConsumeListener);
@@ -416,7 +423,7 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     bundle.putBoolean("acknowledged", purchase.isAcknowledged());
     bundle.putString("orderId", purchase.getOrderId());
-    bundle.putString("productId", purchase.getSku());
+    bundle.putStringArrayList("productIds", purchase.getSkus());
     bundle.putInt("purchaseState", purchaseStateNativeToJS(purchase.getPurchaseState()));
     bundle.putLong("purchaseTime", purchase.getPurchaseTime());
     bundle.putString("packageName", purchase.getPackageName());
@@ -429,7 +436,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     Bundle bundle = new Bundle();
 
     // PurchaseHistoryRecord is a subset of Purchase
-    bundle.putString("productId", purchaseRecord.getSku());
+    bundle.putStringArrayList("productIds", purchaseRecord.getSkus());
     bundle.putLong("purchaseTime", purchaseRecord.getPurchaseTime());
     bundle.putString("purchaseToken", purchaseRecord.getPurchaseToken());
 

@@ -81,7 +81,7 @@ allprojects {
 
 dependencies {
   unimodule 'unimodules-core'
-  api 'com.android.billingclient:billing:2.0.0'
+  api 'com.android.billingclient:billing:4.0.0'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${safeExtGet('kotlinVersion', '1.4.21')}"
 }

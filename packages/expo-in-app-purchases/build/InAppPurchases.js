@@ -31,13 +31,13 @@ export async function getPurchaseHistoryAsync(refresh) {
     }
     return await ExpoInAppPurchases.getPurchaseHistoryAsync(refresh);
 }
-export async function purchaseItemAsync(itemId, oldItem) {
+export async function purchaseItemAsync(itemId, purchaseToken) {
     if (!connected) {
         throw new ConnectionError(errors.NOT_CONNECTED);
     }
-    await ExpoInAppPurchases.purchaseItemAsync(itemId, oldItem);
+    await ExpoInAppPurchases.purchaseItemAsync(itemId, purchaseToken);
 }
-export function setPurchaseListener(callback) {
+export async function setPurchaseListener(callback) {
     if (purchaseUpdatedSubscription) {
         purchaseUpdatedSubscription.remove();
     }

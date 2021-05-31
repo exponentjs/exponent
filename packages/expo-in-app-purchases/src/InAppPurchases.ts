@@ -59,15 +59,15 @@ export async function getPurchaseHistoryAsync(refresh?: boolean): Promise<IAPQue
   return await ExpoInAppPurchases.getPurchaseHistoryAsync(refresh);
 }
 
-export async function purchaseItemAsync(itemId: string, oldItem?: string): Promise<void> {
+export async function purchaseItemAsync(itemId: string, purchaseToken?: string): Promise<void> {
   if (!connected) {
     throw new ConnectionError(errors.NOT_CONNECTED);
   }
 
-  await ExpoInAppPurchases.purchaseItemAsync(itemId, oldItem);
+  await ExpoInAppPurchases.purchaseItemAsync(itemId, purchaseToken);
 }
 
-export function setPurchaseListener(callback: (result) => void): void {
+export async function setPurchaseListener(callback: (result) => void): Promise<void> {
   if (purchaseUpdatedSubscription) {
     purchaseUpdatedSubscription.remove();
   }
