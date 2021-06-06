@@ -80,6 +80,10 @@
       "assets/**",
       "node_modules/react-navigation/src/**/*.png",
       "node_modules/@expo/vector-icons/fonts/*.ttf"
+    ],
+    "plugins": [
+      "expo-dev-menu",
+      "expo-dev-launcher"
     ]
   }
 }

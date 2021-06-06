@@ -19,6 +19,7 @@
   "expo-yarn-workspaces": {
     "symlinks": [
       "expo-constants",
+      "expo-dev-menu",
       "expo-camera",
       "expo-updates"
     ]
@@ -26,7 +27,8 @@
   "react-native-unimodules": {
     "android": {
       "exclude": [
-        "expo-module-template"
+        "expo-module-template",
+        "expo-dev-menu"
       ],
       "modulesPaths": [
         "../../../../packages"
@@ -36,7 +38,8 @@
     },
     "ios": {
       "exclude": [
-        "expo-module-template"
+        "expo-module-template",
+        "expo-dev-menu"
       ],
       "modules_paths": [
         "../../../packages"
@@ -83,6 +86,8 @@
     "expo-constants": "~10.1.3",
     "expo-contacts": "~9.1.2",
     "expo-device": "~3.2.0",
+    "expo-dev-launcher": "~0.3.0",
+    "expo-dev-menu-interface": "~0.2.0",
     "expo-document-picker": "~9.1.2",
     "expo-face-detector": "~10.0.1",
     "expo-facebook": "~11.1.1",
