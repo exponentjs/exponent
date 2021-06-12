@@ -3,36 +3,90 @@ import { PermissionResponse as UMPermissionResponse } from 'expo-modules-core';
  * Enum with available location accuracies.
  */
 export declare enum LocationAccuracy {
+    /**
+     * Accurate to the nearest three kilometers.
+     */
     Lowest = 1,
+    /**
+     * Accurate to the nearest kilometer.
+     */
     Low = 2,
+    /**
+     * Accurate to within one hundred meters.
+     */
     Balanced = 3,
+    /**
+     * Accurate to within ten meters of the desired target.
+     */
     High = 4,
+    /**
+     * The best level of accuracy available.
+     */
     Highest = 5,
+    /**
+     * The highest possible accuracy that uses additional sensor data
+     * to facilitate navigation apps.
+     */
     BestForNavigation = 6
 }
 /**
  * Enum with available activity types of background location tracking.
  */
 export declare enum LocationActivityType {
+    /**
+     * Default activity type.
+     * Use it if there is no other type that matches the activity you track.
+     */
     Other = 1,
+    /**
+     * Location updates are being used specifically during vehicular navigation
+     *  to track location changes to the automobile.
+     */
     AutomotiveNavigation = 2,
+    /**
+     * Use this activity type if you track fitness activities
+     * such as walking, running, cycling, and so on.
+     */
     Fitness = 3,
+    /**
+     * Activity type for movements for other types of vehicular navigation
+     * that are not automobile related.
+     */
     OtherNavigation = 4,
+    /**
+     * Intended for airborne activities.
+     * Available since iOS 12.0, fall backs to ActivityType.Other otherwise.
+     */
     Airborne = 5
 }
 /**
  * A type of the event that geofencing task can receive.
  */
 export declare enum LocationGeofencingEventType {
+    /**
+     * Emitted when the device entered observed region.
+     */
     Enter = 1,
+    /**
+     * Occurs as soon as the device left observed region.
+     */
     Exit = 2
 }
 /**
  * State of the geofencing region that you receive through the geofencing task.
  */
 export declare enum LocationGeofencingRegionState {
+    /**
+     * The device state is unknown
+     */
     Unknown = 0,
+    /**
+     * Indicates that the device is inside the region.
+     */
     Inside = 1,
+    /**
+     * Inverse of inside state.
+     */
     Outside = 2
 }
 /**
@@ -46,12 +100,12 @@ export declare type LocationOptions = {
      */
     accuracy?: LocationAccuracy;
     /**
-     * (Android only) Specifies whether to ask the user to turn on improved accuracy location mode
+     * (**Android only**) Specifies whether to ask the user to turn on improved accuracy location mode
      * which uses Wi-Fi, cell networks and GPS sensor. Defaults to `true`.
      */
     mayShowUserSettingsDialog?: boolean;
     /**
-     * (Android only) Minimum time to wait between each update in milliseconds.
+     * (**Android only**) Minimum time to wait between each update in milliseconds.
      * Default value may depend on `accuracy` option.
      */
     timeInterval?: number;
@@ -165,15 +219,50 @@ export declare type LocationRegion = {
  * Type representing the location object.
  */
 export declare type LocationObject = {
+    /**
+     * The coordinates of the position.
+     */
     coords: {
+        /**
+         * The latitude in degrees.
+         */
         latitude: number;
+        /**
+         * The longitude in degrees.
+         */
         longitude: number;
+        /**
+         * The altitude in meters above the WGS 84 reference ellipsoid.
+         * Can be `null` on Web if it's not available.
+         */
         altitude: number | null;
+        /**
+         * The radius of uncertainty for the location, measured in meters.
+         * Can be `null` on Web if it's not available.
+         */
         accuracy: number | null;
+        /**
+         * The accuracy of the altitude value, in meters.
+         * Can be `null` on Web if it's not available.
+         */
         altitudeAccuracy: number | null;
+        /**
+         * Horizontal direction of travel of this device, measured in degrees
+         * starting at due north and continuing clockwise around the compass.
+         * Thus, north is 0 degrees, east is 90 degrees, south is 180 degrees, and so on.
+         * Can be `null` on Web if it's not available.
+         */
         heading: number | null;
+        /**
+         * The instantaneous speed of the device in meters per second.
+         * Can be `null` on Web if it's not available.
+         */
         speed: number | null;
     };
+    /**
+     * The time at which this position information was obtained,
+     * in milliseconds since epoch.
+     */
     timestamp: number;
 };
 /**
@@ -195,18 +284,18 @@ export declare type LocationProviderStatus = {
      */
     backgroundModeEnabled: boolean;
     /**
-     * (Android only) Whether the GPS provider is available.
+     * (**Android only**) Whether the GPS provider is available.
      * If `true` the location data will come from GPS, especially for requests with high accuracy.
      */
     gpsAvailable?: boolean;
     /**
-     * (Android only) Whether the network provider is available.
+     * (**Android only**) Whether the network provider is available.
      * If `true` the location data will come from cellular network, especially for requests
      * with low accuracy.
      */
     networkAvailable?: boolean;
     /**
-     * (Android only) Whether the passive provider is available.
+     * (**Android only**) Whether the passive provider is available.
      *  If `true` the location data will be determined passively.
      */
     passiveAvailable?: boolean;
@@ -249,24 +338,66 @@ export declare type LocationGeocodingOptions = {
  * Type representing a result of `geocodeAsync`.
  */
 export declare type LocationGeocodedLocation = {
+    /**
+     * The latitude in degrees.
+     */
     latitude: number;
+    /**
+     * The longitude in degrees.
+     */
     longitude: number;
+    /**
+     * The altitude in meters above the WGS 84 reference ellipsoid.
+     */
     altitude?: number;
+    /**
+     * The radius of uncertainty for the location, measured in meters.
+     */
     accuracy?: number;
 };
 /**
  * Type representing a result of `reverseGeocodeAsync`.
  */
 export declare type LocationGeocodedAddress = {
+    /**
+     * City name of the address.
+     */
     city: string | null;
+    /**
+     * Additional city-level information like district name.
+     */
     district: string | null;
+    /**
+     * Street name of the address.
+     */
     street: string | null;
+    /**
+     * The state or province associated with the address.
+     */
     region: string | null;
+    /**
+     * Additional information about administrative area.
+     */
     subregion: string | null;
+    /**
+     * Localized country name of the address.
+     */
     country: string | null;
+    /**
+     *  Postal code of the address.
+     */
     postalCode: string | null;
+    /**
+     * The name of the placemark, for example, "Tower Bridge".
+     */
     name: string | null;
+    /**
+     * Localized (iso) country code of the address, if available.
+     */
     isoCountryCode: string | null;
+    /**
+     * The timezone identifier associated with the address (**iOS only**)
+     */
     timezone: string | null;
 };
 /**
@@ -276,6 +407,10 @@ export declare type LocationSubscription = {
     remove: () => void;
 };
 export declare type PermissionDetailsLocationIOS = {
+    /**
+     * The scope of granted permission.
+     * Indicates when it's possible to use location, possible values are: whenInUse, always or none.
+     */
     scope: 'whenInUse' | 'always' | 'none';
 };
 export declare type PermissionDetailsLocationAndroid = {
@@ -283,8 +418,16 @@ export declare type PermissionDetailsLocationAndroid = {
      * @deprecated use `accuracy` instead
      */
     scope: 'fine' | 'coarse' | 'none';
+    /**
+     * On Android it indicates the type of location provider with
+     * possible values: fine, coarse, none.
+     */
     accuracy: 'fine' | 'coarse' | 'none';
 };
+/**
+ * `LocationPermissionResponse` extends `PermissionResponse` type exported
+ * by unimodules-permission-interface and contains additional platform-specific fields.
+ */
 export interface LocationPermissionResponse extends UMPermissionResponse {
     ios?: PermissionDetailsLocationIOS;
     android?: PermissionDetailsLocationAndroid;
