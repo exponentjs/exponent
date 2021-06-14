@@ -1,5 +1,6 @@
 import { PermissionResponse as UMPermissionResponse } from 'expo-modules-core';
 
+// @needsAudit
 /**
  * Enum with available location accuracies.
  */
@@ -36,6 +37,7 @@ export enum LocationAccuracy {
   BestForNavigation = 6,
 }
 
+// @needsAudit
 /**
  * Enum with available activity types of background location tracking.
  */
@@ -71,6 +73,7 @@ export enum LocationActivityType {
   Airborne = 5,
 }
 
+// @needsAudit
 /**
  * A type of the event that geofencing task can receive.
  */
@@ -86,6 +89,7 @@ export enum LocationGeofencingEventType {
   Exit = 2,
 }
 
+// @needsAudit
 /**
  * State of the geofencing region that you receive through the geofencing task.
  */
@@ -106,6 +110,7 @@ export enum LocationGeofencingRegionState {
   Outside = 2,
 }
 
+// @needsAudit
 /**
  * Type representing options argument in `getCurrentPositionAsync`.
  */
@@ -136,6 +141,7 @@ export type LocationOptions = {
   distanceInterval?: number;
 };
 
+// @needsAudit
 /**
  * Type representing options object that can be passed to `getLastKnownPositionAsync`.
  */
@@ -151,6 +157,7 @@ export type LocationLastKnownOptions = {
   requiredAccuracy?: number;
 };
 
+// @needsAudit
 /**
  * Type representing background location task options.
  */
@@ -165,12 +172,16 @@ export type LocationTaskOptions = LocationOptions & {
   /**
    * The distance in meters that must occur between last reported location
    * and the current location before deferred locations are reported. Defaults to `0`.
+   * > Deferred updates provide a way to report locations in a batch when the app is
+   * in the background state. Location updates aren't being deferred in the foreground.
    */
   deferredUpdatesDistance?: number;
 
   /**
    * Minimum time interval in milliseconds that must pass since last reported location
    * before all later locations are reported in a batched update. Defaults to `0`.
+   * > Deferred updates provide a way to report locations in a batch when the app is
+   * in the background state. Location updates aren't being deferred in the foreground.
    */
   deferredUpdatesInterval?: number;
 
@@ -215,6 +226,7 @@ export type LocationTaskOptions = LocationOptions & {
   };
 };
 
+// @needsAudit
 /**
  * Type representing geofencing region object.
  */
@@ -252,6 +264,7 @@ export type LocationRegion = {
   notifyOnExit?: boolean;
 };
 
+// @needsAudit
 /**
  * Type representing the location object.
  */
@@ -310,11 +323,13 @@ export type LocationObject = {
   timestamp: number;
 };
 
+// @needsAudit
 /**
  * Represents `watchPositionAsync` callback.
  */
 export type LocationCallback = (location: LocationObject) => any;
 
+// @needsAudit
 /**
  * Represents the object containing details about location provider.
  */
@@ -351,6 +366,7 @@ export type LocationProviderStatus = {
   passiveAvailable?: boolean;
 };
 
+// @needsAudit
 /**
  * Type of the object containing heading details and provided by `watchHeadingAsync` callback.
  */
@@ -374,6 +390,7 @@ export type LocationHeadingObject = {
   accuracy: number;
 };
 
+// @needsAudit
 /**
  * Represents `watchHeadingAsync` callback.
  */
@@ -390,6 +407,7 @@ export type LocationGeocodingOptions = {
   useGoogleMaps?: boolean;
 };
 
+// @needsAudit
 /**
  * Type representing a result of `geocodeAsync`.
  */
@@ -415,6 +433,7 @@ export type LocationGeocodedLocation = {
   accuracy?: number;
 };
 
+// @needsAudit
 /**
  * Type representing a result of `reverseGeocodeAsync`.
  */
@@ -470,6 +489,7 @@ export type LocationGeocodedAddress = {
   timezone: string | null;
 };
 
+// @needsAudit
 /**
  * Represents subscription object returned by methods watching for new locations or headings.
  */
@@ -477,6 +497,7 @@ export type LocationSubscription = {
   remove: () => void;
 };
 
+// @needsAudit @docsMissing
 export type PermissionDetailsLocationIOS = {
   /**
    * The scope of granted permission.
@@ -485,6 +506,7 @@ export type PermissionDetailsLocationIOS = {
   scope: 'whenInUse' | 'always' | 'none';
 };
 
+// @needsAudit @docsMissing
 export type PermissionDetailsLocationAndroid = {
   /**
    * @deprecated use `accuracy` instead
@@ -498,6 +520,7 @@ export type PermissionDetailsLocationAndroid = {
   accuracy: 'fine' | 'coarse' | 'none';
 };
 
+// @needsAudit
 /**
  * `LocationPermissionResponse` extends `PermissionResponse` type exported
  * by unimodules-permission-interface and contains additional platform-specific fields.

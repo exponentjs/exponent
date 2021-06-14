@@ -141,11 +141,15 @@ export declare type LocationTaskOptions = LocationOptions & {
     /**
      * The distance in meters that must occur between last reported location
      * and the current location before deferred locations are reported. Defaults to `0`.
+     * > Deferred updates provide a way to report locations in a batch when the app is
+     * in the background state. Location updates aren't being deferred in the foreground.
      */
     deferredUpdatesDistance?: number;
     /**
      * Minimum time interval in milliseconds that must pass since last reported location
      * before all later locations are reported in a batched update. Defaults to `0`.
+     * > Deferred updates provide a way to report locations in a batch when the app is
+     * in the background state. Location updates aren't being deferred in the foreground.
      */
     deferredUpdatesInterval?: number;
     /**

@@ -1,3 +1,4 @@
+// @needsAudit
 /**
  * Enum with available location accuracies.
  */
@@ -29,6 +30,7 @@ export var LocationAccuracy;
      */
     LocationAccuracy[LocationAccuracy["BestForNavigation"] = 6] = "BestForNavigation";
 })(LocationAccuracy || (LocationAccuracy = {}));
+// @needsAudit
 /**
  * Enum with available activity types of background location tracking.
  */
@@ -60,6 +62,7 @@ export var LocationActivityType;
      */
     LocationActivityType[LocationActivityType["Airborne"] = 5] = "Airborne";
 })(LocationActivityType || (LocationActivityType = {}));
+// @needsAudit
 /**
  * A type of the event that geofencing task can receive.
  */
@@ -74,6 +77,7 @@ export var LocationGeofencingEventType;
      */
     LocationGeofencingEventType[LocationGeofencingEventType["Exit"] = 2] = "Exit";
 })(LocationGeofencingEventType || (LocationGeofencingEventType = {}));
+// @needsAudit
 /**
  * State of the geofencing region that you receive through the geofencing task.
  */
