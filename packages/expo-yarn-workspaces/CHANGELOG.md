@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Add engines limitation for Node 14 and above ([#12761](https://github.com/expo/expo/pull/12761) by [@byCedric](https://github.com/bycedric))
+
 ## 1.5.1 — 2021-04-20
 
 ### 🐛 Bug fixes
