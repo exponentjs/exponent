@@ -1,10 +1,15 @@
 import { Platform } from '@unimodules/core';
 import { PermissionStatus } from 'expo-modules-core';
 import ExpoLocation from './ExpoLocation';
-import { LocationAccuracy, LocationActivityType, LocationGeofencingEventType, LocationGeofencingRegionState, } from './Location.types';
+import { LocationAccuracy, } from './Location.types';
 import { LocationEventEmitter } from './LocationEventEmitter';
 import { setGoogleApiKey, googleGeocodeAsync, googleReverseGeocodeAsync, } from './LocationGoogleGeocoding';
 import { LocationSubscriber, HeadingSubscriber, _getCurrentWatchId } from './LocationSubscribers';
+// @needsAudit
+/**
+ * Check status of location providers.
+ * @returns A `Promise` resolving to an object of type [`LocationProviderStatus`](#locationproviderstatus).
+ */
 export async function getProviderStatusAsync() {
     return ExpoLocation.getProviderStatusAsync();
 }
@@ -368,19 +373,10 @@ export async function hasStartedGeofencingAsync(taskName) {
     _validateTaskName(taskName);
     return ExpoLocation.hasStartedGeofencingAsync(taskName);
 }
-// @needsAudit @docsMissing
-/**
- * @deprecated
- * Deprecated as of SDK39 in favour of `setGoogleApiKey`.
- */
-export function setApiKey(apiKey) {
-    console.warn("Location's method `setApiKey` is deprecated in favor of `setGoogleApiKey`.");
-    setGoogleApiKey(apiKey);
-}
 // For internal purposes
 export { LocationEventEmitter as EventEmitter, _getCurrentWatchId };
 // Export as namespaced types.
-export { LocationAccuracy as Accuracy, LocationActivityType as ActivityType, LocationGeofencingEventType as GeofencingEventType, LocationGeofencingRegionState as GeofencingRegionState, PermissionStatus, setGoogleApiKey, };
+export { PermissionStatus, setGoogleApiKey };
 export { installWebGeolocationPolyfill } from './GeolocationPolyfill';
 export * from './Location.types';
 //# sourceMappingURL=Location.js.map

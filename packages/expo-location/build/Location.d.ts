@@ -1,8 +1,12 @@
 import { PermissionStatus, PermissionResponse } from 'expo-modules-core';
-import { LocationAccuracy, LocationCallback, LocationGeocodedAddress, LocationGeocodedLocation, LocationHeadingCallback, LocationHeadingObject, LocationLastKnownOptions, LocationObject, LocationOptions, LocationPermissionResponse, LocationProviderStatus, LocationRegion, LocationSubscription, LocationTaskOptions, LocationActivityType, LocationGeofencingEventType, LocationGeofencingRegionState, LocationGeocodingOptions } from './Location.types';
+import { LocationCallback, LocationGeocodedAddress, LocationGeocodedLocation, LocationHeadingCallback, LocationHeadingObject, LocationLastKnownOptions, LocationObject, LocationOptions, LocationPermissionResponse, LocationProviderStatus, LocationRegion, LocationSubscription, LocationTaskOptions, LocationGeocodingOptions } from './Location.types';
 import { LocationEventEmitter } from './LocationEventEmitter';
 import { setGoogleApiKey } from './LocationGoogleGeocoding';
 import { _getCurrentWatchId } from './LocationSubscribers';
+/**
+ * Check status of location providers.
+ * @returns A `Promise` resolving to an object of type [`LocationProviderStatus`](#locationproviderstatus).
+ */
 export declare function getProviderStatusAsync(): Promise<LocationProviderStatus>;
 /**
  * Asks the user to turn on high accuracy location mode which enables network provider
@@ -113,13 +117,13 @@ export declare function requestPermissionsAsync(): Promise<LocationPermissionRes
  * @returns A `Promise` that resolves to an object of type
  * [`PermissionResponse`](permissions.md#permissionresponse).
  */
-export declare function getForegroundPermissionsAsync(): Promise<LocationPermissionResponse>;
+export declare function getForegroundPermissionsAsync(): Promise<PermissionResponse>;
 /**
  * Asks the user to grant permissions for location while the app is in the foreground.
  * @returns A `Promise` that resolves to an object of type
  * [`PermissionResponse`](permissions.md#permissionresponse).
  */
-export declare function requestForegroundPermissionsAsync(): Promise<LocationPermissionResponse>;
+export declare function requestForegroundPermissionsAsync(): Promise<PermissionResponse>;
 /**
  * Checks user's permissions for accessing location while the app is in the background.
  * @returns A `Promise` that resolves to an object of type
@@ -225,12 +229,7 @@ export declare function stopGeofencingAsync(taskName: string): Promise<void>;
  * @returns A `Promise` resolving to boolean value indicating whether the geofencing task is started or not.
  */
 export declare function hasStartedGeofencingAsync(taskName: string): Promise<boolean>;
-/**
- * @deprecated
- * Deprecated as of SDK39 in favour of `setGoogleApiKey`.
- */
-export declare function setApiKey(apiKey: string): void;
 export { LocationEventEmitter as EventEmitter, _getCurrentWatchId };
-export { LocationAccuracy as Accuracy, LocationActivityType as ActivityType, LocationGeofencingEventType as GeofencingEventType, LocationGeofencingRegionState as GeofencingRegionState, PermissionStatus, setGoogleApiKey, };
+export { PermissionStatus, setGoogleApiKey };
 export { installWebGeolocationPolyfill } from './GeolocationPolyfill';
 export * from './Location.types';

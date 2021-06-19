@@ -17,9 +17,6 @@ import {
   LocationRegion,
   LocationSubscription,
   LocationTaskOptions,
-  LocationActivityType,
-  LocationGeofencingEventType,
-  LocationGeofencingRegionState,
   LocationGeocodingOptions,
 } from './Location.types';
 import { LocationEventEmitter } from './LocationEventEmitter';
@@ -30,6 +27,11 @@ import {
 } from './LocationGoogleGeocoding';
 import { LocationSubscriber, HeadingSubscriber, _getCurrentWatchId } from './LocationSubscribers';
 
+// @needsAudit
+/**
+ * Check status of location providers.
+ * @returns A `Promise` resolving to an object of type [`LocationProviderStatus`](#locationproviderstatus).
+ */
 export async function getProviderStatusAsync(): Promise<LocationProviderStatus> {
   return ExpoLocation.getProviderStatusAsync();
 }
@@ -249,7 +251,7 @@ export async function requestPermissionsAsync(): Promise<LocationPermissionRespo
  * @returns A `Promise` that resolves to an object of type
  * [`PermissionResponse`](permissions.md#permissionresponse).
  */
-export async function getForegroundPermissionsAsync(): Promise<LocationPermissionResponse> {
+export async function getForegroundPermissionsAsync(): Promise<PermissionResponse> {
   return await ExpoLocation.getForegroundPermissionsAsync();
 }
 
@@ -259,7 +261,7 @@ export async function getForegroundPermissionsAsync(): Promise<LocationPermissio
  * @returns A `Promise` that resolves to an object of type
  * [`PermissionResponse`](permissions.md#permissionresponse).
  */
-export async function requestForegroundPermissionsAsync(): Promise<LocationPermissionResponse> {
+export async function requestForegroundPermissionsAsync(): Promise<PermissionResponse> {
   return await ExpoLocation.requestForegroundPermissionsAsync();
 }
 
@@ -455,28 +457,11 @@ export async function hasStartedGeofencingAsync(taskName: string): Promise<boole
   return ExpoLocation.hasStartedGeofencingAsync(taskName);
 }
 
-// @needsAudit @docsMissing
-/**
- * @deprecated
- * Deprecated as of SDK39 in favour of `setGoogleApiKey`.
- */
-export function setApiKey(apiKey: string): void {
-  console.warn("Location's method `setApiKey` is deprecated in favor of `setGoogleApiKey`.");
-  setGoogleApiKey(apiKey);
-}
-
 // For internal purposes
 export { LocationEventEmitter as EventEmitter, _getCurrentWatchId };
 
 // Export as namespaced types.
-export {
-  LocationAccuracy as Accuracy,
-  LocationActivityType as ActivityType,
-  LocationGeofencingEventType as GeofencingEventType,
-  LocationGeofencingRegionState as GeofencingRegionState,
-  PermissionStatus,
-  setGoogleApiKey,
-};
+export { PermissionStatus, setGoogleApiKey };
 
 export { installWebGeolocationPolyfill } from './GeolocationPolyfill';
 export * from './Location.types';

@@ -11,6 +11,10 @@ type GeolocationOptions = {
   enableHighAccuracy?: boolean;
 };
 
+/**
+ * Polyfills navigator.geolocation for interop with the core
+ * React Native and Web API approach to geolocation.
+ */
 export function installWebGeolocationPolyfill(): void {
   if (Platform.OS !== 'web') {
     // Polyfill navigator.geolocation for interop with the core react-native and web API approach to
