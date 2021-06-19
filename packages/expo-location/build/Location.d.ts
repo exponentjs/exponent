@@ -1,5 +1,5 @@
 import { PermissionStatus, PermissionResponse } from 'expo-modules-core';
-import { LocationCallback, LocationGeocodedAddress, LocationGeocodedLocation, LocationHeadingCallback, LocationHeadingObject, LocationLastKnownOptions, LocationObject, LocationOptions, LocationPermissionResponse, LocationProviderStatus, LocationRegion, LocationSubscription, LocationTaskOptions, LocationGeocodingOptions } from './Location.types';
+import { LocationAccuracy, LocationCallback, LocationGeocodedAddress, LocationGeocodedLocation, LocationHeadingCallback, LocationHeadingObject, LocationLastKnownOptions, LocationObject, LocationOptions, LocationPermissionResponse, LocationProviderStatus, LocationRegion, LocationSubscription, LocationTaskOptions, LocationActivityType, LocationGeofencingEventType, LocationGeofencingRegionState, LocationGeocodingOptions } from './Location.types';
 import { LocationEventEmitter } from './LocationEventEmitter';
 import { setGoogleApiKey } from './LocationGoogleGeocoding';
 import { _getCurrentWatchId } from './LocationSubscribers';
@@ -230,6 +230,6 @@ export declare function stopGeofencingAsync(taskName: string): Promise<void>;
  */
 export declare function hasStartedGeofencingAsync(taskName: string): Promise<boolean>;
 export { LocationEventEmitter as EventEmitter, _getCurrentWatchId };
-export { PermissionStatus, setGoogleApiKey };
+export { LocationAccuracy as Accuracy, LocationActivityType as ActivityType, LocationGeofencingEventType as GeofencingEventType, LocationGeofencingRegionState as GeofencingRegionState, PermissionStatus, setGoogleApiKey, };
 export { installWebGeolocationPolyfill } from './GeolocationPolyfill';
 export * from './Location.types';

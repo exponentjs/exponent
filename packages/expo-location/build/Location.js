@@ -1,7 +1,7 @@
 import { Platform } from '@unimodules/core';
 import { PermissionStatus } from 'expo-modules-core';
 import ExpoLocation from './ExpoLocation';
-import { LocationAccuracy, } from './Location.types';
+import { LocationAccuracy, LocationActivityType, LocationGeofencingEventType, LocationGeofencingRegionState, } from './Location.types';
 import { LocationEventEmitter } from './LocationEventEmitter';
 import { setGoogleApiKey, googleGeocodeAsync, googleReverseGeocodeAsync, } from './LocationGoogleGeocoding';
 import { LocationSubscriber, HeadingSubscriber, _getCurrentWatchId } from './LocationSubscribers';
@@ -376,7 +376,7 @@ export async function hasStartedGeofencingAsync(taskName) {
 // For internal purposes
 export { LocationEventEmitter as EventEmitter, _getCurrentWatchId };
 // Export as namespaced types.
-export { PermissionStatus, setGoogleApiKey };
+export { LocationAccuracy as Accuracy, LocationActivityType as ActivityType, LocationGeofencingEventType as GeofencingEventType, LocationGeofencingRegionState as GeofencingRegionState, PermissionStatus, setGoogleApiKey, };
 export { installWebGeolocationPolyfill } from './GeolocationPolyfill';
 export * from './Location.types';
 //# sourceMappingURL=Location.js.map
