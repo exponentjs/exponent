@@ -24,7 +24,6 @@ export declare const LocationSubscriber: Subscriber<LocationCallback>;
 export declare const HeadingSubscriber: Subscriber<LocationHeadingCallback>;
 /**
  * Necessary for some unit tests.
- * @returns The current subscription id
  */
 export declare function _getCurrentWatchId(): number;
 export {};

@@ -2,6 +2,7 @@ import { PermissionStatus } from 'expo-modules-core';
 import { LocationAccuracy, } from './Location.types';
 import { LocationEventEmitter } from './LocationEventEmitter';
 class GeocoderError extends Error {
+    code;
     constructor() {
         super('Geocoder service is not available for this device.');
         this.code = 'E_NO_GEOCODER';

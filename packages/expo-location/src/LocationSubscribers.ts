@@ -83,7 +83,6 @@ export const HeadingSubscriber = new Subscriber<LocationHeadingCallback>(
 
 /**
  * Necessary for some unit tests.
- * @returns The current subscription id
  */
 export function _getCurrentWatchId(): number {
   return nextWatchId;

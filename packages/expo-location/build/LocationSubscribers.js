@@ -2,9 +2,11 @@ import ExpoLocation from './ExpoLocation';
 import { LocationEventEmitter } from './LocationEventEmitter';
 let nextWatchId = 0;
 class Subscriber {
+    eventName;
+    eventDataField;
+    callbacks = {};
+    eventSubscription = null;
     constructor(eventName, eventDataField) {
-        this.callbacks = {};
-        this.eventSubscription = null;
         this.eventName = eventName;
         this.eventDataField = eventDataField;
     }
@@ -53,7 +55,6 @@ export const LocationSubscriber = new Subscriber('Expo.locationChanged', 'locati
 export const HeadingSubscriber = new Subscriber('Expo.headingChanged', 'heading');
 /**
  * Necessary for some unit tests.
- * @returns The current subscription id
  */
 export function _getCurrentWatchId() {
     return nextWatchId;
