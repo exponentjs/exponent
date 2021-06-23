@@ -17,8 +17,13 @@ const pkg = require('expo-dev-menu/package.json');
 const DEV_MENU_ANDROID_IMPORT = 'expo.modules.devmenu.react.DevMenuAwareReactActivity';
 const DEV_MENU_ACTIVITY_CLASS = 'public class MainActivity extends DevMenuAwareReactActivity {';
 
-const DEV_MENU_POD_IMPORT =
-  "pod 'expo-dev-menu', path: '../node_modules/expo-dev-menu', :configurations => :debug";
+type DevMenuPodOptions = {
+  nodeModulesPath?: string
+}
+
+const getDevMenuPodImport = ({ nodeModulesPath = '../node_modules' }: DevMenuPodOptions = {}) => {
+  return `pod 'expo-dev-menu', path: '${nodeModulesPath}/expo-dev-menu', :configurations => :debug`;
+}
 
 async function readFileAsync(path: string): Promise<string> {
   return fs.promises.readFile(path, 'utf8');
@@ -87,7 +92,7 @@ const withDevMenuActivity: ConfigPlugin = config => {
   });
 };
 
-const withDevMenuPodfile: ConfigPlugin = config => {
+const withDevMenuPodfile: ConfigPlugin<DevMenuPodOptions> = (config, options) => {
   return withDangerousMod(config, [
     'ios',
     async config => {
@@ -101,7 +106,7 @@ const withDevMenuPodfile: ConfigPlugin = config => {
             /pod ['"]expo-dev-menu['"],\s?path: ['"]\.\.\/node_modules\/expo-dev-menu['"],\s?:?configurations:?\s(?:=>\s)?:debug/
           )
         ) {
-          podfile = addLines(podfile, 'use_react_native', 0, [`  ${DEV_MENU_POD_IMPORT}`]);
+          podfile = addLines(podfile, 'use_react_native', 0, [`  ${getDevMenuPodImport(options)}`]);
         }
         return podfile;
       });
@@ -110,9 +115,9 @@ const withDevMenuPodfile: ConfigPlugin = config => {
   ]);
 };
 
-const withDevMenu = (config: ExpoConfig) => {
+const withDevMenu = (config: ExpoConfig, devMenuPodfileOptions: DevMenuPodOptions = {}) => {
   config = withDevMenuActivity(config);
-  config = withDevMenuPodfile(config);
+  config = withDevMenuPodfile(config, devMenuPodfileOptions);
   config = withDevMenuAppDelegate(config);
   return config;
 };
