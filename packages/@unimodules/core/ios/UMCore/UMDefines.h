@@ -2,6 +2,7 @@
 
 #define UM_EXPORTED_METHODS_PREFIX __um_export__
 #define UM_PROPSETTERS_PREFIX __um_set__
+#define UM_PROPINFO_PREFIX __um_propinfo__
 
 #define UM_DO_CONCAT(A, B) A ## B
 #define UM_CONCAT(A, B) UM_DO_CONCAT(A, B)
@@ -16,8 +17,21 @@
   return &config; \
   }
 
+#define UM_VIEW_PROPERTY_INFO(external_name, type, viewPropPath, viewPropType) \
+  + (const UMPropInfo *)UM_CONCAT(UM_PROPINFO_PREFIX, external_name) { \
+  static UMPropInfo config = {#external_name, #type, viewPropPath, viewPropType}; \
+  return &config; \
+} \
+
 #define UM_VIEW_PROPERTY(external_name, type, viewClass) \
+  UM_VIEW_PROPERTY_INFO(external_name, type, nil, nil) \
   - (void)UM_CONCAT(UM_PROPSETTERS_PREFIX, external_name):(type)value view:(viewClass *)view
+
+#define UM_VIEW_PROPERTY_ANIMATED(external_name, type, viewClass) \
+  UM_VIEW_PROPERTY_INFO(external_name, type, #external_name, #type) \
+  - (void)UM_CONCAT(UM_PROPSETTERS_PREFIX, external_name):(type)value view:(viewClass *)view { \
+    view.external_name = value; \
+  }
 
 #define _UM_DEFINE_CUSTOM_LOAD(_custom_load_code) \
   extern void UMRegisterModule(Class); \
@@ -73,6 +87,13 @@ typedef struct UMMethodInfo {
   const char *const jsName;
   const char *const objcName;
 } UMMethodInfo;
+
+typedef struct UMPropInfo {
+  const char *const jsName;
+  const char *const type;
+  const char *const viewPropPath;
+  const char *const viewPropType;
+} UMPropInfo;
 
 typedef struct UMModuleInfo {
   const char *const jsName;

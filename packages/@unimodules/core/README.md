@@ -138,6 +138,8 @@ Subclass `UMViewManager` and override at least `- (UIView *)view` and `- (NSStri
 
 Use `UM_VIEW_PROPERTY(propName, propClass, viewClass)` to define custom view properties.
 
+And use `UM_VIEW_PROPERTY_ANIMATED(propName, propClass, viewClass, viewPropPath, viewPropType)` to define view properties that can be animated natively.
+
 #### Android
 
 TODO: ViewManager from interface to a class

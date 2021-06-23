@@ -1,8 +1,12 @@
 // Copyright 2018-present 650 Industries. All rights reserved.
 
+#import <UMCore/UMDefines.h>
 #import <UMReactNativeAdapter/UMViewManagerAdapterClassesRegistry.h>
 #import <UMReactNativeAdapter/UMViewManagerAdapter.h>
 #import <objc/runtime.h>
+
+#define QUOTE(str) #str
+#define EXPAND_AND_QUOTE(str) QUOTE(str)
 
 static const NSString *viewManagerAdapterModuleNamePrefix = @"ViewManagerAdapter_";
 
@@ -38,10 +42,31 @@ static dispatch_once_t directEventBlockImplementationOnceToken;
 {
   const char *viewManagerClassName = [[viewManagerAdapterModuleNamePrefix stringByAppendingString:[viewManager viewName]] UTF8String];
   Class viewManagerAdapterClass = objc_allocateClassPair([UMViewManagerAdapter class], viewManagerClassName, 0);
+  
   [self _ensureDirectEventBlockImplementationIsPresent];
   for (NSString *eventName in [viewManager supportedEvents]) {
     class_addMethod(object_getClass(viewManagerAdapterClass), NSSelectorFromString([@"propConfig_" stringByAppendingString:eventName]), directEventBlockImplementation, "@@:");
   }
+  
+  Class viewManagerClass = [viewManager class];
+  [[viewManager getPropsNames] enumerateKeysAndObjectsUsingBlock:^(id propName, id obj, BOOL *stop) {
+    SEL propInfoSelector = NSSelectorFromString([@EXPAND_AND_QUOTE(UM_PROPINFO_PREFIX) stringByAppendingString:propName]);
+    if ([viewManagerClass respondsToSelector:propInfoSelector]) {
+      IMP imp = [viewManagerClass methodForSelector:propInfoSelector];
+      const UMPropInfo *propInfo = ((const UMPropInfo *(*)(id, SEL))imp)(viewManagerClass, propInfoSelector);
+      
+      // Animated props contain extra information on how the prop can be set directly on the view.
+      // These props follow an optimized code-path that bypasses the view-manager.
+      if (propInfo->viewPropType && propInfo->viewPropPath) {
+        NSString *viewPropType = [NSString stringWithUTF8String:propInfo->viewPropType];
+        NSString *viewPropPath = [NSString stringWithUTF8String:propInfo->viewPropPath];
+        class_addMethod(object_getClass(viewManagerAdapterClass), NSSelectorFromString([@"propConfig_" stringByAppendingString:propName]), imp_implementationWithBlock(^{
+          return @[viewPropType, viewPropPath];
+        }), "@@:");
+      }
+    }
+  }];
+  
   return viewManagerAdapterClass;
 }
 
