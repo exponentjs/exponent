@@ -23,7 +23,7 @@
   "dependencies": {
     "@emotion/react": "^11.1.5",
     "@expo/spawn-async": "^1.5.0",
-    "@expo/styleguide": "^3.0.0",
+    "@expo/styleguide": "^3.2.0",
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/mdx": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
@@ -58,7 +58,7 @@
     "@babel/core": "^7.13.14",
     "@emotion/babel-preset-css-prop": "^11.2.0",
     "@testing-library/jest-dom": "5.11.0",
-    "@testing-library/react": "10.4.3",
+    "@testing-library/react": "^12.0.0",
     "@types/fs-extra": "^9.0.7",
     "@types/github-slugger": "^1.3.0",
     "@types/google.analytics": "^0.0.41",

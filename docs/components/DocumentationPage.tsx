@@ -16,11 +16,11 @@ import DocumentationSidebarRight, {
   SidebarRightComponentType,
 } from '~/components/DocumentationSidebarRight';
 import Head from '~/components/Head';
-import { H1 } from '~/components/base/headings';
 import navigation from '~/constants/navigation';
 import * as Constants from '~/constants/theme';
 import { VERSIONS } from '~/constants/versions';
 import { NavigationRoute, Url } from '~/types/common';
+import { PageHeader } from '~/ui/components/page-header';
 
 const STYLES_DOCUMENT = css`
   background: ${theme.background.default};
@@ -52,6 +52,7 @@ const HIDDEN_ON_DESKTOP = css`
 type Props = {
   url: Url;
   title: string;
+  description?: string;
   asPath: string;
   sourceCodeUrl?: string;
   tocVisible: boolean;
@@ -307,7 +308,7 @@ export default class DocumentationPage extends React.Component<Props, State> {
 
         {!this.state.isMenuActive ? (
           <div css={STYLES_DOCUMENT}>
-            <H1>{this.props.title}</H1>
+            <PageHeader title={this.props.title} description={this.props.description} />
             <DocumentationPageContext.Provider value={{ version }}>
               {this.props.children}
             </DocumentationPageContext.Provider>
@@ -321,7 +322,7 @@ export default class DocumentationPage extends React.Component<Props, State> {
         ) : (
           <div>
             <div css={[STYLES_DOCUMENT, HIDDEN_ON_MOBILE]}>
-              <H1>{this.props.title}</H1>
+              <PageHeader title={this.props.title} description={this.props.description} />
               <DocumentationPageContext.Provider value={{ version }}>
                 {this.props.children}
               </DocumentationPageContext.Provider>
