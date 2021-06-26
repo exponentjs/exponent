@@ -7,6 +7,7 @@
 @interface EXSplashScreenService ()
 
 @property (nonatomic, strong) NSMapTable<UIViewController *, EXSplashScreenController *> *splashScreenControllers;
+@property (nonatomic, assign) BOOL autoHideEnabled;
 
 @end
 
@@ -18,6 +19,7 @@ UM_REGISTER_SINGLETON_MODULE(SplashScreen);
 {
   if (self = [super init]) {
     _splashScreenControllers = [NSMapTable weakToStrongObjectsMapTable];
+    _autoHideEnabled = YES;
   }
   return self;
 }
@@ -44,7 +46,8 @@ UM_REGISTER_SINGLETON_MODULE(SplashScreen);
                                                                                      splashScreenViewProvider:splashScreenViewProvider];
   [self.splashScreenControllers setObject:splashScreenController forKey:viewController];
   [[self.splashScreenControllers objectForKey:viewController] showWithCallback:successCallback
-                                                               failureCallback:failureCallback];
+                                                               failureCallback:failureCallback
+                                                               autoHideEnabled:_autoHideEnabled];
 }
 
 - (void)preventSplashScreenAutoHideFor:(UIViewController *)viewController
@@ -57,6 +60,11 @@ UM_REGISTER_SINGLETON_MODULE(SplashScreen);
   
   return [[self.splashScreenControllers objectForKey:viewController] preventAutoHideWithCallback:successCallback
                                                                                  failureCallback:failureCallback];
+}
+
+- (void)setSplashScreenAutoHideEnabled:(BOOL)autoHideEnabled
+{
+  _autoHideEnabled = autoHideEnabled;
 }
 
 - (void)hideSplashScreenFor:(UIViewController *)viewController

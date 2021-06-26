@@ -414,8 +414,9 @@ module.exports = {
         ],
         ExpoSharing: [{ key: 0, argumentsCount: 2, name: 'shareAsync' }],
         ExpoSplashScreen: [
-          { key: 0, argumentsCount: 0, name: 'hideAsync' },
-          { key: 1, argumentsCount: 0, name: 'preventAutoHideAsync' },
+          { key: 0, argumentsCount: 1, name: 'setSplashScreenAutoHideEnabled' },
+          { key: 1, argumentsCount: 0, name: 'hideAsync' },
+          { key: 2, argumentsCount: 0, name: 'preventAutoHideAsync' },
         ],
         ExpoStoreReview: [
           { key: 0, argumentsCount: 0, name: 'isAvailableAsync' },

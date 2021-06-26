@@ -79,6 +79,10 @@ Preventing default autohiding might come in handy if your application needs to p
 A `Promise` that resolves to `true` when preventing autohiding succeeded and to `false` if the native splash screen is already prevented from autohiding (for instance, if you've already called this method).
 `Promise` rejection most likely means that native splash screen cannot be prevented from autohiding (it's already hidden when this method was executed).
 
+### `SplashScreen.setSplashScreenAutoHideEnabled(enabledBool)`
+
+The default behavior of splash screen on creation or JS bridge reload is to auto hide the splash screen. You can disable this functionality and any creation or reload that happens after that won't auto hide and require a hideAsync to be hidden.
+
 ### `SplashScreen.hideAsync()`
 
 Hides the native splash screen. Only works if the native splash screen has been previously prevented from autohiding by calling [`SplashScreen.preventAutoHideAsync()`](#splashscreenpreventautohideasync) method.
@@ -438,6 +442,22 @@ You might want to add a separate image for `dark` mode. If the system is switche
 If you're targeting a version of iOS < 11 then you cannot use `named color` feature and instead you need to generate images with desired background colors that are going to be used as the background for splash screen view.
 There is this awesome 1x1px png online generator: http://www.1x1px.me (use it to generate two 1x1px images with desired background colors for different color modes).
 
+###### (<em>optional</em>) Disable auto hiding feature on the splash screen
+
+Optionally you configure to disable the auto hiding feature on the splash screen you're about to show. If you disable it yuu won't need to call preventAutoHideAsync and it will stay until you call hideAsync.
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  ...
+  // Call before super didFinishLaunchingWithOptions so that the configuration takes place before we show the splash screen
+  EXSplashScreenService *splashScreenService = (EXSplashScreenService *)[UMModuleRegistryProvider getSingletonModuleForClass:[EXSplashScreenService class]];
+  [splashScreenService setSplashScreenAutoHideEnabled:false];
+  [super application:application didFinishLaunchingWithOptions:launchOptions];
+
+  return YES;
+}
+
+
 #### 🛠 (<em>optional</em>) Customize StatusBar
 
 You might want to customize the StatusBar appearance during the time the SplashScreen is being shown.
@@ -503,6 +523,8 @@ public class MainActivity extends ReactActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
++   // Optionally you can call below to disable the auto hiding feature on the splash screen you're about to show
++   // SplashScreen.setSplashScreenAutoHideEnabled(false);
 +   // SplashScreen.show(...) has to be called after super.onCreate(...)
 +   SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
     ...
@@ -524,6 +546,8 @@ public class MainActivity extends ReactActivity {
 +  @Override
 +  protected void onCreate(Bundle savedInstanceState) {
 +    super.onCreate(savedInstanceState);
++   // Optionally you can call below to disable the auto hiding feature on the splash screen you're about to show
++   // SplashScreen.setSplashScreenAutoHideEnabled(false);
 +   // SplashScreen.show(...) has to be called after super.onCreate(...)
 +   SplashScreen.show(this, SplashScreenImageResizeMode.CONTAIN, ReactRootView.class, false);
     ...

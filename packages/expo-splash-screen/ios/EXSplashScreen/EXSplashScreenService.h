@@ -44,6 +44,11 @@ NS_ASSUME_NONNULL_BEGIN
                        failureCallback:(void (^)(NSString *message))failureCallback;
 
 /**
+ * Configures whether SplashScreen for any view controllers will use autohiding after showing.
+ */
+- (void)setSplashScreenAutoHideEnabled:(BOOL)autoHideEnabled;
+
+/**
  * Signaling method that has to be called upon Content is rendered in view hierarchy.
  * Autohide functionality depends on this call.
  */

@@ -20,6 +20,7 @@ class SplashScreenController(
   private var splashScreenView: View = splashScreenViewProvider.createSplashScreenView(activity)
   private val handler = Handler()
 
+  private var defaultAutoHideEnabled = true
   private var autoHideEnabled = true
   private var splashScreenShown = false
 
@@ -27,7 +28,13 @@ class SplashScreenController(
 
   // region public lifecycle
 
+  fun showSplashScreen(permanentAutoHideEnabled: Boolean, successCallback: () -> Unit = {}) {
+    defaultAutoHideEnabled = permanentAutoHideEnabled
+    showSplashScreen(successCallback)
+  }
+
   fun showSplashScreen(successCallback: () -> Unit = {}) {
+    autoHideEnabled = defaultAutoHideEnabled
     weakActivity.get()?.runOnUiThread {
       (splashScreenView.parent as? ViewGroup)?.removeView(splashScreenView)
       contentView.addView(splashScreenView)
@@ -65,7 +72,6 @@ class SplashScreenController(
 
     activity.runOnUiThread {
       contentView.removeView(splashScreenView)
-      autoHideEnabled = true
       splashScreenShown = false
       successCallback(true)
     }

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
               splashScreenViewProvider:(id<EXSplashScreenViewProvider>)splashScreenViewProvider;
 
 - (void)showWithCallback:(void (^)(void))successCallback failureCallback:(void (^)(NSString *message))failureCallback;
+- (void)showWithCallback:(void (^)(void))successCallback failureCallback:(void (^)(NSString *message))failureCallback autoHideEnabled:(BOOL)autoHideEnabled;
 - (void)preventAutoHideWithCallback:(void (^)(BOOL hasEffect))successCallback failureCallback:(void (^)(NSString *message))failureCallback;
 - (void)hideWithCallback:(void (^)(BOOL hasEffect))successCallback failureCallback:(void (^)(NSString *message))failureCallback;
 - (void)onAppContentDidAppear;

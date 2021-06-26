@@ -6,6 +6,8 @@
 
 ### 🎉 New features
 
+- Allows you to configure if you want the Splash Screen yet to be shown to automatically hide, so you don't need to call prevent and risk doing it too late after it already hid
+
 ### 🐛 Bug fixes
 
 ### 💡 Others
