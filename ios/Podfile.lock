@@ -1912,7 +1912,9 @@ PODS:
     - ExpoModulesCore
     - UMCore
   - ExpoModulesCore (0.1.1):
+    - Folly
     - React-Core
+    - ReactCommon/turbomodule/core
   - EXPrint (10.2.0):
     - ExpoModulesCore
     - UMCore
@@ -4034,7 +4036,7 @@ SPEC CHECKSUMS:
   EXCamera: 5a90a462cd0965bbf5e5ddb725115ac5109869e9
   EXCellular: 82f7267f13f296f37434d0031e9a214bbd4b8919
   EXClipboard: c66f7d22ba754496b0fc6b23a2cb9a3e10fa1581
-  EXConstants: 4c1e78f8711b0991bf5bbd37a574e93e7a44a438
+  EXConstants: 8924b6627e4ddeed60758d415c80ee5a3810b289
   EXContacts: bc06f42aa1bc7fb5ed0f5b29287f772faa33ad55
   EXCrypto: 46e28f1eb7ec3e2ae5aab652fe1dc4d46bafb386
   EXDevice: 6f1eed02c099f5b382a12a40406c58868892aba6
@@ -4063,7 +4065,7 @@ SPEC CHECKSUMS:
   EXNetwork: 6682b2bbbd90e66c4738159abaf8cd206c25e8b8
   EXNotifications: 296d9487163c2c08fffec5e79a5f9094bc016d9c
   EXPermissions: 8eb648bd5c2115d01a39dc7c2ad4c94a5846e4cb
-  ExpoModulesCore: a70ccb0e2d7483de92f7a5b368f524b63809788c
+  ExpoModulesCore: 24d784e64da83b42afea3a13bda0a459fa2f7625
   EXPrint: 2dbe4d320687e559b46fdb01e330fdf875137094
   EXRandom: ecb71f5d01991f29bb0277f8a2c35d168f85d637
   EXScreenCapture: c51844407fbac8bbca4415467bc43f2b7764d225
@@ -4140,7 +4142,7 @@ SPEC CHECKSUMS:
   React-RCTText: 1b6773e776e4b33f90468c20fe3b16ca3e224bb8
   React-RCTVibration: 4d2e726957f4087449739b595f107c0d4b6c2d2d
   ReactCommon: a0a1edbebcac5e91338371b72ffc66aa822792ce
-  RNReanimated: d9da990fc90123f4ffbfdda93d00fc15174863a8
+  RNReanimated: 6b7d1e26f099a28a76c54e02be4e5c479deeac62
   RNScreens: 21b73c94c9117e1110a79ee0ee80c93ccefed8ce
   Stripe: 6cc7bb348f4b1fad111129f6ee40eb6682deaefb
   stripe-react-native: 2598d45be4bad95f0c11a1dde7af185e8829bc67
@@ -4151,6 +4153,6 @@ SPEC CHECKSUMS:
   Yoga: 7740b94929bbacbddda59bf115b5317e9a161598
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 57c679a3db102899bc876a899804e78034217bd9
+PODFILE CHECKSUM: aa25235fcc46ae5d6a8f73b64eeafcb7dbbd28f1
 
 COCOAPODS: 1.10.1

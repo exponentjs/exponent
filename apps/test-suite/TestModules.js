@@ -6,6 +6,11 @@ import Constants from 'expo-constants';
 import ExponentTest from './ExponentTest';
 import { isDeviceFarm } from './utils/Environment';
 
+(async () => {
+  const ip = await global.ExpoModules.ExpoNetwork.getIpAddressAsync();
+  console.log(`IP: `, ip);
+})();
+
 function browserSupportsWebGL() {
   try {
     const canvas = document.createElement('canvas');

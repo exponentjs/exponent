@@ -22,23 +22,23 @@ static dispatch_once_t onceToken;
     [NSException raise:@"Method not implemented in UIApplicationDelegate" format:@"Some modules: %@ have registered for `%@` UIApplicationDelegate's callback, however, neither your AppDelegate nor %@ can handle this method. You'll need to either implement this method in your AppDelegate or submit a pull request to handle it in %@.", delegatesToBeCalled, selectorName, NSStringFromClass([self class]), NSStringFromClass([self class])];
   }
 #endif
-  
+
   [super forwardInvocation:invocation];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions
 {
   BOOL answer = NO;
-  
+
   SEL selector = @selector(application:didFinishLaunchingWithOptions:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     BOOL subcontractorAnswer = NO;
     subcontractorAnswer = [subcontractor application:application didFinishLaunchingWithOptions:launchOptions];
     answer |= subcontractorAnswer;
   }
-  
+
   return answer;
 }
 
@@ -46,7 +46,7 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(applicationWillEnterForeground:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     [subcontractor applicationWillEnterForeground:application];
   }
@@ -54,16 +54,16 @@ static dispatch_once_t onceToken;
 
 - (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options
 {
-  
+
   SEL selector = @selector(application:openURL:options:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     if ([subcontractor application:app openURL:url options:options]) {
       return YES;
     }
   }
-  
+
   return NO;
 }
 
@@ -71,11 +71,11 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(application:performFetchWithCompletionHandler:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   __block NSUInteger subcontractorsLeft = [subcontractorsArray count];
   __block UIBackgroundFetchResult fetchResult = UIBackgroundFetchResultNoData;
   __block NSObject *lock = [NSObject new];
-  
+
   void (^handler)(UIBackgroundFetchResult) = ^(UIBackgroundFetchResult result) {
     @synchronized (lock) {
       if (result == UIBackgroundFetchResultFailed) {
@@ -83,14 +83,14 @@ static dispatch_once_t onceToken;
       } else if (fetchResult != UIBackgroundFetchResultFailed && result == UIBackgroundFetchResultNewData) {
         fetchResult = UIBackgroundFetchResultNewData;
       }
-      
+
       subcontractorsLeft--;
       if (subcontractorsLeft == 0) {
         completionHandler(fetchResult);
       }
     }
   };
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     [subcontractor application:application performFetchWithCompletionHandler:handler];
   }
@@ -100,25 +100,25 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(application:continueUserActivity:restorationHandler:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   __block NSMutableArray<id<UIUserActivityRestoring>> * _Nullable mergedParams = [NSMutableArray new];
   __block NSUInteger subcontractorsLeft = [subcontractorsArray count];
   __block NSObject *lock = [NSObject new];
-  
+
   void (^handler)(NSArray<id<UIUserActivityRestoring>> * _Nullable) = ^(NSArray<id<UIUserActivityRestoring>> * _Nullable param) {
     @synchronized (lock) {
-      
+
       [mergedParams addObjectsFromArray:param];
-      
+
       subcontractorsLeft--;
       if (subcontractorsLeft == 0) {
         restorationHandler(mergedParams);
       }
     }
   };
-  
+
    BOOL result = NO;
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     result = result || [subcontractor application:application continueUserActivity:userActivity restorationHandler:handler];
   }
@@ -131,7 +131,7 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(application:handleEventsForBackgroundURLSession:completionHandler:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
- 
+
   __block BOOL delegatingCompleted = NO;
   __block int delegatesCompleted = 0;
   __block unsigned long allDelegates = subcontractorsArray.count;
@@ -140,7 +140,7 @@ static dispatch_once_t onceToken;
       completionHandler();
     }
   };
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     [subcontractor application:application handleEventsForBackgroundURLSession:identifier completionHandler:^(){
       @synchronized (self) {
@@ -149,7 +149,7 @@ static dispatch_once_t onceToken;
       }
     }];
   }
-  
+
   @synchronized (self) {
     delegatingCompleted = YES;
     completionHandlerCaller();
@@ -162,7 +162,7 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(application:didRegisterForRemoteNotificationsWithDeviceToken:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     [subcontractor application:application didRegisterForRemoteNotificationsWithDeviceToken:token];
   }
@@ -172,7 +172,7 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(application:didFailToRegisterForRemoteNotificationsWithError:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   for(id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     [subcontractor application:application didFailToRegisterForRemoteNotificationsWithError:err];
   }
@@ -182,11 +182,11 @@ static dispatch_once_t onceToken;
 {
   SEL selector = @selector(application:didReceiveRemoteNotification:fetchCompletionHandler:);
   NSArray<id<UIApplicationDelegate>> *subcontractorsArray = [self getSubcontractorsImplementingSelector:selector];
-  
+
   __block NSUInteger subcontractorsLeft = [subcontractorsArray count];
   __block UIBackgroundFetchResult fetchResult = UIBackgroundFetchResultNoData;
   __block NSObject *lock = [NSObject new];
-  
+
   void (^handler)(UIBackgroundFetchResult) = ^(UIBackgroundFetchResult result) {
     @synchronized (lock) {
       if (result == UIBackgroundFetchResultFailed) {
@@ -194,14 +194,14 @@ static dispatch_once_t onceToken;
       } else if (fetchResult != UIBackgroundFetchResultFailed && result == UIBackgroundFetchResultNewData) {
         fetchResult = UIBackgroundFetchResultNewData;
       }
-      
+
       subcontractorsLeft--;
       if (subcontractorsLeft == 0) {
         completionHandler(fetchResult);
       }
     }
   };
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractorsArray) {
     [subcontractor application:application didReceiveRemoteNotification:userInfo fetchCompletionHandler:handler];
   }
@@ -214,9 +214,9 @@ static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     subcontractors = [[NSMutableArray alloc] init];
     subcontractorsForSelector = [NSMutableDictionary new];
-    
+
     NSArray<EXSingletonModule*> * singletonModules = [[EXModuleRegistryProvider singletonModules] allObjects];
-    
+
     for (EXSingletonModule *singletonModule in singletonModules) {
       if ([singletonModule conformsToProtocol:@protocol(UIApplicationDelegate)]) {
         [subcontractors addObject:(id<UIApplicationDelegate>)singletonModule];
@@ -230,25 +230,25 @@ static dispatch_once_t onceToken;
 }
 
 - (NSArray<id<UIApplicationDelegate>> *)getSubcontractorsImplementingSelector:(SEL)selector {
-  
+
   [self ensureSubcontractorsAreInitializedAndSorted];
-  
+
   NSString *selectorKey = NSStringFromSelector(selector);
-  
+
   if (subcontractorsForSelector[selectorKey]) {
     return subcontractorsForSelector[selectorKey];
   }
-  
+
   NSMutableArray<id<UIApplicationDelegate>> *result = [NSMutableArray new];
-  
+
   for (id<UIApplicationDelegate> subcontractor in subcontractors) {
     if ([subcontractor respondsToSelector:selector]) {
       [result addObject:subcontractor];
     }
   }
-  
+
   subcontractorsForSelector[selectorKey] = result;
-  
+
   return result;
 }
 

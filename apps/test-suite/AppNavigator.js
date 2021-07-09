@@ -1,5 +1,6 @@
 import MaterialCommunityIcons from '@expo/vector-icons/build/MaterialCommunityIcons';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 
 import Colors from './constants/Colors';
@@ -24,8 +25,8 @@ const shouldDisableTransition = !!global.DETOX;
 const transitionSpec = shouldDisableTransition ? { open: spec, close: spec } : undefined;
 
 export default function AppNavigator(props) {
-
   React.useLayoutEffect(() => {
+    SplashScreen.hideAsync();
     if (props.navigation) {
       props.navigation.setOptions({
         title: 'Tests',
@@ -34,7 +35,7 @@ export default function AppNavigator(props) {
           const color = focused ? Colors.activeTintColor : Colors.inactiveTintColor;
           return <MaterialCommunityIcons name="format-list-checks" size={27} color={color} />;
         },
-      })
+      });
     }
   }, [props.navigation]);
 

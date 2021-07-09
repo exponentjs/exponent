@@ -11,6 +11,8 @@ inhibit_all_warnings!
 # Enables Swift modules in Expo Go
 use_experimental_swift_modules!
 
+use_modular_headers!
+
 abstract_target 'Expo Go' do
   # Expo Client dependencies
   pod 'Amplitude'
