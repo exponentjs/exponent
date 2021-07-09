@@ -2,6 +2,10 @@
 
 #import <EXAV/EXAVPlayerData.h>
 
+#import <React/RCTBridge.h>
+#import <React/RCTBridge+Private.h>
+#import <React/RCTUIManager.h>
+
 NSString *const EXAVPlayerDataStatusIsLoadedKeyPath = @"isLoaded";
 NSString *const EXAVPlayerDataStatusURIKeyPath = @"uri";
 NSString *const EXAVPlayerDataStatusHeadersKeyPath = @"headers";
@@ -80,7 +84,7 @@ NSString *const EXAVPlayerDataObserverPlaybackBufferEmptyKeyPath = @"playbackBuf
     _isLoaded = NO;
     _loadFinishBlock = loadFinishBlock;
   
-    _player = nil;
+    _engine = [[AVAudioEngine alloc] init];
   
     _url = [NSURL URLWithString:[source objectForKey:EXAVPlayerDataStatusURIKeyPath]];
     _headers = [self validatedRequestHeaders:source[EXAVPlayerDataStatusHeadersKeyPath]];
@@ -94,7 +98,7 @@ NSString *const EXAVPlayerDataObserverPlaybackBufferEmptyKeyPath = @"playbackBuf
     // These status props will be potentially reset by the following call to [self setStatus:parameters ...].
     _progressUpdateIntervalMillis = @(500);
     _currentPosition = kCMTimeZero;
-    _timeControlStatus = 0;
+    _timeControlStatus = AVPlayerTimeControlStatusPaused;
     _shouldPlay = NO;
     _rate = @(1.0);
     _pitchCorrectionQuality = AVAudioTimePitchAlgorithmVarispeed;
@@ -107,6 +111,99 @@ NSString *const EXAVPlayerDataObserverPlaybackBufferEmptyKeyPath = @"playbackBuf
     [self setStatus:parameters resolver:nil rejecter:nil];
   
     [self _loadNewPlayer];
+    
+    
+    bool RUN_THIS_CODE = false; // yep.
+    
+    /*
+    static bool isRunning = false;
+    if (!isRunning && RUN_THIS_CODE) {
+      isRunning = true;
+      [[AVAudioSession sharedInstance] setMode:AVAudioSessionModeMoviePlayback error:nil];
+      [[AVAudioSession sharedInstance] setActive:YES error:nil];
+      
+      _engine = [[AVAudioEngine alloc] init];
+      [_engine mainMixerNode]; // lazy getter init
+      [_engine prepare];
+      
+      NSError *engineStartError;
+      [_engine startAndReturnError:&engineStartError];
+      if (engineStartError != nil) {
+        NSLog(@"Error starting session!", engineStartError.description);
+      } else {
+        NSURL *filePath = [[NSBundle mainBundle] URLForResource:@"x" withExtension:@"mp3"];
+        _playerNode = [[AVAudioPlayerNode alloc] init];
+        
+        NSError *fileReadError;
+        auto _audioFile = [[AVAudioFile alloc] initForReading:filePath error:&fileReadError];
+        if (fileReadError != nil) {
+          NSLog(@"Error reading audio file!", fileReadError.description);
+        } else {
+          [_engine attachNode:_playerNode];
+          [_engine connect:_playerNode to:[_engine mainMixerNode] format:_audioFile.processingFormat];
+          
+          jsi::Function* callback;
+          
+          [_playerNode scheduleFile:_audioFile atTime:nil completionHandler:nil];
+          
+          RCTBridge* bridge = [RCTBridge currentBridge];
+          RCTCxxBridge* cxxBridge = (RCTCxxBridge *)[RCTBridge currentBridge];
+          if (cxxBridge.runtime) {
+            jsi::Runtime& jsiRuntime = *(jsi::Runtime*)cxxBridge.runtime;
+            auto setAudioCallback = [self](jsi::Runtime& runtime,
+                                            const jsi::Value& thisValue,
+                                            const jsi::Value* arguments,
+                                            size_t count) -> jsi::Value {
+              auto func = arguments[0].asObject(runtime).asFunction(runtime);
+              auto callback = std::make_shared<jsi::Function>(std::move(func));
+              NSLog(@"setAudioCallback()...");
+              
+              [_playerNode installTapOnBus:0
+                                bufferSize:1024
+                                    format:nil
+                                     block:^(AVAudioPCMBuffer * _Nonnull buffer,
+                                             AVAudioTime * _Nonnull when) {
+                double** data;
+                if (buffer.floatChannelData != nil) {
+                  data = (double**) buffer.floatChannelData;
+                } else if (buffer.int32ChannelData != nil) {
+                  data = (double**) buffer.int32ChannelData;
+                } else if (buffer.int16ChannelData != nil) {
+                  data = (double**) buffer.int16ChannelData;
+                }
+                auto channelsCount = (size_t) buffer.stride;
+                auto framesCount = buffer.frameLength;
+                
+                auto channels = jsi::Array(runtime, channelsCount);
+                for (auto i = 0; i < channelsCount; i++) {
+                  auto channel = jsi::Object(runtime);
+                  
+                  auto frames = jsi::Array(runtime, framesCount);
+                  for (auto ii = 0; ii < framesCount; ii++) {
+                    frames.setValueAtIndex(runtime, ii, jsi::Value((double) buffer.floatChannelData[i][ii]));
+                  }
+                  
+                  channel.setProperty(runtime, "frames", frames);
+                  channels.setValueAtIndex(runtime, i, channel);
+                }
+                
+                auto sample = jsi::Object(runtime);
+                sample.setProperty(runtime, "channels", channels);
+                callback->call(runtime, sample);
+              }];
+              [_playerNode play];
+              
+              return jsi::Value::undefined();
+            };
+            jsiRuntime.global().setProperty(jsiRuntime, "setAudioCallback", jsi::Function::createFromHostFunction(jsiRuntime,
+                                                                                                                  jsi::PropNameID::forAscii(jsiRuntime, "setAudioCallback"),
+                                                                                                                  2,
+                                                                                                                  setAudioCallback));
+
+          }
+        }
+      }
+    } */
   }
   
   return self;
@@ -117,32 +214,53 @@ NSString *const EXAVPlayerDataObserverPlaybackBufferEmptyKeyPath = @"playbackBuf
   NSArray *cookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
   AVURLAsset *avAsset = [AVURLAsset URLAssetWithURL:_url options:@{AVURLAssetHTTPCookiesKey : cookies, @"AVURLAssetHTTPHeaderFieldsKey": _headers}];
   
-  // unless we preload, the asset will not necessarily load the duration by the time we try to play it.
-  // http://stackoverflow.com/questions/20581567/avplayer-and-avfoundationerrordomain-code-11819
-  UM_WEAKIFY(self);
-  [avAsset loadValuesAsynchronouslyForKeys:@[ @"duration" ] completionHandler:^{
-    UM_ENSURE_STRONGIFY(self);
-
-    // We prepare three items for AVQueuePlayer, so when the first finishes playing,
-    // second can start playing and the third can start preparing to play.
-    AVPlayerItem *firstplayerItem = [AVPlayerItem playerItemWithAsset:avAsset];
-    AVPlayerItem *secondPlayerItem = [AVPlayerItem playerItemWithAsset:avAsset];
-    AVPlayerItem *thirdPlayerItem = [AVPlayerItem playerItemWithAsset:avAsset];
-    self.items = @[firstplayerItem, secondPlayerItem, thirdPlayerItem];
-    self.player = [AVQueuePlayer queuePlayerWithItems:@[firstplayerItem, secondPlayerItem, thirdPlayerItem]];
-    if (self.player) {
-      [self _addObserver:self.player forKeyPath:EXAVPlayerDataObserverStatusKeyPath];
-      [self _addObserver:self.player.currentItem forKeyPath:EXAVPlayerDataObserverStatusKeyPath];
-    } else {
-      NSString *errorMessage = @"Load encountered an error: [AVPlayer playerWithPlayerItem:] returned nil.";
-      if (self.loadFinishBlock) {
-        self.loadFinishBlock(NO, nil, errorMessage);
-        self.loadFinishBlock = nil;
-      } else if (self.errorCallback) {
-        self.errorCallback(errorMessage);
-      }
+  // TODO: do any AVAudioSession configuration?
+  
+  _engine = [[AVAudioEngine alloc] init];
+  [_engine mainMixerNode]; // lazy getter init
+  [_engine prepare];
+  
+  void (^onError)(NSString *) = ^(NSString *errorMessage){
+    if (self.loadFinishBlock) {
+      self.loadFinishBlock(NO, nil, errorMessage);
+      self.loadFinishBlock = nil;
+    } else if (self.errorCallback) {
+      self.errorCallback(errorMessage);
     }
-  }];
+  };
+  void (^onSuccess)() = ^{
+    if (self.loadFinishBlock) {
+      self.loadFinishBlock(YES, [self getStatus], nil);
+      self.loadFinishBlock = nil;
+    }
+  };
+  
+  NSError *engineStartError;
+  [_engine startAndReturnError:&engineStartError];
+  if (engineStartError != nil) {
+    // Failed to start AVAudioEngine!
+    onError([NSString stringWithFormat:@"Error starting audio engine! %@", engineStartError.description]);
+  } else {
+    // Successfully started AVAudioEngine.
+    _playerNode = [[AVAudioPlayerNode alloc] init];
+    
+    NSError *fileReadError;
+    AVAudioFile *file = [[AVAudioFile alloc] initForReading:_url error:&fileReadError];
+    if (fileReadError != nil) {
+      // Failed to read AVAudioFile!
+      onError([NSString stringWithFormat:@"Error reading audio file from \"%@\"! %@", _url.absoluteString, engineStartError.description]);
+    } else {
+      // Successfully read AVAudioFile.
+      [_engine attachNode:_playerNode];
+      [_engine connect:_playerNode to:[_engine mainMixerNode] format:file.processingFormat];
+      [_playerNode scheduleFile:file atTime:nil completionHandler:^{
+        // AVAudioFile finished playing to end (or [stop] was called)
+        // TODO: Clean up player node? uninstall tap?
+      }];
+      onSuccess();
+      [_playerNode play];
+    }
+  }
 }
 
 - (void)_finishLoadingNewPlayer
@@ -211,6 +329,8 @@ NSString *const EXAVPlayerDataObserverPlaybackBufferEmptyKeyPath = @"playbackBuf
          resolver:(UMPromiseResolveBlock)resolve
          rejecter:(UMPromiseRejectBlock)reject
 {
+  
+  /*
   BOOL mustUpdateTimeObserver = NO;
   BOOL mustSeek = NO;
   
@@ -345,7 +465,7 @@ NSString *const EXAVPlayerDataObserverPlaybackBufferEmptyKeyPath = @"playbackBuf
     if (resolve) {
       resolve([EXAVPlayerData getUnloadedStatus]);
     }
-  }
+  }*/
 }
 
 #pragma mark - getStatus

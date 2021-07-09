@@ -1,5 +1,6 @@
 import MaterialCommunityIcons from '@expo/vector-icons/build/MaterialCommunityIcons';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as SplashScreen from 'expo-splash-screen';
 import * as React from 'react';
 
 import Colors from './constants/Colors';
@@ -26,6 +27,7 @@ const transitionSpec = shouldDisableTransition ? { open: spec, close: spec } : u
 export default function AppNavigator(props) {
 
   React.useLayoutEffect(() => {
+    SplashScreen.hideAsync();
     if (props.navigation) {
       props.navigation.setOptions({
         title: 'Tests',

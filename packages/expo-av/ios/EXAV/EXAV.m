@@ -1,10 +1,13 @@
 // Copyright 2017-present 650 Industries. All rights reserved.
 
+#import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
+#import "EXAV.h"
 
 #import <UMCore/UMUIManager.h>
 #import <UMCore/UMEventEmitterService.h>
 #import <UMCore/UMAppLifecycleService.h>
+#import <UMCore/UMJavaScriptContextProvider.h>
 #import <ExpoModulesCore/EXFileSystemInterface.h>
 #import <ExpoModulesCore/EXPermissionsInterface.h>
 #import <ExpoModulesCore/EXPermissionsMethodsDelegate.h>
@@ -13,6 +16,8 @@
 #import <EXAV/EXAVPlayerData.h>
 #import <EXAV/EXVideoView.h>
 #import <EXAV/EXAudioRecordingPermissionRequester.h>
+
+#import "EXAV+AudioSampleCallback.h"
 
 NSString *const EXAudioRecordingOptionsIsMeteringEnabledKey = @"isMeteringEnabled";
 NSString *const EXAudioRecordingOptionsKeepAudioActiveHintKey = @"keepAudioActiveHint";
@@ -122,6 +127,15 @@ UM_EXPORT_MODULE(ExponentAV);
   [[_moduleRegistry getModuleImplementingProtocol:@protocol(UMAppLifecycleService)] registerAppLifecycleListener:self];
   _permissionsManager = [_moduleRegistry getModuleImplementingProtocol:@protocol(EXPermissionsInterface)];
   [EXPermissionsMethodsDelegate registerRequesters:@[[EXAudioRecordingPermissionRequester new]] withPermissionsManager:_permissionsManager];
+  
+  
+  id<UMJavaScriptContextProvider> jsContextProvider = [_moduleRegistry getModuleImplementingProtocol:@protocol(UMJavaScriptContextProvider)];
+  void *jsRuntimePtr = [jsContextProvider javaScriptRuntimePointer];
+  if (jsRuntimePtr) {
+    [self installJSIBindingsForRuntime:jsRuntimePtr withSoundDictionary:_soundDictionary];
+  } else {
+    UMLogWarn(@"EXAV: Cannot install Audio Sample Buffer callback. Do you have 'Remote Debugging' enabled in your app's Developer Menu (https://reactnative.dev/docs/debugging)? Audio Sample Buffer callbacks are not supported while using Remote Debugging, you will need to disable it to use them.");
+  }
 }
 
 - (void)onAppForegrounded

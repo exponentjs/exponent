@@ -41,6 +41,24 @@ export class Sound {
             return status;
         };
     }
+    static getAverageLoudness(sampleOrChannel) {
+        if ('frames' in sampleOrChannel) {
+            // it's a single `AudioChannel`
+            // https://developer.apple.com/documentation/accelerate/1450655-vdsp_rmsqv
+            const frameSum = sampleOrChannel.frames.reduce((prev, curr) => {
+                const x = curr ** 2;
+                return prev + x;
+            }, 0);
+            const rmsValue = Math.sqrt(frameSum / sampleOrChannel.frames.length);
+            const decibel = 10 * Math.log10(rmsValue); // ranges from -160dB to 0dB
+            return (160 + decibel) / 160; // map 0...160 to 0...1
+        }
+        else {
+            // it's a full `AudioSample`
+            const sumOfAllChannels = sampleOrChannel.channels.reduce((prev, curr) => prev + this.getAverageLoudness(curr), 0);
+            return sumOfAllChannels / sampleOrChannel.channels.length;
+        }
+    }
     // Internal methods
     _callOnPlaybackStatusUpdateForNewStatus(status) {
         const shouldDismissBasedOnCoalescing = this._lastStatusUpdateTime &&

@@ -20,6 +20,6 @@ Pod::Spec.new do |s|
     s.source_files = "#{s.name}/**/*.h"
     s.vendored_frameworks = "#{s.name}.xcframework"
   else
-    s.source_files = "#{s.name}/**/*.{h,m}"
+    s.source_files = "#{s.name}/**/*.{h,m,mm}"
   end
 end

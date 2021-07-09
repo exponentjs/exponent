@@ -19,6 +19,8 @@
 		B2C02654256BDB3E008FD925 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		B2C02655256BDB3E008FD925 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		B2C02656256BDB3E008FD925 /* notification.wav in Resources */ = {isa = PBXBuildFile; fileRef = 31B5C868245847DF0086F49B /* notification.wav */; };
+		B84C105726946C89006EFA70 /* x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B84C105626946C89006EFA70 /* x.mp3 */; };
+		B84C105826946C89006EFA70 /* x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B84C105626946C89006EFA70 /* x.mp3 */; };
 		CD59639C247F2EFA0030EECA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD59639B247F2EFA0030EECA /* AppDelegate.swift */; };
 		CD6B041323091F4B002044FF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CD6B041223091F4B002044FF /* StoreKit.framework */; };
 		CDDB247C24802C4C00F6E7AC /* Dispatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDDB247B24802C4C00F6E7AC /* Dispatch.swift */; };
@@ -55,6 +57,7 @@
 		8BAF8128E6D385105BAC158C /* libPods-BareExpoMain-BareExpoDetox.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BareExpoMain-BareExpoDetox.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2C0265D256BDB3E008FD925 /* BareExpoDetox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BareExpoDetox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B2C02661256BDB47008FD925 /* BareExpo copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "BareExpo copy-Info.plist"; path = "/Users/lukasz/work/expo/apps/bare-expo/ios/BareExpo copy-Info.plist"; sourceTree = "<absolute>"; };
+		B84C105626946C89006EFA70 /* x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = x.mp3; sourceTree = "<group>"; };
 		BC18BA048F8FB37715445686 /* Pods-BareExpoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BareExpoTests.release.xcconfig"; path = "Target Support Files/Pods-BareExpoTests/Pods-BareExpoTests.release.xcconfig"; sourceTree = "<group>"; };
 		CD59639A247F2EF90030EECA /* BareExpo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BareExpo-Bridging-Header.h"; sourceTree = "<group>"; };
 		CD59639B247F2EFA0030EECA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = BareExpo/AppDelegate.swift; sourceTree = "<group>"; };
@@ -124,6 +127,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				31B5C868245847DF0086F49B /* notification.wav */,
+				B84C105626946C89006EFA70 /* x.mp3 */,
 				CD59639A247F2EF90030EECA /* BareExpo-Bridging-Header.h */,
 			);
 			name = BareExpo;
@@ -316,6 +320,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				31B5C869245847DF0086F49B /* notification.wav in Resources */,
+				B84C105726946C89006EFA70 /* x.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -326,6 +331,7 @@
 				B2C02654256BDB3E008FD925 /* Images.xcassets in Resources */,
 				B2C02655256BDB3E008FD925 /* LaunchScreen.xib in Resources */,
 				B2C02656256BDB3E008FD925 /* notification.wav in Resources */,
+				B84C105826946C89006EFA70 /* x.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

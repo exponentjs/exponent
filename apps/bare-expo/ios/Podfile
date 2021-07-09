@@ -37,7 +37,7 @@ abstract_target 'BareExpoMain' do
   target 'BareExpo' do
     # Enables Flipper.
     # Note that if you have use_frameworks! enabled, Flipper will not work and
-    use_flipper!('Flipper' => '0.79.0') # should match the version of your Flipper client app
+    use_flipper!({ 'Flipper-Folly' => '2.5.3', 'Flipper' => '0.87.0', 'Flipper-RSocket' => '1.3.1' })
     # Note that we don't call `flipper_post_install`.
     # It causes problems with cocoapods. We add the FB_SONARKIT_ENABLED manually instead.
   end

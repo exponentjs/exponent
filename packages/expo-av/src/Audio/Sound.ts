@@ -1,4 +1,4 @@
-import { EventEmitter } from '@unimodules/core';
+import { EventEmitter, Platform } from '@unimodules/core';
 
 import {
   Playback,
@@ -14,6 +14,15 @@ import { PitchCorrectionQuality } from '../Audio';
 import ExponentAV from '../ExponentAV';
 import { throwIfAudioIsDisabled } from './AudioAvailability';
 
+export interface AudioChannel {
+  frames: number[];
+}
+export interface AudioSample {
+  channels: AudioChannel[];
+}
+
+type TAudioSampleCallback = ((sample: AudioSample) => void) | null;
+
 type AudioInstance = number | HTMLMediaElement | null;
 export class Sound implements Playback {
   _loaded: boolean = false;
@@ -25,6 +34,37 @@ export class Sound implements Playback {
   _eventEmitter: EventEmitter = new EventEmitter(ExponentAV);
   _coalesceStatusUpdatesInMillis: number = 100;
   _onPlaybackStatusUpdate: ((status: AVPlaybackStatus) => void) | null = null;
+  _onAudioSampleReceived: TAudioSampleCallback = null;
+
+  get onAudioSampleReceived(): TAudioSampleCallback {
+    return this._onAudioSampleReceived;
+  }
+  set onAudioSampleReceived(callback: TAudioSampleCallback) {
+    // @ts-expect-error
+    if (global.__av_sound_setOnAudioSampleReceivedCallback == null) {
+      if (Platform.OS === 'android' || Platform.OS === 'ios') {
+        throw new Error(
+          'Failed to set Audio Sample Buffer callback! The JSI function seems to not be installed correctly.'
+        );
+      } else {
+        throw new Error(`'onAudioSampleReceived' is not supported on ${Platform.OS}!`);
+      }
+    }
+    if (this._key == null) {
+      throw new Error(
+        'Cannot set Audio Sample Buffer callback when the Sound instance has not been successfully loaded/initialized!'
+      );
+    }
+    if (typeof this._key !== 'number') {
+      throw new Error(
+        `Cannot set Audio Sample Buffer callback when Sound instance key is of type ${typeof this
+          ._key}! (expected: number)`
+      );
+    }
+    this._onAudioSampleReceived = callback;
+    // @ts-expect-error
+    global.__av_sound_setOnAudioSampleReceivedCallback(this._key, callback);
+  }
 
   /** @deprecated Use `Sound.createAsync()` instead */
   static create = async (
@@ -50,6 +90,41 @@ export class Sound implements Playback {
     const status: AVPlaybackStatus = await sound.loadAsync(source, initialStatus, downloadFirst);
     return { sound, status };
   };
+
+  /**
+   * Returns the average loudness of all audio sample frames in the given `AudioChannel`.
+   *
+   * The resulting "loudness" value ranges from `0` to `1`, where `0` is "silent" (-160dB) and `1` is "loud" (0dB)
+   * @param channel The `AudioChannel` to calculate average "loudness" from.
+   */
+  public static getAverageLoudness(channel: AudioChannel): number;
+  /**
+   * Returns the average loudness of all audio sample frames in every `AudioChannel` of the given `AudioSample`.
+   *
+   * The resulting "loudness" value ranges from `0` to `1`, where `0` is "silent" (-160dB) and `1` is "loud" (0dB)
+   * @param sample The `AudioSample` to calculate average "loudness" from.
+   */
+  public static getAverageLoudness(sample: AudioSample): number;
+  public static getAverageLoudness(sampleOrChannel: AudioSample | AudioChannel): number {
+    if ('frames' in sampleOrChannel) {
+      // it's a single `AudioChannel`
+      // https://developer.apple.com/documentation/accelerate/1450655-vdsp_rmsqv
+      const frameSum = sampleOrChannel.frames.reduce((prev, curr) => {
+        const x = curr ** 2;
+        return prev + x;
+      }, 0);
+      const rmsValue = Math.sqrt(frameSum / sampleOrChannel.frames.length);
+      const decibel = 10 * Math.log10(rmsValue); // ranges from -160dB to 0dB
+      return (160 + decibel) / 160; // map 0...160 to 0...1
+    } else {
+      // it's a full `AudioSample`
+      const sumOfAllChannels = sampleOrChannel.channels.reduce(
+        (prev, curr) => prev + this.getAverageLoudness(curr),
+        0
+      );
+      return sumOfAllChannels / sampleOrChannel.channels.length;
+    }
+  }
 
   // Internal methods
 

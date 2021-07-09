@@ -1,6 +1,12 @@
 import { EventEmitter } from '@unimodules/core';
 import { Playback, AVPlaybackSource, AVPlaybackStatus, AVPlaybackStatusToSet } from '../AV';
 import { PitchCorrectionQuality } from '../Audio';
+export interface AudioChannel {
+    frames: number[];
+}
+export interface AudioSample {
+    channels: AudioChannel[];
+}
 declare type AudioInstance = number | HTMLMediaElement | null;
 export declare class Sound implements Playback {
     _loaded: boolean;
@@ -23,6 +29,20 @@ export declare class Sound implements Playback {
         sound: Sound;
         status: AVPlaybackStatus;
     }>;
+    /**
+     * Returns the average loudness of all audio sample frames in the given `AudioChannel`.
+     *
+     * The resulting "loudness" value ranges from `0` to `1`, where `0` is "silent" (-160dB) and `1` is "loud" (0dB)
+     * @param channel The `AudioChannel` to calculate average "loudness" from.
+     */
+    static getAverageLoudness(channel: AudioChannel): number;
+    /**
+     * Returns the average loudness of all audio sample frames in every `AudioChannel` of the given `AudioSample`.
+     *
+     * The resulting "loudness" value ranges from `0` to `1`, where `0` is "silent" (-160dB) and `1` is "loud" (0dB)
+     * @param sample The `AudioSample` to calculate average "loudness" from.
+     */
+    static getAverageLoudness(sample: AudioSample): number;
     _callOnPlaybackStatusUpdateForNewStatus(status: AVPlaybackStatus): void;
     _performOperationAndHandleStatusAsync(operation: () => Promise<AVPlaybackStatus>): Promise<AVPlaybackStatus>;
     _internalStatusUpdateCallback: ({ key, status, }: {
