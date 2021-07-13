@@ -39,7 +39,7 @@
     "jest-watch-typeahead": "^0.5.0",
     "json5": "^2.1.0",
     "lodash": "^4.5.0",
-    "react-test-renderer": "~16.11.0"
+    "react-test-renderer": "~17.0.1"
   },
   "bugs": {
     "url": "https://github.com/expo/expo/issues"
