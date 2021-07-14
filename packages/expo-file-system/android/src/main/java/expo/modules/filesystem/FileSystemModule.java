@@ -48,8 +48,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.Nullable;
 import androidx.documentfile.provider.DocumentFile;
-
 import expo.modules.interfaces.filesystem.FilePermissionModuleInterface;
 import expo.modules.interfaces.filesystem.Permission;
 import okhttp3.Call;
@@ -75,6 +75,7 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
   private static final String NAME = "ExponentFileSystem";
   private static final String TAG = FileSystemModule.class.getSimpleName();
   private static final String EXDownloadProgressEventName = "expo-file-system.downloadProgress";
+  private static final String EXUploadProgressEventName = "expo-file-system.uploadProgress";
   private static final long MIN_EVENT_DT_MS = 100;
   private static final String HEADER_KEY = "headers";
   private static final int DIR_PERMISSIONS_REQUEST_CODE = 5394;
@@ -83,7 +84,7 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
   private OkHttpClient mClient;
   private Promise mDirPermissionsRequest;
 
-  private final Map<String, DownloadResumable> mDownloadResumableMap = new HashMap<>();
+  private final Map<String, TaskHandler> mTaskHandlers = new HashMap<>();
 
   private enum UploadType {
     INVALID(-1),
@@ -234,12 +235,12 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
   @ExpoMethod
   public void getInfoAsync(String uriStr, Map<String, Object> options, Promise promise) {
     try {
-       Uri uri = Uri.parse(uriStr);
-       Uri absoluteUri = uri;
-       if ("file".equals(uri.getScheme())) {
+      Uri uri = Uri.parse(uriStr);
+      Uri absoluteUri = uri;
+      if ("file".equals(uri.getScheme())) {
         uriStr = uriStr.substring(uriStr.indexOf(':') + 3);
         absoluteUri = Uri.parse(uriStr);
-       }
+      }
       ensurePermission(absoluteUri, Permission.READ);
       if ("file".equals(uri.getScheme())) {
         File file = uriToFile(absoluteUri);
@@ -616,172 +617,6 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
   }
 
   @ExpoMethod
-  public void uploadAsync(final String url, final String fileUriString, final Map<String, Object> options, final Promise promise) {
-    try {
-      final Uri fileUri = Uri.parse(fileUriString);
-      ensurePermission(fileUri, Permission.READ);
-      checkIfFileExists(fileUri);
-
-      if (!options.containsKey("httpMethod")) {
-        promise.reject("ERR_FILESYSTEM_MISSING_HTTP_METHOD", "Missing HTTP method.", null);
-        return;
-      }
-      String method = (String) options.get("httpMethod");
-
-      if (!options.containsKey("uploadType")) {
-        promise.reject("ERR_FILESYSTEM_MISSING_UPLOAD_TYPE", "Missing upload type.", null);
-        return;
-      }
-      UploadType uploadType = UploadType.fromInt(((Double) options.get("uploadType")).intValue());
-
-      Request.Builder requestBuilder = new Request.Builder().url(url);
-      if (options.containsKey(HEADER_KEY)) {
-        final Map<String, Object> headers = (Map<String, Object>) options.get(HEADER_KEY);
-        for (String key : headers.keySet()) {
-          requestBuilder.addHeader(key, headers.get(key).toString());
-        }
-      }
-
-      File file = uriToFile(fileUri);
-      if (uploadType == UploadType.BINARY_CONTENT) {
-        RequestBody body = RequestBody.create(null, file);
-        requestBuilder.method(method, body);
-      } else if (uploadType == UploadType.MULTIPART) {
-        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
-
-        if (options.containsKey("parameters")) {
-          Map<String, Object> parametersMap = (Map<String, Object>) options.get("parameters");
-          for (String key : parametersMap.keySet()) {
-            bodyBuilder.addFormDataPart(key, String.valueOf(parametersMap.get(key)));
-          }
-        }
-
-        String mimeType;
-        if (options.containsKey("mimeType")) {
-          mimeType = (String) options.get("mimeType");
-        } else {
-          mimeType = URLConnection.guessContentTypeFromName(file.getName());
-        }
-
-        String fieldName = file.getName();
-        if (options.containsKey("fieldName")) {
-          fieldName = (String) options.get("fieldName");
-        }
-
-        bodyBuilder.addFormDataPart(fieldName, file.getName(), RequestBody.create(mimeType != null ? MediaType.parse(mimeType) : null, file));
-        requestBuilder.method(method, bodyBuilder.build());
-      } else {
-        promise.reject("ERR_FILESYSTEM_INVALID_UPLOAD_TYPE", String.format("Invalid upload type: %s.", options.get("uploadType")), null);
-        return;
-      }
-
-      getOkHttpClient().newCall(requestBuilder.build()).enqueue(new Callback() {
-        @Override
-        public void onFailure(Call call, IOException e) {
-          Log.e(TAG, String.valueOf(e.getMessage()));
-          promise.reject(e);
-        }
-
-        @Override
-        public void onResponse(Call call, Response response) {
-          Bundle result = new Bundle();
-          try {
-            if (response.body() != null) {
-              result.putString("body", response.body().string());
-            } else {
-              result.putString("body", null);
-            }
-          } catch (IOException exception) {
-            promise.reject(exception);
-            return;
-          }
-          result.putInt("status", response.code());
-          result.putBundle("headers", translateHeaders(response.headers()));
-          response.close();
-          promise.resolve(result);
-        }
-      });
-    } catch (Exception e) {
-      Log.e(TAG, e.getMessage());
-      promise.reject(e);
-    }
-  }
-
-  @ExpoMethod
-  public void downloadAsync(String url, final String uriStr, final Map<String, Object> options, final Promise promise) {
-    try {
-      final Uri uri = Uri.parse(uriStr);
-      ensurePermission(uri, Permission.WRITE);
-      checkIfFileDirExists(uri);
-
-      if (!url.contains(":")) {
-        Context context = getContext();
-        Resources resources = context.getResources();
-        String packageName = context.getPackageName();
-        int resourceId = resources.getIdentifier(url, "raw", packageName);
-
-        BufferedSource bufferedSource = Okio.buffer(Okio.source(context.getResources().openRawResource(resourceId)));
-        File file = uriToFile(uri);
-        file.delete();
-        BufferedSink sink = Okio.buffer(Okio.sink(file));
-        sink.writeAll(bufferedSource);
-        sink.close();
-
-        Bundle result = new Bundle();
-        result.putString("uri", Uri.fromFile(file).toString());
-        if (options != null && options.containsKey("md5") && (Boolean) options.get("md5")) {
-          result.putString("md5", md5(file));
-        }
-        promise.resolve(result);
-      } else if ("file".equals(uri.getScheme())) {
-        Request.Builder requestBuilder = new Request.Builder().url(url);
-        if (options != null && options.containsKey(HEADER_KEY)) {
-          try {
-            final Map<String, Object> headers = (Map<String, Object>) options.get(HEADER_KEY);
-            for (String key : headers.keySet()) {
-              requestBuilder.addHeader(key, (String) headers.get(key));
-            }
-          } catch (ClassCastException exception) {
-            promise.reject("ERR_FILESYSTEM_INVALID_HEADERS", "Invalid headers dictionary. Keys and values should be strings.", exception);
-            return;
-          }
-        }
-        getOkHttpClient().newCall(requestBuilder.build()).enqueue(new Callback() {
-          @Override
-          public void onFailure(Call call, IOException e) {
-            Log.e(TAG, String.valueOf(e.getMessage()));
-            promise.reject(e);
-          }
-
-          @Override
-          public void onResponse(Call call, Response response) throws IOException {
-            File file = uriToFile(uri);
-            file.delete();
-            BufferedSink sink = Okio.buffer(Okio.sink(file));
-            sink.writeAll(response.body().source());
-            sink.close();
-
-            Bundle result = new Bundle();
-            result.putString("uri", Uri.fromFile(file).toString());
-            if (options != null && options.containsKey("md5") && (Boolean) options.get("md5")) {
-              result.putString("md5", md5(file));
-            }
-            result.putInt("status", response.code());
-            result.putBundle("headers", translateHeaders(response.headers()));
-            response.close();
-            promise.resolve(result);
-          }
-        });
-      } else {
-        throw new IOException("Unsupported scheme for location '" + uri + "'.");
-      }
-    } catch (Exception e) {
-      Log.e(TAG, e.getMessage());
-      promise.reject(e);
-    }
-  }
-
-  @ExpoMethod
   public void getTotalDiskCapacityAsync(Promise promise) {
     try {
       StatFs root = new StatFs(Environment.getDataDirectory().getAbsolutePath());
@@ -839,107 +674,6 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
       return FileSystemFileProvider.getUriForFile(application, application.getPackageName() + ".FileSystemFileProvider", file);
     } catch (Exception e) {
       throw e;
-    }
-  }
-
-  @ExpoMethod
-  public void downloadResumableStartAsync(String url, final String fileUriStr, final String uuid, final Map<String, Object> options, final String resumeData, final Promise promise) {
-    try {
-      final Uri fileUri = Uri.parse(fileUriStr);
-      checkIfFileDirExists(fileUri);
-      if (!("file".equals(fileUri.getScheme()))) {
-        throw new IOException("Unsupported scheme for location '" + fileUri + "'.");
-      }
-
-      final boolean isResume = resumeData != null;
-
-      final ProgressListener progressListener = new ProgressListener() {
-        long mLastUpdate = -1;
-
-        @Override
-        public void update(long bytesRead, long contentLength, boolean done) {
-          EventEmitter eventEmitter = mModuleRegistry.getModule(EventEmitter.class);
-          if (eventEmitter != null) {
-            Bundle downloadProgress = new Bundle();
-            Bundle downloadProgressData = new Bundle();
-            long totalBytesWritten = isResume ? bytesRead + Long.parseLong(resumeData) : bytesRead;
-            long totalBytesExpectedToWrite = isResume ? contentLength + Long.parseLong(resumeData) : contentLength;
-            long currentTime = System.currentTimeMillis();
-
-            // Throttle events. Sending too many events will block the JS event loop.
-            // Make sure to send the last event when we're at 100%.
-            if (currentTime > mLastUpdate + MIN_EVENT_DT_MS || totalBytesWritten == totalBytesExpectedToWrite) {
-              mLastUpdate = currentTime;
-              downloadProgressData.putDouble("totalBytesWritten", totalBytesWritten);
-              downloadProgressData.putDouble("totalBytesExpectedToWrite", totalBytesExpectedToWrite);
-              downloadProgress.putString("uuid", uuid);
-              downloadProgress.putBundle("data", downloadProgressData);
-
-              eventEmitter.emit(EXDownloadProgressEventName, downloadProgress);
-            }
-          }
-        }
-      };
-
-      OkHttpClient client =
-        getOkHttpClient().newBuilder()
-          .addNetworkInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-              Response originalResponse = chain.proceed(chain.request());
-              return originalResponse.newBuilder()
-                .body(new ProgressResponseBody(originalResponse.body(), progressListener))
-                .build();
-            }
-          })
-          .build();
-
-      Request.Builder requestBuilder = new Request.Builder();
-      if (isResume) {
-        requestBuilder.addHeader("Range", "bytes=" + resumeData + "-");
-      }
-
-      if (options != null && options.containsKey(HEADER_KEY)) {
-        final Map<String, Object> headers = (Map<String, Object>) options.get(HEADER_KEY);
-        for (String key : headers.keySet()) {
-          requestBuilder.addHeader(key, headers.get(key).toString());
-        }
-      }
-
-      Request request = requestBuilder.url(url).build();
-      Call call = client.newCall(request);
-      DownloadResumable downloadResumable = new DownloadResumable(uuid, url, fileUri, call);
-      this.mDownloadResumableMap.put(uuid, downloadResumable);
-
-      File file = uriToFile(fileUri);
-      DownloadResumableTaskParams params = new DownloadResumableTaskParams(options, call, file, isResume, promise);
-      DownloadResumableTask task = new DownloadResumableTask();
-      task.execute(params);
-    } catch (Exception e) {
-      Log.e(TAG, e.getMessage());
-      promise.reject(e);
-    }
-  }
-
-  @ExpoMethod
-  public void downloadResumablePauseAsync(final String uuid, final Promise promise) {
-    DownloadResumable downloadResumable = this.mDownloadResumableMap.get(uuid);
-    if (downloadResumable != null) {
-      downloadResumable.call.cancel();
-      this.mDownloadResumableMap.remove(downloadResumable.uuid);
-      try {
-        File file = uriToFile(downloadResumable.fileUri);
-        Bundle result = new Bundle();
-        result.putString("resumeData", String.valueOf(file.length()));
-        promise.resolve(result);
-      } catch (Exception e) {
-        Log.e(TAG, e.getMessage());
-        promise.reject(e);
-      }
-    } else {
-      Exception e = new IOException("No download object available");
-      Log.e(TAG, e.getMessage());
-      promise.reject(e);
     }
   }
 
@@ -1056,6 +790,374 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
     }
   }
 
+  @Nullable
+  private Request createUploadRequest(final String url, final String fileUriString, final Map<String, Object> options, final Promise promise, final RequestBodyDecorator decorator) {
+    try {
+      final Uri fileUri = Uri.parse(fileUriString);
+      ensurePermission(fileUri, Permission.READ);
+      checkIfFileExists(fileUri);
+
+      if (!options.containsKey("httpMethod")) {
+        promise.reject("ERR_FILESYSTEM_MISSING_HTTP_METHOD", "Missing HTTP method.", null);
+        return null;
+      }
+      String method = (String) options.get("httpMethod");
+
+      if (!options.containsKey("uploadType")) {
+        promise.reject("ERR_FILESYSTEM_MISSING_UPLOAD_TYPE", "Missing upload type.", null);
+        return null;
+      }
+      UploadType uploadType = UploadType.fromInt(((Double) options.get("uploadType")).intValue());
+
+      Request.Builder requestBuilder = new Request.Builder().url(url);
+      if (options.containsKey(HEADER_KEY)) {
+        final Map<String, Object> headers = (Map<String, Object>) options.get(HEADER_KEY);
+        for (String key : headers.keySet()) {
+          requestBuilder.addHeader(key, headers.get(key).toString());
+        }
+      }
+
+      File file = uriToFile(fileUri);
+      if (uploadType == UploadType.BINARY_CONTENT) {
+        RequestBody body = decorator.decorate(RequestBody.create(null, file));
+        requestBuilder.method(method, body);
+      } else if (uploadType == UploadType.MULTIPART) {
+        MultipartBody.Builder bodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+
+        if (options.containsKey("parameters")) {
+          Map<String, Object> parametersMap = (Map<String, Object>) options.get("parameters");
+          for (String key : parametersMap.keySet()) {
+            bodyBuilder.addFormDataPart(key, String.valueOf(parametersMap.get(key)));
+          }
+        }
+
+        String mimeType;
+        if (options.containsKey("mimeType")) {
+          mimeType = (String) options.get("mimeType");
+        } else {
+          mimeType = URLConnection.guessContentTypeFromName(file.getName());
+        }
+
+        String fieldName = file.getName();
+        if (options.containsKey("fieldName")) {
+          fieldName = (String) options.get("fieldName");
+        }
+
+        bodyBuilder.addFormDataPart(fieldName, file.getName(), decorator.decorate(RequestBody.create(mimeType != null ? MediaType.parse(mimeType) : null, file)));
+        requestBuilder.method(method, bodyBuilder.build());
+        return requestBuilder.build();
+      } else {
+        promise.reject("ERR_FILESYSTEM_INVALID_UPLOAD_TYPE", String.format("Invalid upload type: %s.", options.get("uploadType")), null);
+        return null;
+      }
+    } catch (Exception e) {
+      Log.e(TAG, e.getMessage());
+      promise.reject(e);
+    }
+
+    return null;
+  }
+
+  @ExpoMethod
+  public void uploadAsync(final String url, final String fileUriString, final Map<String, Object> options, final Promise promise) {
+    Request request = createUploadRequest(url, fileUriString, options, promise, requestBody -> requestBody);
+    if (request == null) {
+      return;
+    }
+
+    getOkHttpClient().newCall(request).enqueue(new Callback() {
+      @Override
+      public void onFailure(Call call, IOException e) {
+        Log.e(TAG, String.valueOf(e.getMessage()));
+        promise.reject(e);
+      }
+
+      @Override
+      public void onResponse(Call call, Response response) {
+        Bundle result = new Bundle();
+        try {
+          if (response.body() != null) {
+            result.putString("body", response.body().string());
+          } else {
+            result.putString("body", null);
+          }
+        } catch (IOException exception) {
+          promise.reject(exception);
+          return;
+        }
+        result.putInt("status", response.code());
+        result.putBundle("headers", translateHeaders(response.headers()));
+        response.close();
+        promise.resolve(result);
+      }
+    });
+  }
+
+  @ExpoMethod
+  public void uploadTaskStartAsync(final String url, final String fileUriString, final String uuid, final Map<String, Object> options, final Promise promise) {
+    CountingRequestListener progressListener = new CountingRequestListener() {
+      private long mLastUpdate = -1;
+
+      @Override
+      public void onProgress(long bytesWritten, long contentLength) {
+        EventEmitter eventEmitter = mModuleRegistry.getModule(EventEmitter.class);
+        if (eventEmitter != null) {
+          Bundle uploadProgress = new Bundle();
+          Bundle uploadProgressData = new Bundle();
+          long currentTime = System.currentTimeMillis();
+
+          // Throttle events. Sending too many events will block the JS event loop.
+          // Make sure to send the last event when we're at 100%.
+          if (currentTime > mLastUpdate + MIN_EVENT_DT_MS || bytesWritten == contentLength) {
+            mLastUpdate = currentTime;
+            uploadProgressData.putDouble("totalByteSent", bytesWritten);
+            uploadProgressData.putDouble("totalBytesExpectedToSend", contentLength);
+            uploadProgress.putString("uuid", uuid);
+            uploadProgress.putBundle("data", uploadProgressData);
+
+            eventEmitter.emit(EXUploadProgressEventName, uploadProgress);
+          }
+        }
+      }
+    };
+
+    Request request = createUploadRequest(
+      url,
+      fileUriString,
+      options,
+      promise,
+      requestBody -> new CountingRequestBody(requestBody, progressListener)
+    );
+    if (request == null) {
+      return;
+    }
+
+    Call call = getOkHttpClient().newCall(request);
+    mTaskHandlers.put(uuid, new TaskHandler(call));
+    call.enqueue(new Callback() {
+      @Override
+      public void onFailure(Call call, IOException e) {
+        if (call.isCanceled()) {
+          promise.resolve(null);
+          return;
+        }
+        Log.e(TAG, String.valueOf(e.getMessage()));
+        promise.reject(e);
+      }
+
+      @Override
+      public void onResponse(Call call, Response response) {
+        Bundle result = new Bundle();
+        try {
+          if (response.body() != null) {
+            result.putString("body", response.body().string());
+          } else {
+            result.putString("body", null);
+          }
+        } catch (IOException exception) {
+          promise.reject(exception);
+          return;
+        }
+        result.putInt("status", response.code());
+        result.putBundle("headers", translateHeaders(response.headers()));
+        response.close();
+        promise.resolve(result);
+      }
+    });
+  }
+
+  @ExpoMethod
+  public void downloadAsync(String url, final String uriStr, final Map<String, Object> options, final Promise promise) {
+    try {
+      final Uri uri = Uri.parse(uriStr);
+      ensurePermission(uri, Permission.WRITE);
+      checkIfFileDirExists(uri);
+
+      if (!url.contains(":")) {
+        Context context = getContext();
+        Resources resources = context.getResources();
+        String packageName = context.getPackageName();
+        int resourceId = resources.getIdentifier(url, "raw", packageName);
+
+        BufferedSource bufferedSource = Okio.buffer(Okio.source(context.getResources().openRawResource(resourceId)));
+        File file = uriToFile(uri);
+        file.delete();
+        BufferedSink sink = Okio.buffer(Okio.sink(file));
+        sink.writeAll(bufferedSource);
+        sink.close();
+
+        Bundle result = new Bundle();
+        result.putString("uri", Uri.fromFile(file).toString());
+        if (options != null && options.containsKey("md5") && (Boolean) options.get("md5")) {
+          result.putString("md5", md5(file));
+        }
+        promise.resolve(result);
+      } else if ("file".equals(uri.getScheme())) {
+        Request.Builder requestBuilder = new Request.Builder().url(url);
+        if (options != null && options.containsKey(HEADER_KEY)) {
+          try {
+            final Map<String, Object> headers = (Map<String, Object>) options.get(HEADER_KEY);
+            for (String key : headers.keySet()) {
+              requestBuilder.addHeader(key, (String) headers.get(key));
+            }
+          } catch (ClassCastException exception) {
+            promise.reject("ERR_FILESYSTEM_INVALID_HEADERS", "Invalid headers dictionary. Keys and values should be strings.", exception);
+            return;
+          }
+        }
+        getOkHttpClient().newCall(requestBuilder.build()).enqueue(new Callback() {
+          @Override
+          public void onFailure(Call call, IOException e) {
+            Log.e(TAG, String.valueOf(e.getMessage()));
+            promise.reject(e);
+          }
+
+          @Override
+          public void onResponse(Call call, Response response) throws IOException {
+            File file = uriToFile(uri);
+            file.delete();
+            BufferedSink sink = Okio.buffer(Okio.sink(file));
+            sink.writeAll(response.body().source());
+            sink.close();
+
+            Bundle result = new Bundle();
+            result.putString("uri", Uri.fromFile(file).toString());
+            if (options != null && options.containsKey("md5") && (Boolean) options.get("md5")) {
+              result.putString("md5", md5(file));
+            }
+            result.putInt("status", response.code());
+            result.putBundle("headers", translateHeaders(response.headers()));
+            response.close();
+            promise.resolve(result);
+          }
+        });
+      } else {
+        throw new IOException("Unsupported scheme for location '" + uri + "'.");
+      }
+    } catch (Exception e) {
+      Log.e(TAG, e.getMessage());
+      promise.reject(e);
+    }
+  }
+
+  @ExpoMethod
+  public void networkTaskCancelAsync(final String uuid, final Promise promise) {
+    TaskHandler taskHandler = this.mTaskHandlers.get(uuid);
+    if (taskHandler != null) {
+      taskHandler.call.cancel();
+    }
+
+    promise.resolve(null);
+  }
+
+  @ExpoMethod
+  public void downloadResumableStartAsync(String url, final String fileUriStr, final String uuid, final Map<String, Object> options, final String resumeData, final Promise promise) {
+    try {
+      final Uri fileUri = Uri.parse(fileUriStr);
+      checkIfFileDirExists(fileUri);
+      if (!("file".equals(fileUri.getScheme()))) {
+        throw new IOException("Unsupported scheme for location '" + fileUri + "'.");
+      }
+
+      final boolean isResume = resumeData != null;
+
+      final ProgressListener progressListener = new ProgressListener() {
+        long mLastUpdate = -1;
+
+        @Override
+        public void update(long bytesRead, long contentLength, boolean done) {
+          EventEmitter eventEmitter = mModuleRegistry.getModule(EventEmitter.class);
+          if (eventEmitter != null) {
+            Bundle downloadProgress = new Bundle();
+            Bundle downloadProgressData = new Bundle();
+            long totalBytesWritten = isResume ? bytesRead + Long.parseLong(resumeData) : bytesRead;
+            long totalBytesExpectedToWrite = isResume ? contentLength + Long.parseLong(resumeData) : contentLength;
+            long currentTime = System.currentTimeMillis();
+
+            // Throttle events. Sending too many events will block the JS event loop.
+            // Make sure to send the last event when we're at 100%.
+            if (currentTime > mLastUpdate + MIN_EVENT_DT_MS || totalBytesWritten == totalBytesExpectedToWrite) {
+              mLastUpdate = currentTime;
+              downloadProgressData.putDouble("totalBytesWritten", totalBytesWritten);
+              downloadProgressData.putDouble("totalBytesExpectedToWrite", totalBytesExpectedToWrite);
+              downloadProgress.putString("uuid", uuid);
+              downloadProgress.putBundle("data", downloadProgressData);
+
+              eventEmitter.emit(EXDownloadProgressEventName, downloadProgress);
+            }
+          }
+        }
+      };
+
+      OkHttpClient client =
+        getOkHttpClient().newBuilder()
+          .addNetworkInterceptor(new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+              Response originalResponse = chain.proceed(chain.request());
+              return originalResponse.newBuilder()
+                .body(new ProgressResponseBody(originalResponse.body(), progressListener))
+                .build();
+            }
+          })
+          .build();
+
+      Request.Builder requestBuilder = new Request.Builder();
+      if (isResume) {
+        requestBuilder.addHeader("Range", "bytes=" + resumeData + "-");
+      }
+
+      if (options != null && options.containsKey(HEADER_KEY)) {
+        final Map<String, Object> headers = (Map<String, Object>) options.get(HEADER_KEY);
+        for (String key : headers.keySet()) {
+          requestBuilder.addHeader(key, headers.get(key).toString());
+        }
+      }
+
+      Request request = requestBuilder.url(url).build();
+      Call call = client.newCall(request);
+      TaskHandler taskHandler = new DownloadTaskHandler(fileUri, call);
+      this.mTaskHandlers.put(uuid, taskHandler);
+
+      File file = uriToFile(fileUri);
+      DownloadResumableTaskParams params = new DownloadResumableTaskParams(options, call, file, isResume, promise);
+      DownloadResumableTask task = new DownloadResumableTask();
+      task.execute(params);
+    } catch (Exception e) {
+      Log.e(TAG, e.getMessage());
+      promise.reject(e);
+    }
+  }
+
+  @ExpoMethod
+  public void downloadResumablePauseAsync(final String uuid, final Promise promise) {
+    TaskHandler taskHandler = this.mTaskHandlers.get(uuid);
+    if (taskHandler == null) {
+      Exception e = new IOException("No download object available");
+      Log.e(TAG, e.getMessage());
+      promise.reject(e);
+      return;
+    }
+
+    if (!(taskHandler instanceof DownloadTaskHandler)) {
+      promise.reject("ERR_FILESYSTEM_CANNOT_FIND_TASK", "Cannot find task.");
+      return;
+    }
+
+    taskHandler.call.cancel();
+    this.mTaskHandlers.remove(uuid);
+    try {
+      File file = uriToFile(((DownloadTaskHandler) taskHandler).fileUri);
+      Bundle result = new Bundle();
+      result.putString("resumeData", String.valueOf(file.length()));
+      promise.resolve(result);
+    } catch (Exception e) {
+      Log.e(TAG, e.getMessage());
+      promise.reject(e);
+    }
+  }
+
+
   @Override
   public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
     if (requestCode == DIR_PERMISSIONS_REQUEST_CODE && mDirPermissionsRequest != null) {
@@ -1170,6 +1272,11 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
         promise.resolve(result);
         return null;
       } catch (Exception e) {
+        if (call.isCanceled()) {
+          promise.resolve(null);
+          return null;
+        }
+
         Log.e(TAG, e.getMessage());
         promise.reject(e);
         return null;
@@ -1194,17 +1301,21 @@ public class FileSystemModule extends ExportedModule implements ActivityEventLis
     return responseHeaders;
   }
 
-  private static class DownloadResumable {
-    public final String uuid;
-    public final String url;
-    public final Uri fileUri;
+  private static class TaskHandler {
     public final Call call;
 
-    public DownloadResumable(String uuid, String url, Uri fileUri, Call call) {
-      this.uuid = uuid;
-      this.url = url;
-      this.fileUri = fileUri;
+    public TaskHandler(Call call) {
       this.call = call;
+    }
+  }
+
+  private static class DownloadTaskHandler extends TaskHandler {
+    public final Uri fileUri;
+
+
+    public DownloadTaskHandler(Uri fileUri, Call call) {
+      super(call);
+      this.fileUri = fileUri;
     }
   }
 
