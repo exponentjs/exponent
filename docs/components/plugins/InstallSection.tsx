@@ -37,11 +37,14 @@ type Props = {
   href?: string;
 };
 
+const getPackageLink = (packageNames: string) =>
+  `https://github.com/expo/expo/tree/master/packages/${packageNames.split(' ')[0]}`;
+
 const InstallSection: React.FC<Props> = ({
   packageName,
   hideBareInstructions = false,
   cmd = [`expo install ${packageName}`],
-  href = `https://github.com/expo/expo/tree/master/packages/${packageName}`,
+  href = getPackageLink(packageName),
 }) => (
   <div>
     <TerminalBlock cmd={cmd} />
