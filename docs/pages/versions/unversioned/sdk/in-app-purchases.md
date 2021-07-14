@@ -27,7 +27,11 @@ Run `npx pod-install` after installing the npm package.
 
 ### Configure for Android
 
-No additional set up necessary.
+Add this to your `android/app/src/main/AndroidManifest.xml` file:
+
+```
+<uses-permission android:name="com.android.vending.BILLING" />
+```
 
 ## Setup
 
