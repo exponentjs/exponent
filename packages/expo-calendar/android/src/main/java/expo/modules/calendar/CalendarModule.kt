@@ -568,7 +568,9 @@ class CalendarModule(
 
   @Throws(Exception::class, SecurityException::class)
   private fun saveAttendeeForEvent(details: ReadableArguments, eventID: String?): Int {
-    val isNew = !details.containsKey("id") // this is
+    // Key "id" should be called "attendeeId",
+    // but for now to keep API reverse compatibility it wasn't changed
+    val isNew = !details.containsKey("id")
     val attendeeBuilder = AttendeeBuilder(details)
       .putString("name", CalendarContract.Attendees.ATTENDEE_NAME)
       .putString("email", CalendarContract.Attendees.ATTENDEE_EMAIL, isNew)
