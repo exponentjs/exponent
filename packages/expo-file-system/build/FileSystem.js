@@ -121,32 +121,131 @@ export async function uploadAsync(url, fileUri, options = {}) {
 export function createDownloadResumable(uri, fileUri, options, callback, resumeData) {
     return new DownloadResumable(uri, fileUri, options, callback, resumeData);
 }
-export class DownloadResumable {
-    constructor(url, fileUri, options = {}, callback, resumeData) {
+export function createUploadTask(url, fileUri, options, callback) {
+    return new UploadTask(url, fileUri, options, callback);
+}
+export class NetworkTask {
+    constructor() {
         this._uuid = uuidv4();
-        this._url = url;
-        this._fileUri = fileUri;
-        this._options = options;
-        this._resumeData = resumeData;
-        this._callback = callback;
-        this._subscription = null;
-        this._emitter = new EventEmitter(ExponentFileSystem);
+        this.taskWasCanceled = false;
+        this.emitter = new EventEmitter(ExponentFileSystem);
+    }
+    async cancelAsync() {
+        if (!ExponentFileSystem.networkTaskCancelAsync) {
+            throw new UnavailabilityError('expo-file-system', 'networkTaskCancelAsync');
+        }
+        this.removeSubscription();
+        this.taskWasCanceled = true;
+        return await ExponentFileSystem.networkTaskCancelAsync(this.uuid);
+    }
+    checkIfTaskWasCanceled() {
+        if (this.taskWasCanceled) {
+            console.warn('This task was already canceled.');
+            return true;
+        }
+        return false;
+    }
+    get uuid() {
+        return this._uuid;
+    }
+    addSubscription() {
+        if (this.subscription) {
+            return;
+        }
+        this.subscription = this.emitter.addListener(this.getEventName(), (event) => {
+            if (event.uuid === this.uuid) {
+                const callback = this.getCallback();
+                if (callback) {
+                    callback(event.data);
+                }
+            }
+        });
+    }
+    removeSubscription() {
+        if (!this.subscription) {
+            return;
+        }
+        this.emitter.removeSubscription(this.subscription);
+        this.subscription = null;
+    }
+}
+export class UploadTask extends NetworkTask {
+    constructor(url, fileUri, options, callback) {
+        super();
+        this.url = url;
+        this.fileUri = fileUri;
+        this.callback = callback;
+        const httpMethod = (options?.httpMethod?.toUpperCase ||
+            'POST');
+        this.options = {
+            sessionType: FileSystemSessionType.BACKGROUND,
+            uploadType: FileSystemUploadType.BINARY_CONTENT,
+            ...options,
+            httpMethod,
+        };
+    }
+    getEventName() {
+        return 'expo-file-system.uploadProgress';
+    }
+    getCallback() {
+        return this.callback;
+    }
+    async uploadAsync() {
+        if (!ExponentFileSystem.uploadTaskStartAsync) {
+            throw new UnavailabilityError('expo-file-system', 'uploadTaskStartAsync');
+        }
+        if (this.checkIfTaskWasCanceled()) {
+            return undefined;
+        }
+        this.addSubscription();
+        const result = await ExponentFileSystem.uploadTaskStartAsync(this.url, this.fileUri, this.uuid, this.options);
+        this.removeSubscription();
+        return result;
+    }
+}
+export class DownloadResumable extends NetworkTask {
+    constructor(url, _fileUri, options = {}, callback, resumeData) {
+        super();
+        this.url = url;
+        this._fileUri = _fileUri;
+        this.options = options;
+        this.callback = callback;
+        this.resumeData = resumeData;
+    }
+    get fileUri() {
+        return this._fileUri;
+    }
+    getEventName() {
+        return 'expo-file-system.downloadProgress';
+    }
+    getCallback() {
+        return this.callback;
     }
     async downloadAsync() {
         if (!ExponentFileSystem.downloadResumableStartAsync) {
             throw new UnavailabilityError('expo-file-system', 'downloadResumableStartAsync');
         }
-        this._addSubscription();
-        return await ExponentFileSystem.downloadResumableStartAsync(this._url, this._fileUri, this._uuid, this._options, this._resumeData);
+        if (this.checkIfTaskWasCanceled()) {
+            return undefined;
+        }
+        this.addSubscription();
+        return await ExponentFileSystem.downloadResumableStartAsync(this.url, this._fileUri, this.uuid, this.options, this.resumeData);
     }
     async pauseAsync() {
         if (!ExponentFileSystem.downloadResumablePauseAsync) {
             throw new UnavailabilityError('expo-file-system', 'downloadResumablePauseAsync');
         }
-        const pauseResult = await ExponentFileSystem.downloadResumablePauseAsync(this._uuid);
-        this._removeSubscription();
+        if (this.checkIfTaskWasCanceled()) {
+            return {
+                fileUri: this._fileUri,
+                options: this.options,
+                url: this.url,
+            };
+        }
+        const pauseResult = await ExponentFileSystem.downloadResumablePauseAsync(this.uuid);
+        this.removeSubscription();
         if (pauseResult) {
-            this._resumeData = pauseResult.resumeData;
+            this.resumeData = pauseResult.resumeData;
             return this.savable();
         }
         else {
@@ -157,36 +256,19 @@ export class DownloadResumable {
         if (!ExponentFileSystem.downloadResumableStartAsync) {
             throw new UnavailabilityError('expo-file-system', 'downloadResumableStartAsync');
         }
-        this._addSubscription();
-        return await ExponentFileSystem.downloadResumableStartAsync(this._url, this._fileUri, this._uuid, this._options, this._resumeData);
+        if (this.checkIfTaskWasCanceled()) {
+            return undefined;
+        }
+        this.addSubscription();
+        return await ExponentFileSystem.downloadResumableStartAsync(this.url, this.fileUri, this.uuid, this.options, this.resumeData);
     }
     savable() {
         return {
-            url: this._url,
-            fileUri: this._fileUri,
-            options: this._options,
-            resumeData: this._resumeData,
+            url: this.url,
+            fileUri: this.fileUri,
+            options: this.options,
+            resumeData: this.resumeData,
         };
-    }
-    _addSubscription() {
-        if (this._subscription) {
-            return;
-        }
-        this._subscription = this._emitter.addListener('expo-file-system.downloadProgress', (event) => {
-            if (event.uuid === this._uuid) {
-                const callback = this._callback;
-                if (callback) {
-                    callback(event.data);
-                }
-            }
-        });
-    }
-    _removeSubscription() {
-        if (!this._subscription) {
-            return;
-        }
-        this._emitter.removeSubscription(this._subscription);
-        this._subscription = null;
     }
 }
 const baseReadAsStringAsync = readAsStringAsync;

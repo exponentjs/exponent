@@ -63,11 +63,23 @@ export type FileSystemUploadResult = FileSystemHttpResult & {
   body: string;
 };
 
-export type DownloadProgressCallback = (data: DownloadProgressData) => void;
+export type NetworkTaskProgressCallback<T extends DownloadProgressData | UploadProgressData> = (
+  data: T
+) => void;
+
+/**
+ * @deprecated use `NetworkTaskProgressCallback<DownloadProgressData>` instead
+ */
+export type DownloadProgressCallback = NetworkTaskProgressCallback<DownloadProgressData>;
 
 export type DownloadProgressData = {
   totalBytesWritten: number;
   totalBytesExpectedToWrite: number;
+};
+
+export type UploadProgressData = {
+  totalByteSent: number;
+  totalBytesExpectedToSend: number;
 };
 
 export type DownloadPauseState = {
@@ -112,12 +124,9 @@ export type WritingOptions = {
   encoding?: EncodingType | 'utf8' | 'base64';
 };
 
-export type ProgressEvent = {
+export type ProgressEvent<T> = {
   uuid: string;
-  data: {
-    totalBytesWritten: number;
-    totalBytesExpectedToWrite: number;
-  };
+  data: T;
 };
 
 export type FileSystemRequestDirectoryPermissionsResult =
@@ -156,6 +165,8 @@ export interface ExponentFileSystemModule {
   readonly readSAFDirectoryAsync?: PlatformMethod;
   readonly makeSAFDirectoryAsync?: PlatformMethod;
   readonly createSAFFileAsync?: PlatformMethod;
+  readonly networkTaskCancelAsync?: PlatformMethod;
+  readonly uploadTaskStartAsync?: PlatformMethod;
   startObserving?: () => void;
   stopObserving?: () => void;
   addListener: (eventName: string) => void;
