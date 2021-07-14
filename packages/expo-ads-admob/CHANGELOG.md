@@ -5,6 +5,7 @@
 ### 🛠 Breaking changes
 
 ### 🎉 New features
+- Added Server Side Verification Options to AdMob Rewarded Ad requestAdAsync ([#12368](https://github.com/expo/expo/pull/12368)) by [@swittk]
 
 ### 🐛 Bug fixes
 

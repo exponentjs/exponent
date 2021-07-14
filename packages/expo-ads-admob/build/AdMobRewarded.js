@@ -37,7 +37,7 @@ export default {
         if (!options.servePersonalizedAds) {
             params.npa = '1';
         }
-        await AdMobNativeModule.requestAd(params);
+        await AdMobNativeModule.requestAd(params, options.serverSideVerificationOptions);
     },
     async showAdAsync() {
         if (!AdMobNativeModule.showAd) {

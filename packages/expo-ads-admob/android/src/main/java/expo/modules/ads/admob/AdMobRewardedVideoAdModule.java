@@ -16,6 +16,7 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdCallback;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 
 import org.unimodules.core.ExportedModule;
 import org.unimodules.core.ModuleRegistry;
@@ -90,7 +91,7 @@ public class AdMobRewardedVideoAdModule extends ExportedModule {
   }
 
   @ExpoMethod
-  public void requestAd(final ReadableArguments additionalRequestParams, final Promise promise) {
+  public void requestAd(final ReadableArguments additionalRequestParams, final ReadableArguments ssvOptions, final Promise promise) {
     new Handler(Looper.getMainLooper()).post(new Runnable() {
       @Override
       public void run() {
@@ -111,6 +112,21 @@ public class AdMobRewardedVideoAdModule extends ExportedModule {
           .build();
 
         mRewardedAd = new RewardedAd(mActivityProvider.getCurrentActivity(), mAdUnitID);
+
+        if( ssvOptions != null && !ssvOptions.isEmpty() ) {
+          // Check if ReadableArguments has a value (see doc on ReadableArguments here https://github.com/expo/expo/blob/59794c1cc56ac8ea110c208ba0711dbd1e044594/packages/%40unimodules/core/android/src/main/java/org/unimodules/core/arguments/ReadableArguments.java#L10)
+          ServerSideVerificationOptions options = new ServerSideVerificationOptions.Builder();
+          String userId = ssvOptions.getString("userId");
+          String customData = ssvOptions.getString("customData");
+          if(userId != null) {
+            options.setUserId(userId);
+          }
+          if(customData != null) {
+            options.setCustomData(customData);
+          }
+          options.build();
+          mRewardedAd.setServerSideVerificationOptions(options);
+        }
 
         mRewardedAd.loadAd(adRequest, new RewardedAdLoadCallback() {
           @Override

@@ -10,6 +10,10 @@ declare const _default: {
         additionalRequestParams?: {
             [key: string]: string;
         } | undefined;
+        serverSideVerificationOptions?: {
+            userId?: string | undefined;
+            customData?: string | undefined;
+        } | undefined;
     }): Promise<void>;
     showAdAsync(): Promise<void>;
     dismissAdAsync(): Promise<void>;

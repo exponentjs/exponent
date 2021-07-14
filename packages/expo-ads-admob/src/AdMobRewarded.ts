@@ -46,6 +46,10 @@ export default {
     options: {
       servePersonalizedAds?: boolean;
       additionalRequestParams?: { [key: string]: string };
+      serverSideVerificationOptions?: {
+        userId?: string,
+        customData?: string
+      };
     } = {}
   ): Promise<void> {
     if (!AdMobNativeModule.requestAd) {
@@ -59,7 +63,7 @@ export default {
       params.npa = '1';
     }
 
-    await AdMobNativeModule.requestAd(params);
+    await AdMobNativeModule.requestAd(params, options.serverSideVerificationOptions);
   },
   async showAdAsync(): Promise<void> {
     if (!AdMobNativeModule.showAd) {
