@@ -110,9 +110,9 @@ def findDefaultBasePackage(String packageDir) {
   return ["$packageName.$className"]
 }
 
-def generateBasePackageList(List<Unimodule> unimodules) {
-  def findMainJavaApp = new FileNameFinder().getFileNames(rootProject.getProjectDir().getPath(), '**/MainApplication.java', '')
-  def findMainKtApp = new FileNameFinder().getFileNames(rootProject.getProjectDir().getPath(), '**/MainApplication.kt', '')
+def generateBasePackageList(List<Unimodule> unimodules, String appPath) {
+  def findMainJavaApp = new FileNameFinder().getFileNames(rootProject.getProjectDir().getPath(), appPath + '**/MainApplication.java', '')
+  def findMainKtApp = new FileNameFinder().getFileNames(rootProject.getProjectDir().getPath(), appPath + '**/MainApplication.kt', '')
   
   if (findMainJavaApp.size() != 1 && findMainKtApp.size() != 1) {
     throw new GradleException("You need to have MainApplication in your project")
@@ -215,7 +215,7 @@ class Colors {
   static final String MAGENTA = "\u001B[35m"
 }
 
-def addUnimodulesDependencies(String target, List exclude, List modulesPaths, Closure<Boolean> addUnimodule) {
+def addUnimodulesDependencies(String target, List exclude, String appPath, List modulesPaths, Closure<Boolean> addUnimodule) {
   if (!(new File(project.rootProject.projectDir.parentFile, 'package.json').exists())) {
     // There's no package.json
     throw new GradleException(
@@ -226,7 +226,7 @@ def addUnimodulesDependencies(String target, List exclude, List modulesPaths, Cl
   def results = findUnimodules(target, exclude, modulesPaths)
   def unimodules = results.unimodules
   def duplicates = results.duplicates
-  generateBasePackageList(unimodules)
+  generateBasePackageList(unimodules, appPath)
 
   if (unimodules.size() > 0) {
     println()
@@ -257,8 +257,9 @@ ext.addUnimodulesDependencies = { Map customOptions = [:] ->
       configuration: 'implementation',
       target       : 'react-native',
       exclude      : [],
+      appPath      : ''
   ] << getAndroidConfig(rootProject.projectDir) << customOptions
-  addUnimodulesDependencies(options.target, options.exclude, options.modulesPaths, {unimodule ->
+  addUnimodulesDependencies(options.target, options.exclude, options.appPath, options.modulesPaths, {unimodule ->
     Object dependency = project.project(':' + unimodule.name)
     project.dependencies.add(options.configuration, dependency)
   })
