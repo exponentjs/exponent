@@ -161,7 +161,7 @@ The permission type for location access.
 
 <!-- TODO: Permissions.LOCATION issue (search by this phrase) -->
 
-> **Note:** If your app is being launched on Android 10 or newer, permission will be treated as granted only when user accepted it for backgrounded app. To check whether permission is granted for when app is in use, use `foregroundGranted`.
+> **Note:** If your app is being launched on Android 10 or newer, permission will be treated as granted only when user accepted it for backgrounded app. To check whether permission is granted for when app is in use, use the `foregroundGranted` boolean attribute. For example, if permission is granted for when app is in use, resolving a call to `Permissions.getAsync(Permissions.LOCATION)` provides an object as such (only relevant properties shown): `{ status: 'denied', granted: false, permissions: { location: { status: 'denied', granted: false, foregroundGranted: true } } }`
 
 > **Note:** iOS is not working with this permission being not individually, `Permissions.askAsync(Permissions.SOME_PERMISSIONS, Permissions.LOCATION, Permissions.CAMERA, ...)` would throw.
 > On iOS ask for this permission type individually.
