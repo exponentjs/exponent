@@ -73,6 +73,7 @@ export interface SQLResultSet {
 export interface SQLResultSetRowList {
   length: number;
   item(index: number): any;
+  _array: any[];
 }
 
 export declare class SQLError {
