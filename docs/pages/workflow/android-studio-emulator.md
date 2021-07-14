@@ -33,7 +33,11 @@ echo "export ANDROID_SDK=$ANDROID_SDK" >> ~/`[[ $SHELL == *"zsh" ]] && echo '.zs
 echo "export PATH=$HOME/Library/Android/sdk/platform-tools:\$PATH" >> ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
 ```
 
-- Make sure that you can run `adb` from your terminal.
+- Make sure that you can run `adb` from your terminal. If you fail to run it, try this command:
+
+```bash
+source ~/`[[ $SHELL == *"zsh" ]] && echo '.zshenv' || echo '.bash_profile'`
+```
 
 ## Step 2: Set up a virtual device
 
