@@ -169,7 +169,7 @@ const LOCATION_TASK_NAME = 'background-location-task';
 
 export default class Component extends React.Component {
   onPress = async () => {
-    const { status } = await Location.requestPermissionsAsync();
+    const { status } = await Location.requestForegroundPermissionsAsync();
     if (status === 'granted') {
       await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, {
         accuracy: Location.Accuracy.Balanced,
