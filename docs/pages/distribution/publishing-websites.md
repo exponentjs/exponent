@@ -100,6 +100,15 @@ With this setup Netlify will build and deploy when you push to git or open a new
 2. Pick your Git hosting service and select your repository
 3. Click `Build your site`
 
+
+## [Render](https://render.com/)
+
+With this setup, Expo will build and deploy your static site automatically based on the branch you choose (defaults to main):
+1. Add build command `cd expo_code && yarn install && expo build:web` where `expo_code` is where your package.json file is.
+   If your package.json is in the root directory, you do not need to change the directory.
+2. Add publish directory as `expo_code/web-build`.
+
+
 ## [GitHub Pages](https://pages.github.com/)
 
 > We'll use `yarn` but you can use `npm` if you want.
