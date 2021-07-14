@@ -12,6 +12,7 @@ import {
 import Link from 'next/link';
 import * as React from 'react';
 
+import { VisuallyHidden } from './VisuallyHidden';
 import { MoreHorizontal } from './icons/MoreHorizontal';
 import { SDK } from './icons/SDK';
 import { Search } from './icons/Search';
@@ -29,6 +30,8 @@ const STYLES_LOGO = css`
 const STYLES_UNSTYLED_ANCHOR = css`
   color: inherit;
   text-decoration: none;
+  display: flex;
+  align-items: center;
 `;
 
 const STYLES_TITLE_TEXT = css`
@@ -209,7 +212,6 @@ const SELECT_THEME = css`
   appearance: none;
   background-color: ${theme.background.default};
   cursor: pointer;
-  outline: none;
 `;
 
 const SELECT_THEME_ICON = css`
@@ -283,7 +285,12 @@ function SelectTheme() {
 
   return (
     <div css={SELECT_THEME_CONTAINER}>
+      <VisuallyHidden>
+        <label htmlFor="select-theme">Select your theme</label>
+      </VisuallyHidden>
+
       <select
+        id="select-theme"
         css={SELECT_THEME}
         value={themeName}
         onChange={e => {
@@ -318,14 +325,9 @@ export default class DocumentationHeader extends React.PureComponent<Props> {
             <div css={STYLES_LOGO_CONTAINER}>
               <Link href="/" passHref>
                 <a css={STYLES_UNSTYLED_ANCHOR}>
-                  <span css={STYLES_LOGO}>
+                  <span css={STYLES_LOGO} aria-hidden>
                     <SDK />
                   </span>
-                </a>
-              </Link>
-
-              <Link href="/" passHref>
-                <a css={STYLES_UNSTYLED_ANCHOR}>
                   <h1 css={STYLES_TITLE_TEXT}>Expo</h1>
                 </a>
               </Link>

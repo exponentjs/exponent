@@ -23,6 +23,8 @@ const STYLES_TITLE = css`
   padding: 8px 16px;
   border-radius: 4px;
   color: ${theme.text.default};
+  width: 100%;
+  border: none;
 
   :hover {
     cursor: pointer;
@@ -124,13 +126,23 @@ export default class DocumentationSidebarGroup extends React.Component<Props, { 
   };
 
   render() {
+    const accordionBtnId = `sidebar-${this.props.info.name.replace(/\s+/g, '-').toLowerCase()}`;
+
     return (
       <div>
-        <a css={STYLES_TITLE} onClick={this.toggleIsOpen}>
+        <button
+          aria-expanded={this.state.isOpen}
+          css={STYLES_TITLE}
+          onClick={this.toggleIsOpen}
+          id={accordionBtnId}>
           {this.props.info.name}
           <ChevronDown size={16} css={this.state.isOpen && STYLES_OPEN_CHEVRON_ICON} />
-        </a>
-        {this.state.isOpen && <div css={STYLES_SIDEBAR_INDENT}>{this.props.children}</div>}
+        </button>
+        {this.state.isOpen && (
+          <section css={STYLES_SIDEBAR_INDENT} aria-labelledby={accordionBtnId}>
+            {this.props.children}
+          </section>
+        )}
       </div>
     );
   }

@@ -16,6 +16,7 @@ import DocumentationSidebarRight, {
   SidebarRightComponentType,
 } from '~/components/DocumentationSidebarRight';
 import Head from '~/components/Head';
+import { Main, SkipToContent } from '~/components/SkipToContent';
 import { H1 } from '~/components/base/headings';
 import navigation from '~/constants/navigation';
 import * as Constants from '~/constants/theme';
@@ -265,87 +266,93 @@ export default class DocumentationPage extends React.Component<Props, State> {
     const algoliaTag = this.getAlgoliaTag();
 
     return (
-      <DocumentationNestedScrollLayout
-        ref={this.layoutRef}
-        header={headerElement}
-        sidebar={sidebarElement}
-        sidebarRight={sidebarRight}
-        tocVisible={this.props.tocVisible}
-        isMenuActive={this.state.isMenuActive}
-        isMobileSearchActive={this.state.isMobileSearchActive}
-        onContentScroll={handleContentScroll}
-        sidebarScrollPosition={sidebarScrollPosition}>
-        <Head title={`${this.props.title} - Expo Documentation`}>
-          {algoliaTag !== null && <meta name="docsearch:version" content={algoliaTag} />}
-          <meta property="og:title" content={`${this.props.title} - Expo Documentation`} />
-          <meta property="og:type" content="website" />
-          <meta property="og:image" content="https://docs.expo.io/static/images/og.png" />
-          <meta property="og:image:url" content="https://docs.expo.io/static/images/og.png" />
-          <meta
-            property="og:image:secure_url"
-            content="https://docs.expo.io/static/images/og.png"
-          />
-          <meta property="og:locale" content="en_US" />
-          <meta property="og:site_name" content="Expo Documentation" />
-          <meta
-            property="og:description"
-            content="Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React."
-          />
-
-          <meta name="twitter:site" content="@expo" />
-          <meta name="twitter:card" content="summary" />
-          <meta property="twitter:title" content={`${this.props.title} - Expo Documentation`} />
-          <meta
-            name="twitter:description"
-            content="Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React."
-          />
-          <meta property="twitter:image" content="https://docs.expo.io/static/images/twitter.png" />
-
-          {(version === 'unversioned' || this.isPreviewPath()) && (
-            <meta name="robots" content="noindex" />
-          )}
-          {version !== 'unversioned' && <link rel="canonical" href={this.getCanonicalUrl()} />}
-        </Head>
-
-        {!this.state.isMenuActive ? (
-          <div css={STYLES_DOCUMENT}>
-            <H1>{this.props.title}</H1>
-            <DocumentationPageContext.Provider value={{ version }}>
-              {this.props.children}
-            </DocumentationPageContext.Provider>
-            <DocumentationFooter
-              title={this.props.title}
-              url={this.props.url}
-              asPath={this.props.asPath}
-              sourceCodeUrl={this.props.sourceCodeUrl}
+      <>
+        <SkipToContent>Skip to main content</SkipToContent>
+        <DocumentationNestedScrollLayout
+          ref={this.layoutRef}
+          header={headerElement}
+          sidebar={sidebarElement}
+          sidebarRight={sidebarRight}
+          tocVisible={this.props.tocVisible}
+          isMenuActive={this.state.isMenuActive}
+          isMobileSearchActive={this.state.isMobileSearchActive}
+          onContentScroll={handleContentScroll}
+          sidebarScrollPosition={sidebarScrollPosition}>
+          <Head title={`${this.props.title} - Expo Documentation`}>
+            {algoliaTag !== null && <meta name="docsearch:version" content={algoliaTag} />}
+            <meta property="og:title" content={`${this.props.title} - Expo Documentation`} />
+            <meta property="og:type" content="website" />
+            <meta property="og:image" content="https://docs.expo.io/static/images/og.png" />
+            <meta property="og:image:url" content="https://docs.expo.io/static/images/og.png" />
+            <meta
+              property="og:image:secure_url"
+              content="https://docs.expo.io/static/images/og.png"
             />
-          </div>
-        ) : (
-          <div>
-            <div css={[STYLES_DOCUMENT, HIDDEN_ON_MOBILE]}>
+            <meta property="og:locale" content="en_US" />
+            <meta property="og:site_name" content="Expo Documentation" />
+            <meta
+              property="og:description"
+              content="Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React."
+            />
+
+            <meta name="twitter:site" content="@expo" />
+            <meta name="twitter:card" content="summary" />
+            <meta property="twitter:title" content={`${this.props.title} - Expo Documentation`} />
+            <meta
+              name="twitter:description"
+              content="Expo is an open-source platform for making universal native apps for Android, iOS, and the web with JavaScript and React."
+            />
+            <meta
+              property="twitter:image"
+              content="https://docs.expo.io/static/images/twitter.png"
+            />
+
+            {(version === 'unversioned' || this.isPreviewPath()) && (
+              <meta name="robots" content="noindex" />
+            )}
+            {version !== 'unversioned' && <link rel="canonical" href={this.getCanonicalUrl()} />}
+          </Head>
+
+          {!this.state.isMenuActive ? (
+            <Main css={STYLES_DOCUMENT}>
               <H1>{this.props.title}</H1>
               <DocumentationPageContext.Provider value={{ version }}>
                 {this.props.children}
               </DocumentationPageContext.Provider>
               <DocumentationFooter
                 title={this.props.title}
+                url={this.props.url}
                 asPath={this.props.asPath}
                 sourceCodeUrl={this.props.sourceCodeUrl}
               />
-            </div>
-            <div css={HIDDEN_ON_DESKTOP}>
-              <DocumentationSidebar
-                url={this.props.url}
-                asPath={this.props.asPath}
-                routes={routes}
-                version={version}
-                onSetVersion={this.handleSetVersion}
-                isVersionSelectorHidden={!isReferencePath}
-              />
-            </div>
-          </div>
-        )}
-      </DocumentationNestedScrollLayout>
+            </Main>
+          ) : (
+            <Main>
+              <div css={[STYLES_DOCUMENT, HIDDEN_ON_MOBILE]}>
+                <H1>{this.props.title}</H1>
+                <DocumentationPageContext.Provider value={{ version }}>
+                  {this.props.children}
+                </DocumentationPageContext.Provider>
+                <DocumentationFooter
+                  title={this.props.title}
+                  asPath={this.props.asPath}
+                  sourceCodeUrl={this.props.sourceCodeUrl}
+                />
+              </div>
+              <div css={HIDDEN_ON_DESKTOP}>
+                <DocumentationSidebar
+                  url={this.props.url}
+                  asPath={this.props.asPath}
+                  routes={routes}
+                  version={version}
+                  onSetVersion={this.handleSetVersion}
+                  isVersionSelectorHidden={!isReferencePath}
+                />
+              </div>
+            </Main>
+          )}
+        </DocumentationNestedScrollLayout>
+      </>
     );
   }
 }

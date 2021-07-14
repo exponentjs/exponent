@@ -122,7 +122,7 @@ export default class DocumentationSidebar extends React.Component<Props> {
     };
 
     return (
-      <nav css={STYLES_SIDEBAR} {...customDataAttributes}>
+      <nav css={STYLES_SIDEBAR} {...customDataAttributes} aria-label="Table of contents">
         {!this.props.isVersionSelectorHidden && (
           <VersionSelector version={this.props.version} onSetVersion={this.props.onSetVersion} />
         )}
