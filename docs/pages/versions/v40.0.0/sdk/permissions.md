@@ -388,14 +388,14 @@ The permission type for reading or writing contacts.
 The permission type for writing to the media library.
 
 - **Android:** it requires the [`WRITE_EXTERNAL_STORAGE`][medialibrary-android-write] permissions in your manifest.
-- **iOS** it requires the `expo-image-picker` or `expo-media-library` module and [`NSPhotoLibraryAddUsageDescription`][medialibrary-ios-plist] message.
+- **iOS:** it requires the `expo-image-picker` or `expo-media-library` module and [`NSPhotoLibraryAddUsageDescription`][medialibrary-ios-plist] message.
 
 ### `Permissions.MEDIA_LIBRARY`
 
 The permission type for reading or writing to the media library.
 
 - **Android:** it requires the [`READ_EXTERNAL_STORAGE`][medialibrary-android-read] and [`WRITE_EXTERNAL_STORAGE`][medialibrary-android-write] permissions in your manifest.
-- **iOS** it requires the `expo-image-picker` or `expo-media-library` module and [`NSPhotoLibraryUsageDescription`][medialibrary-ios-plist] message.
+- **iOS:** it requires the `expo-image-picker` or `expo-media-library` module and [`NSPhotoLibraryUsageDescription`][medialibrary-ios-plist] message.
 
 > **Note (iOS):** iOS provides more detailed permissions, returning `{ status, permissions: { cameraRoll: { accessPrivileges } } }` where `accessPrivileges` can be:
 >
