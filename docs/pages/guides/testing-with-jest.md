@@ -34,7 +34,7 @@ That's it! Now we can start writing Jest tests!
 
 Jest comes with a lot of configuration options, for more details read [Configuring Jest](https://jestjs.io/docs/en/configuration.html).
 
-We would like to point out [transformIgnorePatterns](https://jestjs.io/docs/en/configuration.html#transformignorepatterns-array-string). Below is a great starting point to make sure any modules you may be using within `/node_modules/` are transpiled when running jest. This should cover the majority of your needs but you can always add to this pattern list as you see fit.
+We would like to point out [transformIgnorePatterns](https://jestjs.io/docs/configuration#transformignorepatterns-arraystring). Below is a great starting point to make sure any modules you may be using within `/node_modules/` are transpiled when running jest. This should cover the majority of your needs but you can always add to this pattern list as you see fit.
 
 ```js
 "jest": {
