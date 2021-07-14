@@ -15,13 +15,15 @@
 
 #import <UMCore/UMEventEmitterService.h>
 
-#import <EXFileSystem/EXResumablesManager.h>
+#import <EXFileSystem/EXTaskHandlersManager.h>
 #import <EXFileSystem/EXSessionTaskDispatcher.h>
 #import <EXFileSystem/EXSessionDownloadTaskDelegate.h>
 #import <EXFileSystem/EXSessionResumableDownloadTaskDelegate.h>
 #import <EXFileSystem/EXSessionUploadTaskDelegate.h>
+#import <EXFileSystem/EXSessionCancelableUploadTaskDelegate.h>
 
 NSString * const EXDownloadProgressEventName = @"expo-file-system.downloadProgress";
+NSString * const EXUploadProgressEventName = @"expo-file-system.uploadProgress";
 
 typedef NS_ENUM(NSInteger, EXFileSystemSessionType) {
   EXFileSystemBackgroundSession = 0,
@@ -39,7 +41,7 @@ typedef NS_ENUM(NSInteger, EXFileSystemUploadType) {
 @property (nonatomic, strong) NSURLSession *backgroundSession;
 @property (nonatomic, strong) NSURLSession *foregroundSession;
 @property (nonatomic, strong) EXSessionTaskDispatcher *sessionTaskDispatcher;
-@property (nonatomic, strong) EXResumablesManager *resumableManager;
+@property (nonatomic, strong) EXTaskHandlersManager *takskHandlersManager;
 @property (nonatomic, weak) UMModuleRegistry *moduleRegistry;
 @property (nonatomic, weak) id<UMEventEmitterService> eventEmitter;
 @property (nonatomic, strong) NSString *documentDirectory;
@@ -69,7 +71,7 @@ UM_REGISTER_MODULE();
     _cachesDirectory = cachesDirectory;
     _bundleDirectory = bundleDirectory;
     
-    _resumableManager = [EXResumablesManager new];
+    _takskHandlersManager = [EXTaskHandlersManager new];
     
     [EXFileSystem ensureDirExistsWithPath:_documentDirectory];
     [EXFileSystem ensureDirExistsWithPath:_cachesDirectory];
@@ -111,7 +113,7 @@ UM_REGISTER_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-  return @[EXDownloadProgressEventName];
+  return @[EXDownloadProgressEventName, EXUploadProgressEventName];
 }
 
 - (void)startObserving {
@@ -581,6 +583,58 @@ UM_EXPORT_METHOD_AS(uploadAsync,
                        resolver:(UMPromiseResolveBlock)resolve
                        rejecter:(UMPromiseRejectBlock)reject)
 {
+  NSURLSessionUploadTask *task = [self createUploadTask:urlString localURI:fileUriString options:options rejecter:reject];
+  if (!task) {
+    return;
+  }
+  
+  EXSessionTaskDelegate *taskDelegate = [[EXSessionUploadTaskDelegate alloc] initWithResolve:resolve reject:reject];
+  [_sessionTaskDispatcher registerTaskDelegate:taskDelegate forTask:task];
+  [task resume];
+}
+
+UM_EXPORT_METHOD_AS(uploadTaskStartAsync,
+                    uploadTaskStartAsync:(NSString *)urlString
+                                localURI:(NSString *)fileUriString
+                                    uuid:(NSString *)uuid
+                                 options:(NSDictionary *)options
+                                resolver:(UMPromiseResolveBlock)resolve
+                                rejecter:(UMPromiseRejectBlock)reject)
+{
+  NSURLSessionUploadTask *task = [self createUploadTask:urlString localURI:fileUriString options:options rejecter:reject];
+  if (!task) {
+    return;
+  }
+  
+  UM_WEAKIFY(self);
+  EXUploadDelegateOnSendCallback onSend = ^(NSURLSessionUploadTask *task, int64_t bytesSent, int64_t totalBytesSent, int64_t totalBytesExpectedToSend) {
+    UM_ENSURE_STRONGIFY(self);
+    [self sendEventWithName:EXUploadProgressEventName
+                       body:@{
+                             @"uuid": uuid,
+                             @"data": @{
+                                 @"totalByteSent": @(bytesSent),
+                                 @"totalBytesExpectedToSend": @(totalBytesExpectedToSend),
+                             },
+                           }];
+  };
+  
+  EXSessionTaskDelegate *taskDelegate = [[EXSessionCancelableUploadTaskDelegate alloc] initWithResolve:resolve
+                                                                                          reject:reject
+                                                                                  onSendCallback:onSend
+                                                                                resumableManager:_takskHandlersManager
+                                                                                            uuid:uuid];
+  
+  [_sessionTaskDispatcher registerTaskDelegate:taskDelegate forTask:task];
+  [_takskHandlersManager registerTask:task uuid:uuid];
+  [task resume];
+}
+
+- (NSURLSessionUploadTask * _Nullable)createUploadTask:(NSString *)urlString
+                                              localURI:(NSString *)fileUriString
+                                               options:(NSDictionary *)options
+                                              rejecter:(UMPromiseRejectBlock)reject
+{
   NSURL *fileUri = [NSURL URLWithString:fileUriString];
   NSString *httpMethod = options[@"httpMethod"];
   EXFileSystemUploadType type = [self _getUploadTypeFrom:options[@"uploadType"]];
@@ -588,23 +642,23 @@ UM_EXPORT_METHOD_AS(uploadAsync,
     reject(@"ERR_FILESYSTEM_NO_PERMISSIONS",
            [NSString stringWithFormat:@"Cannot upload file '%@'. Only 'file://' URI are supported.", fileUri],
            nil);
-    return;
+    return nil;
   }
   if (!([self _checkIfFileExists:fileUri.path])) {
     reject(@"ERR_FILE_NOT_EXISTS",
            [NSString stringWithFormat:@"File '%@' does not exist.", fileUri],
            nil);
-    return;
+    return nil;
   }
   if (![self _checkHeadersDictionary:options[@"headers"]]) {
     reject(@"ERR_FILESYSTEM_INVALID_HEADERS_DICTIONARY",
            @"Invalid headers dictionary. Keys and values should be strings.",
            nil);
-    return;
+    return nil;
   }
   if (!httpMethod) {
     reject(@"ERR_FILESYSTEM_MISSING_HTTP_METHOD", @"Missing HTTP method.", nil);
-    return;
+    return nil;
   }
 
   NSMutableURLRequest *request = [self _createRequest:[NSURL URLWithString:urlString] headers:options[@"headers"]];
@@ -614,7 +668,7 @@ UM_EXPORT_METHOD_AS(uploadAsync,
     reject(@"ERR_FILESYSTEM_INVALID_SESSION_TYPE",
            [NSString stringWithFormat:@"Invalid session type: '%@'", options[@"sessionType"]],
            nil);
-    return;
+    return nil;
   }
   
   NSURLSessionUploadTask *task;
@@ -634,12 +688,8 @@ UM_EXPORT_METHOD_AS(uploadAsync,
     reject(@"ERR_FILESYSTEM_INVALID_UPLOAD_TYPE",
            [NSString stringWithFormat:@"Invalid upload type: '%@'.", options[@"uploadType"]],
            nil);
-    return;
   }
-  
-  EXSessionTaskDelegate *taskDelegate = [[EXSessionUploadTaskDelegate alloc] initWithResolve:resolve reject:reject];
-  [_sessionTaskDispatcher registerTaskDelegate:taskDelegate forTask:task];
-  [task resume];
+  return task;
 }
 
 UM_EXPORT_METHOD_AS(downloadResumableStartAsync,
@@ -696,7 +746,7 @@ UM_EXPORT_METHOD_AS(downloadResumablePauseAsync,
                     resolver:(UMPromiseResolveBlock)resolve
                     rejecter:(UMPromiseRejectBlock)reject)
 {
-  NSURLSessionDownloadTask *task = [_resumableManager taskForId:uuid];
+  NSURLSessionDownloadTask *task = [_takskHandlersManager downloadTaskForId:uuid];
   if (!task) {
     reject(@"ERR_FILESYSTEM_CANNOT_FIND_TASK",
            [NSString stringWithFormat:@"There is no download object with UUID: %@", uuid],
@@ -709,6 +759,18 @@ UM_EXPORT_METHOD_AS(downloadResumablePauseAsync,
     UM_ENSURE_STRONGIFY(self);
     resolve(@{ @"resumeData": UMNullIfNil([resumeData base64EncodedStringWithOptions:0]) });
   }];
+}
+
+UM_EXPORT_METHOD_AS(networkTaskCancelAsync,
+                    networkTaskCancelAsyncWithUUID:(NSString *)uuid
+                    resolver:(UMPromiseResolveBlock)resolve
+                    rejecter:(UMPromiseRejectBlock)reject)
+{
+  NSURLSessionDownloadTask *task = [_takskHandlersManager taskForId:uuid];
+  if (task) {
+    [task cancel];
+  }
+  resolve([NSNull null]);
 }
 
 UM_EXPORT_METHOD_AS(getFreeDiskStorageAsync, getFreeDiskStorageAsyncWithResolver:(UMPromiseResolveBlock)resolve rejecter:(UMPromiseRejectBlock)reject)
@@ -880,10 +942,10 @@ UM_EXPORT_METHOD_AS(getTotalDiskCapacityAsync, getTotalDiskCapacityAsyncWithReso
                                                                                                localUrl:fileUrl
                                                                                      shouldCalculateMd5:[options[@"md5"] boolValue]
                                                                                         onWriteCallback:onWrite
-                                                                                       resumableManager:_resumableManager
+                                                                                       resumableManager:_takskHandlersManager
                                                                                                    uuid:uuid];
   [_sessionTaskDispatcher registerTaskDelegate:taskDelegate forTask:downloadTask];
-  [_resumableManager registerTask:downloadTask uuid:uuid];
+  [_takskHandlersManager registerTask:downloadTask uuid:uuid];
   [downloadTask resume];
 }
 

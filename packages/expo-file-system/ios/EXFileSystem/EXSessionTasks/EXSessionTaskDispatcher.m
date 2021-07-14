@@ -82,4 +82,15 @@
   [_sessionHandler invokeCompletionHandlerForSessionIdentifier:session.configuration.identifier];
 }
 
+- (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task
+                                didSendBodyData:(int64_t)bytesSent
+                                 totalBytesSent:(int64_t)totalBytesSent
+                       totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
+{
+  if (_isActive) {
+    EXSessionTaskDelegate *exTask = _tasks[task];
+    [exTask URLSession:session task:task didSendBodyData:bytesSent totalBytesSent:totalBytesSent totalBytesExpectedToSend:totalBytesExpectedToSend];
+  }
+}
+
 @end
