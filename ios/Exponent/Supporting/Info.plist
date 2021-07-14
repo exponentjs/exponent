@@ -73,6 +73,9 @@
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>waze</string>
+		<string>comgooglemaps</string>
+		<string>comgooglemapsurl</string>
+		<string>comgooglemaps-x-callback</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>
