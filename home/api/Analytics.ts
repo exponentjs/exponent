@@ -20,7 +20,7 @@ export function initialize(): void {
     return;
   }
 
-  Amplitude.initialize(apiKey);
+  Amplitude.initializeAsync(apiKey);
   isInitialized = true;
 }
 
@@ -46,9 +46,9 @@ export function track(event: string, options?: TrackingOptions): void {
   if (!canUseAmplitude) return;
 
   if (properties) {
-    Amplitude.logEventWithProperties(event, properties);
+    Amplitude.logEventWithPropertiesAsync(event, properties);
   } else {
-    Amplitude.logEvent(event);
+    Amplitude.logEventAsync(event);
   }
 }
 
