@@ -94,7 +94,7 @@ class ExpoAutolinkingManager {
     String[] args = [
       'node',
       '--eval',
-      'require(\'expo-modules-autolinking\')(process.argv.slice(1))',
+      '"require(\'expo-modules-autolinking\')(process.argv.slice(1))"',
       '--',
       command,
       '--platform',
