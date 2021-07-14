@@ -5,7 +5,9 @@ next time you need to upgrade, install a new module, or otherwise change the nat
 
 ## Documentation
 
-You can find the documentation under [https://docs.expo.io/clients/introduction](https://docs.expo.io/clients/introduction).
+`expo-dev-client` is an npm package installable in any Expo or React Native project. Once installed, any Debug builds of your application will gain an extensible debug menu and the ability to load projects from Expo CLI. Release builds of your application will not change other than the addition of a few header files.
+
+See [the documentation](https://docs.expo.io/clients/introduction/) for more information.
 
 ## Contributing
 

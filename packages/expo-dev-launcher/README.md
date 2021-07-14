@@ -10,7 +10,7 @@ Firstly, you need to add the `expo-dev-launcher` package to your project.
 <summary>yarn</summary>
 
 ```bash
-yarn add expo-dev-launcher expo-dev-menu-interface
+yarn add expo-dev-launcher expo-dev-menu-interface expo-updates-interface
 ```
 
 </details>
@@ -19,7 +19,7 @@ yarn add expo-dev-launcher expo-dev-menu-interface
 <summary>npm</summary>
 
 ```bash
-npm install expo-dev-launcher expo-dev-menu-interface
+npm install expo-dev-launcher expo-dev-menu-interface expo-updates-interface
 ```
 
 </details>

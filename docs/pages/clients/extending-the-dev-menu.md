@@ -22,6 +22,9 @@ One of the main purposes of this package was to provide an easy way to create ex
    import com.facebook.react.bridge.ReactContextBaseJavaModule
    import expo.interfaces.devmenu.DevMenuExtensionInterface
    import expo.interfaces.devmenu.items.DevMenuItem
+   import expo.interfaces.devmenu.items.DevMenuDataSourceInterface
+   import expo.interfaces.devmenu.items.DevMenuItemsContainer
+   import expo.interfaces.devmenu.items.DevMenuScreen
 
    class CustomDevMenuExtension(reactContext: ReactApplicationContext)
      : ReactContextBaseJavaModule(reactContext),
@@ -29,7 +32,7 @@ One of the main purposes of this package was to provide an easy way to create ex
 
      override fun getName() = "CustomDevMenuExtension" // here you can provide name for your extension
 
-     override fun devMenuItems(): List<DevMenuItem>? {
+     override fun devMenuItems(settings: DevMenuExtensionSettingsInterface) = DevMenuItemsContainer.export {
        // Firstly, create a function which will be called when the user presses the button.
        val clearSharedPreferencesOnPress: () -> Unit = {
          reactApplicationContext
@@ -42,20 +45,21 @@ One of the main purposes of this package was to provide an easy way to create ex
            }
        }
 
-       // Then, create `DevMenuAction` object.
-       val clearSharedPreferences = DevMenuAction(
+       // Then, create `DevMenuAction` and export it.
+       action(
          actionId = "clear_shared_preferences", // This string identifies your custom action. Make sure that it's unique.
          action = clearSharedPreferencesOnPress
-       ).apply {
+       ) {
          label = { "Clear shared preferences" } // This string will be displayed in the dev menu.
          glyphName = { "delete" } // This is a icon name used to present your action. You can use any icon from the `MaterialCommunityIcons`.
          importance = DevMenuItemImportance.HIGH.value // This value tells the dev-menu in which order the actions should be rendered.
          keyCommand = KeyCommand(KeyEvent.KEYCODE_S) // You can associate key commend with your action.
        }
-
-       // Return created object. Note: you can register multiple actions if you want.
-       return listOf(clearSharedPreferences)
      }
+
+     fun devMenuScreens(settings: DevMenuExtensionSettingsInterface): List<DevMenuScreen>? = null
+
+     fun devMenuDataSources(settings: DevMenuExtensionSettingsInterface): List<DevMenuDataSourceInterface>? = null
    }
    ```
 
@@ -120,12 +124,15 @@ One of the main purposes of this package was to provide an easy way to create ex
      }
 
      @objc
-     open func devMenuItems() -> [DevMenuItem]? {
+     open func devMenuItems(_ settings: DevMenuExtensionSettingsProtocol) -> DevMenuItemsContainerProtocol? {
        // Firstly, create a function which will be called when the user presses the button.
        let clearNSUserDefaultsOnPress = {
          let prefs = UserDefaults.standard
          prefs.removeObject(forKey: "key_to_remove")
        }
+
+       // Then we need to create a container that will contain all our custom features
+       let container = DevMenuItemsContainer()
 
        let clearNSUserDefaults = DevMenuAction(
          withId: "clear_nsusersdefaults", // This string identifies your custom action. Make sure that it's unique.
@@ -137,8 +144,11 @@ One of the main purposes of this package was to provide an easy way to create ex
        clearNSUserDefaults.importance = DevMenuItem.ImportanceHigh // This value tells the dev-menu in which order the actions should be rendered.
        clearNSUserDefaults.registerKeyCommand(input: "p", modifiers: .command) // You can associate key commend with your action.
 
-       // Return created object. Note: you can register multiple actions if you want.
-       return [clearNSUserDefaults]
+       // Register created object. Note: you can register multiple actions if you want.
+       container.addItem(clearNSUserDefaults)
+
+       // Return container
+       return container
      }
    }
    ```
@@ -161,3 +171,7 @@ One of the main purposes of this package was to provide an easy way to create ex
    ```objc
    #import <React/RCTBridgeModule.h>
    ```
+
+After all those steps you should see something like this:
+
+<img src="/static/images/client/custom_dev_menu_extension_example.png" style={{maxWidth: "100%" }}/>
