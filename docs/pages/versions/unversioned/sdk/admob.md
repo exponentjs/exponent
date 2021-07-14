@@ -234,12 +234,14 @@ Opens a rewarded AdMob ad.
 
 | Events are based on native ad lifecycle |
 | -------------------------------- |
-| `rewardedVideoUserDidEarnReward` |
-| `rewardedVideoDidLoad`           |
-| `rewardedVideoDidFailToLoad`     |
-| `rewardedVideoDidPresent`        |
-| `rewardedVideoDidFailToPresent`  |
-| `rewardedVideoDidDismiss`        |
+| `rewardedVideoDidClose` |
+| `rewardedVideoDidFailToLoad`           |
+| `rewardedVideoDidLoad`     |
+| `rewardedVideoDidOpen`        |
+| `rewardedVideoDidRewardUser`  |
+| `rewardedVideoDidStart`        |
+| `rewardedVideoWillLeaveApplication`     |
+
 
 #### Test ID
 
