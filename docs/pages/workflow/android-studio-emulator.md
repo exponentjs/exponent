@@ -58,15 +58,16 @@ Having multiple `adb` versions on your system can result in the error `adb serve
 This is because the adb version on your system is different from the adb version on the android sdk platform-tools.
 
 - Open the terminal and check the `adb` version on the system:
-
-`$adb version`
+```sh
+adb version
+```
 
 - And from the Android SDK platform-tool directory:
+```sh
+$ANDROID_SDK/platform-tools/adb version
+```
 
-`$cd ~/Library/Android/sdk/platform-tools`
-
-`$./adb version`
-
-- Copy `adb` from Android SDK directory to `usr/bin` directory:
-
-`$sudo cp ~/Library/Android/sdk/platform-tools/adb /usr/bin`
+- Create a symbolic link for `adb` from the Android SDK directory to `usr/local/bin`:
+```sh
+sudo ln -s $ANDROID_SDK/platform-tools/adb /usr/local/bin/adb
+```
