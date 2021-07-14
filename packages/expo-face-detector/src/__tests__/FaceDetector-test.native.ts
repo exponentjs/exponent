@@ -10,3 +10,9 @@ describe('detectFacesAsync', () => {
     expect(ExpoFaceDetector.detectFaces).toHaveBeenLastCalledWith({ ...options, uri });
   });
 });
+
+describe('isAvailableAsync', () => {
+  it('resolves to true on native platforms', async () => {
+    await expect(FaceDetector.isAvailableAsync()).resolves.toBeTruthy();
+  });
+});

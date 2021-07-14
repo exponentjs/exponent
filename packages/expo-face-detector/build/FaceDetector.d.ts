@@ -44,6 +44,10 @@ export declare type DetectionOptions = {
     detectLandmarks?: FaceDetectorLandmarks;
     runClassifications?: FaceDetectorClassifications;
 };
+/**
+ * Returns whether the Face Detector API is enabled on the current device.
+ */
+export declare function isAvailableAsync(): Promise<boolean>;
 export declare function detectFacesAsync(uri: string, options?: DetectionOptions): Promise<{
     faces: FaceFeature[];
     image: Image;
