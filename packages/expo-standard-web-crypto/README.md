@@ -13,7 +13,7 @@ First follow the instructions for installing [`expo-random`](https://github.com/
 ### Add the package to your npm dependencies
 
 ```
-npm install expo-standard-crypto
+npm install expo-standard-web-crypto
 ```
 
 ### Using the polyfill
