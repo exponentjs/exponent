@@ -52,6 +52,10 @@ This module requires the permissions for approximate and exact device location. 
 
 > **Note:** on Android, you have to [submit your app for review and request access to use the background location permission](https://support.google.com/googleplay/android-developer/answer/9799150?hl=en).
 
+#### Removing ACCESS_BACKGROUND_LOCATION
+
+Google Play is rejecting apps that do not provide a valid explanation as to why they need this permission. Expo adds it by default. If you do not need background location access, you should [configure you AndroidManifest.xml to blacklist this permission](https://docs.expo.io/versions/latest/sdk/permissions/#excluding-android-permissions-in-bare-workflow).
+
 # Contributing
 
 Contributions are very welcome! Please refer to guidelines described in the [contributing guide](https://github.com/expo/expo#contributing).
