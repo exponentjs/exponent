@@ -1072,6 +1072,8 @@ First, be sure to login to your Expo account `expo login`. This will be part of 
 - **URIs** (Authorized JavaScript origins): https://auth.expo.io
 - **Authorized redirect URIs**: https://auth.expo.io/@your-username/your-project-slug
 
+If you get `Error: Cannot make a deep link into a standalone app with no custom scheme defined`, set `scheme` in `app.json`.
+
 #### iOS Native
 
 This can only be used in standalone and bare workflow apps. This method cannot be used in the Expo Go app.
