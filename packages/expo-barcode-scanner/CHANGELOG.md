@@ -36,6 +36,7 @@ _This version does not introduce any user-facing changes._
 - Remove lodash. ([#11900](https://github.com/expo/expo/pull/11900) by [@EvanBacon](https://github.com/EvanBacon))
 - Converted plugin to TypeScript. ([#11715](https://github.com/expo/expo/pull/11715) by [@EvanBacon](https://github.com/EvanBacon))
 - Updated Android build configuration to target Android 11 (added support for Android SDK 30). ([#11647](https://github.com/expo/expo/pull/11647) by [@bbarthec](https://github.com/bbarthec))
+- Added support for string literal as bar code types input in iOS ([#11796](https://github.com/expo/expo/pull/11796) by [@jarvisluong](https://github.com/jarvisluong))
 
 ### 🐛 Bug fixes
 

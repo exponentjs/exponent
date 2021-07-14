@@ -29,12 +29,19 @@ UM_EXPORT_MODULE(ExpoBarCodeScannerModule);
 
 - (NSDictionary *)constantsToExport
 {
+  NSMutableDictionary* barCodeTypes = [NSMutableDictionary dictionary];
+  // We export the valid bar code types as string literal which matches the documentation.
+  // The consumer can use the string literal (e.g qr) or the constant exports
+  [[[EXBarCodeScannerUtils validBarCodeTypes] allKeys] enumerateObjectsUsingBlock:^(
+    id  _Nonnull key, NSUInteger idx, BOOL * _Nonnull stop) {
+    barCodeTypes[key] = key;
+  }];
   return @{
            @"Type": @{
                @"front": @(EXCameraTypeFront),
                @"back" : @(EXCameraTypeBack),
                },
-           @"BarCodeType": [EXBarCodeScannerUtils validBarCodeTypes],
+           @"BarCodeType": [NSDictionary dictionaryWithDictionary:barCodeTypes],
            };
 }
 

@@ -54,7 +54,12 @@ NSString *const EX_BARCODE_TYPES_KEY = @"barCodeTypes";
 {
   for (NSString *key in settings) {
     if ([key isEqualToString:EX_BARCODE_TYPES_KEY]) {
-      NSArray<NSString *> *value = settings[key];
+      NSMutableArray<AVMetadataObjectType> *value = [NSMutableArray array];
+      [settings[key] enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([EXBarCodeScannerUtils validBarCodeTypes][obj]) {
+          [value addObject:[EXBarCodeScannerUtils validBarCodeTypes][obj]];
+        }
+      }];
       NSSet *previousTypes = [NSSet setWithArray:_settings[EX_BARCODE_TYPES_KEY]];
       NSSet *newTypes = [NSSet setWithArray:value];
       if (![previousTypes isEqualToSet:newTypes]) {
