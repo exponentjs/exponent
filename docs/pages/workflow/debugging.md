@@ -101,7 +101,9 @@ brew install --cask react-native-debugger
 
 ### Startup
 
-After firing up React Native Debugger, you'll need to specify the port (shortcuts: `Command+T` on macOS, `Ctrl+T` on Linux/Windows) to `19000` (if you use SDK <= 39, the port should be `19001`>). After that, run your project with `expo start`, and select `Debug remote JS` from the Developer Menu. The debugger should automatically connect.
+After firing up React Native Debugger, you'll need to specify the port (shortcuts: `Command+T` on macOS, `Ctrl+T` on Linux/Windows) to `19000` (if you use SDK <= 39, the port should be `19001`>). After that, run your project with `expo start`.
+
+Then, in the iOS Simulator, hit `CMD + D` to "shake" the Simulartor, and then select `Debug Remote JS` from the Developer Menu that pops up. The React Native Debugger should now be connected.
 
 In the debugger console, you can see the Element tree, as well as the props, state, and children of whatever element you select. You also have the Chrome console on the right, and if you type `$r` in the console, you will see the breakdown of your selected element.
 
