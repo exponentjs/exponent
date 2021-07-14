@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "rimraf .next/preval && next dev -p 3002",
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=5120 next build",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=4096 next build",
     "export": "yarn run build && next export && yarn run export-issue-404",
     "export-issue-404": "echo \"🛠  Patching https://github.com/vercel/next.js/issues/16528\"; cp out/404/index.html out/404.html",
     "export-server": "http-server out -p 8000",
