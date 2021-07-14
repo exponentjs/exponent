@@ -47,7 +47,7 @@ In managed apps, scanning barcodes with the camera requires the [`Permission.CAM
 
 > Important notes:
 >
-> - When an ITF-14 barcode is recognized, it's type can sometimes be set to `interleaved2of5`.
+> - When an ITF-14 barcode is recognized, its type can sometimes be set to `interleaved2of5`.
 
 > - Scanning for either `PDF417` and/or `Code39` formats can result in a noticeable increase in battery consumption on iOS. It is recommended to provide only the bar code formats you expect to scan to the `barCodeTypes` prop.
 
@@ -193,4 +193,4 @@ Object of type `BarCodeScannerResult` contains following keys:
 - **bounds : [BarCodeScanner.BarCodeBounds](#barcodescannerbarcodebounds)** -- (_Optional_) The `BarCodeBounds` object.
 - **cornerPoints : Array<[BarCodeScanner.BarCodePoint](#barcodescannerbarcodepoint)\>** -- (_Optional_) Corner points of the bounding box.
 
-> **NOTE** `bounds` and `cornerPoints` are not always available. On iOS, for `code39` and `pdf417` you don't get those values. Moreover, on iOS, those values don't have to bounds the whole barcode. For some types, they will represent the area used by the scanner.
+> **NOTE** `bounds` and `cornerPoints` are not always available. On iOS, for `code39` and `pdf417` you don't get those values. Moreover, on iOS, those values don't have to bound the whole barcode. For some types, they will represent the area used by the scanner.
