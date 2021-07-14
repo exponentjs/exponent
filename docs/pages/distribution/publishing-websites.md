@@ -253,3 +253,43 @@ In case you want to change the header for hosting add the following config in `h
     }
   ]
 ```
+
+## [Heroku hosting](https://dashboard.heroku.com/apps/)
+
+### static.json
+
+- Add a `static.json` to select the web-build folder:
+
+```js
+{
+  "root": "web-build/",
+  "clean_urls": false
+}
+```
+
+- To enable client side routing add `"routes"`:
+
+```js
+{
+  "root": "web-build/",
+  "clean_urls": false,
+  "routes": {
+    "/**": "index.html"
+  }
+}
+```
+
+### Connect your app with Heroku
+
+- Create a new Heroku app
+
+- Connect your app via Heroku CLI or Github to deploy it
+
+
+### Heroku buildpack static
+
+- Add the `heroku-buildpack-static`. Go to Settings click on `Add buildpack` and paste [https://github.com/hone/heroku-buildpack-static](https://github.com/hone/heroku-buildpack-static) into the search bar and click `Save changes`.
+
+> Remove all other buildpacks if there are.
+
+- Deploy your app
