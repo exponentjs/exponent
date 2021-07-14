@@ -10,8 +10,7 @@ import { useWindowDimensions } from 'react-native';
 `useWindowDimensions` automatically updates `width` and `height` values when screen size changes. You can get your application window's width and height like so:
 
 ```js
-const windowWidth = useWindowDimensions().width;
-const windowHeight = useWindowDimensions().height;
+const { width, height } = useWindowDimensions();
 ```
 
 ## Example
@@ -21,10 +20,11 @@ import React from "react";
 import { View, StyleSheet, Text, useWindowDimensions } from "react-native";
 
 const App = () => {
-  const window = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
+
   return (
     <View style={styles.container}>
-      <Text>{`Window Dimensions: height - ${window.height}, width - ${window.width}`}</Text>
+      <Text>{`Window Dimensions: height - ${height}, width - ${width}`}</Text>
     </View>
   );
 }
@@ -44,12 +44,12 @@ export default App;
 
 ## Properties
 
-### `fontScale`
+### `width`
 
-The scale of the font currently used. Some operating systems allow users to scale their font sizes larger or smaller for reading comfort. This property will let you know what is in effect.
+The width in pixels of the window or screen your app occupies.
 
 ```js
-useWindowDimensions().fontScale;
+useWindowDimensions().width;
 ```
 
 ### `height`
@@ -68,12 +68,12 @@ The pixel ratio of the device your app is running on.
 useWindowDimensions().scale;
 ```
 
-> A value of `1` indicates PPI/DPI of 96 (76 on some platforms). `2` indicates a Retina or high DPI display.
+### `fontScale`
 
-### `width`
-
-The width in pixels of the window or screen your app occupies.
+The scale of the font currently used. Some operating systems allow users to scale their font sizes larger or smaller for reading comfort. This property will let you know what is in effect.
 
 ```js
-useWindowDimensions().width;
+useWindowDimensions().fontScale;
 ```
+
+> A value of `1` indicates PPI/DPI of 96 (76 on some platforms). `2` indicates a Retina or high DPI display.
