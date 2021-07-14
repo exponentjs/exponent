@@ -67,6 +67,6 @@ This is because the adb version on your system is different from the adb version
 
 `$./adb version`
 
-- Copy `adb` from Android SDK directory to `usr/bin` directory:
+- Copy `adb` from Android SDK directory to `/usr/local/bin` directory:
 
-`$sudo cp ~/Library/Android/sdk/platform-tools/adb /usr/bin`
+`$sudo cp ~/Library/Android/sdk/platform-tools/adb /usr/local/bin`
