@@ -106,4 +106,4 @@ When you publish your project, it will upload your assets to the CDN so that the
 
 ### Optimizing Assets
 
-You can manually optimize your assets by running the command `npx expo-optimize` which will use the [sharp](https://sharp.pixelplumbing.com/en/stable/) library to compress your assets. You can set the quality of the compression by passing the `--quality [number]` option to the command. For example, to compress to `90%` you would run `npx expo-optimize --quality 0.9`.
+You can manually optimize your assets by running the command `npx expo-optimize` which will use the [sharp](https://sharp.pixelplumbing.com/en/stable/) library to compress your assets. You can set the quality of the compression by passing the `--quality [number]` option to the command. For example, to compress to `90%` you would run `npx expo-optimize --quality 90`.
