@@ -352,20 +352,20 @@ function useMounted() {
 
 | Website                      | Provider  | PKCE          | Auto Discovery |
 | ---------------------------- | --------- | ------------- | -------------- |
-| [Get Your Config][c-dropbox] | OAuth 2.0 | Not Supported | Not Available  |
+| [Get Your Config][c-dropbox] | OAuth 2.0 | Supported | Not Available  |
 
 [c-dropbox]: https://www.dropbox.com/developers/apps/create
 
 - Scopes must be an empty array.
-- PKCE must be disabled (`usePKCE: false`) otherwise you'll get an error about `code_challenge` being included in the query string.
+- When `responseType: ResponseType.Token` PKCE must be disabled (`usePKCE: false`) otherwise you'll get an error about `code_challenge` being included in the query string.
 - Implicit auth is supported.
 - When `responseType: ResponseType.Code` is used (default behavior) the `redirectUri` must be `https`. This means that code exchange auth cannot be done on native without `useProxy` enabled.
 
-<Tabs tabs={["Auth Code", "Implicit Flow"]}>
+<Tabs tabs={["Auth Code", "Implicit Flow", "PCKE Flow"]}>
 
 <Tab>
 
-Auth code responses (`ResponseType.Code`) will only work in native with `useProxy: true`.
+Auth code responses (`ResponseType.Code`) will only work in native with `useProxy: true` or `usePCKE: true`.
 
 <SnackInline label='Dropbox Auth Code' dependencies={['expo-auth-session', 'expo-random', 'expo-web-browser']}>
 
@@ -396,7 +396,7 @@ export default function App() {
       clientId: 'CLIENT_ID',
       // There are no scopes so just pass an empty array
       scopes: [],
-      // Dropbox doesn't support PKCE
+      // Set to false for implicit authentication
       usePKCE: false,
       // For usage in managed apps using the proxy
       redirectUri: makeRedirectUri({
@@ -482,6 +482,81 @@ export default function App() {
     if (response?.type === 'success') {
       /* @info Use this access token to interact with user data on the provider's server. */
       const { access_token } = response.params;
+      /* @end */
+    }
+  }, [response]);
+
+  return (
+    <Button
+      /* @info Disable the button until the request is loaded asynchronously. */
+      disabled={!request}
+      /* @end */
+      title="Login"
+      onPress={() => {
+        /* @info Prompt the user to authenticate in a user interaction or web browsers will block it. */
+        promptAsync();
+        /* @end */
+      }}
+    />
+  );
+}
+```
+
+</SnackInline>
+
+</Tab>
+
+<Tab>
+
+Auth code responses (`ResponseType.Code`) will only work in native with `useProxy: true` or `usePKCE: true`. The PCKE OAuth workflow returns an authentication code which can be exchanged for a short-lived access token and a long-lived refresh-token. This allows for long-session Dropbox connections.
+
+<SnackInline label='Dropbox PKCE' dependencies={['expo-auth-session', 'expo-web-browser']}>
+
+<!-- prettier-ignore -->
+```tsx
+import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser';
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session';
+import { Button, Platform } from 'react-native';
+
+/* @info <strong>Web only:</strong> This method should be invoked on the page that the auth popup gets redirected to on web, it'll ensure that authentication is completed properly. On native this does nothing. */
+WebBrowser.maybeCompleteAuthSession();
+/* @end */
+
+// Endpoint
+const discovery = {
+  authorizationEndpoint: 'https://www.dropbox.com/oauth2/authorize',
+  tokenEndpoint: 'https://www.dropbox.com/oauth2/token',
+};
+
+export default function App() {
+  /* @info request will contain the <b>codeVerifier</b> which will need to be used with the Dropbox token endpoint to exchange the authorization code for an access token and a refresh token*/
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      //Set response type to code to obtain authorization code instead of an access token
+      responseType: ResponseType.Code,
+      clientId: 'CLIENT_ID',
+      // There are no scopes so just pass an empty array
+      scopes: [],
+      // Set to true for PCKE flow
+      usePKCE: true,
+      redirectUri: makeRedirectUri({
+        // For usage in bare and standalone
+        native: 'your.app://redirect',
+      }),
+      //Needed to obtain refresh token
+      extraParams: {
+        token_access_type: "offline",
+      },
+    },
+    discovery
+  );
+  /* @end */
+
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      /* @info Exchange the authorization code for an access token and refresh token via the Dropbox token enpoint using client_id and client_secret. Alternatively you can use the <b>Implicit</b> auth method. */
+      const { code } = response.params;
       /* @end */
     }
   }, [response]);
