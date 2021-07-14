@@ -23,7 +23,7 @@ for bucket in ${buckets[@]}; do
 #   5. Add custom redirects
 #   6. Copy domain-specific sitemap.xml separately since they're named separately in the build step
 
-echo "::group::[1/7] Sync Next.js static assets in \`_next/**\` folder"
+echo "::group::[1/7] Sync Next.js static assets in \`_next/**\` folder ($bucket)"
 aws s3 sync \
   --no-progress \
   --exclude "*" \
@@ -33,7 +33,7 @@ aws s3 sync \
   "s3://${bucket}"
 echo "::endgroup::"
 
-echo "::group::[2/7] Sync assets in \`static/**\` folder"
+echo "::group::[2/7] Sync assets in \`static/**\` folder ($bucket)"
 aws s3 sync \
   --no-progress \
   --exclude "*" \
@@ -45,7 +45,7 @@ echo "::endgroup::"
 
 # Due to a bug with `aws s3 sync` we need to copy everything first instead of syncing
 # see: https://github.com/aws/aws-cli/issues/3273#issuecomment-643436849
-echo "::group::[3/7] Overwrite HTML dependents, not located in \`_next/**\` or \`static/**\` folder"
+echo "::group::[3/7] Overwrite HTML dependents, not located in \`_next/**\` or \`static/**\` folder ($bucket)"
 aws s3 cp \
   --no-progress \
   --recursive \
@@ -57,7 +57,7 @@ aws s3 cp \
   "s3://${bucket}"
 echo "::endgroup::"
 
-echo "::group::[4/7] Sync assets and clean up outdated files from previous deployments"
+echo "::group::[4/7] Sync assets and clean up outdated files from previous deployments ($bucket)"
 aws s3 sync \
   --no-progress \
   --delete \
@@ -97,7 +97,7 @@ redirects[faq/clear-cache-windows]=troubleshooting/clear-cache-windows/
 redirects[faq/clear-cache-macos-linux]=troubleshooting/clear-cache-macos-linux/
 redirects[faq/application-has-not-been-registered]=troubleshooting/application-has-not-been-registered/
 
-echo "::group::[5/7] Add custom redirects"
+echo "::group::[5/7] Add custom redirects ($bucket)"
 for i in "${!redirects[@]}" # iterate over keys
 do
   aws s3 cp \
@@ -120,7 +120,7 @@ do
 done
 echo "::endgroup::"
 
-echo "::group::[6/7] Copy over domain-specific sitemap.xml and robots.txt"
+echo "::group::[6/7] Copy over domain-specific sitemap.xml and robots.txt ($bucket)"
 aws s3 cp \
   --no-progress \
   "$target/${bucket}-sitemap.xml" \
@@ -132,7 +132,7 @@ aws s3 cp \
   "s3://${bucket}/robots.txt"
 echo "::endgroup::"
 
-echo "::group::[7/7] Notify Google of sitemap changes"
+echo "::group::[7/7] Notify Google of sitemap changes ($bucket)"
 if [ "$bucket" == "docs.expo.io" ]; then
   echo "Strings are equal"
   curl -m 15 "http://www.google.com/ping\?sitemap\=https%3A%2F%2F${bucket}%2Fsitemap.xml"
