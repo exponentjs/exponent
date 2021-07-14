@@ -28,6 +28,17 @@ npx expo-optimize
 
 To inspect bundle sizes, you can use a Webpack plugin called [_Webpack Bundle Analyzer_](https://github.com/webpack-contrib/webpack-bundle-analyzer). This plugin will help you visualize the size of your static bundles. You can use this to identify unwanted large packages that you may not have bundled intentionally.
 
+
+### Using Bundle Analyzer for app bundle
+
+1. Install the source map explorer: `yarn add -D source-map-explorer`
+2. Create app export: `npx expo export --output-dir exported -p https://www.example.com/ --dump-sourcemap`.
+3. Analyze created bundle for iOS: `npx source-map-explorer exported/bundles/ios-*.js exported/bundles/ios-*.map`.
+4. Analyze created bundle for android: `npx source-map-explorer exported/bundles/android-*.js exported/bundles/android-*.map`.
+
+Note: Remember to delete exported folder between runs with e.g.: `rm -rf exported`
+
+
 ### Using Bundle Analyzer
 
 1. Install the bundle analyzer: `yarn add -D webpack-bundle-analyzer`
