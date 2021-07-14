@@ -13,7 +13,7 @@ A component that provides access to the system UI for picking between several op
 
 > 💡 This library was formerly known as `@react-native-community/picker`. If you have that library in your SDK 40+ project, you can uninstall it and install this one instead.
 
-<PlatformsSection android emulator ios simulator />
+<PlatformsSection android emulator ios simulator web />
 
 ## Installation
 
