@@ -397,7 +397,7 @@ The permission type for reading or writing to the media library.
 - **Android:** it requires the [`READ_EXTERNAL_STORAGE`][medialibrary-android-read] and [`WRITE_EXTERNAL_STORAGE`][medialibrary-android-write] permissions in your manifest.
 - **iOS** it requires the `expo-image-picker` or `expo-media-library` module and [`NSPhotoLibraryUsageDescription`][medialibrary-ios-plist] message.
 
-> **Note (iOS):** iOS provides more detailed permissions, returning `{ status, permissions: { cameraRoll: { accessPrivileges } } }` where `accessPrivileges` can be:
+> **Note (iOS):** iOS provides more detailed permissions, returning `{ status, permissions: { mediaLibrary: { accessPrivileges } } }` where `accessPrivileges` can be:
 >
 > - `all` if the user granted your app access to the whole photo library
 > - `limited` if the user granted your app access only to selected photos (only available on **iOS 14.0+**)
