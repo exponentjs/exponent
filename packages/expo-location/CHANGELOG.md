@@ -23,6 +23,8 @@
 
 - Migrated from `unimodules-permissions-interface` to `expo-modules-core`. ([#12961](https://github.com/expo/expo/pull/12961) by [@tsapeta](https://github.com/tsapeta))
 
+- Updated types for `requestForegroundPermissionsAsync` and `getForegroundPermissionsAsync`. ([#13245](https://github.com/expo/expo/pull/13245) by [@drtangible](https://github.com/drtangible))
+
 ## 12.0.4 — 2021-04-13
 
 _This version does not introduce any user-facing changes._

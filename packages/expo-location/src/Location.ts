@@ -179,14 +179,14 @@ export async function requestPermissionsAsync(): Promise<LocationPermissionRespo
 /**
  * Gets the current state of foreground location permissions.
  */
-export async function getForegroundPermissionsAsync(): Promise<LocationPermissionResponse> {
+export async function getForegroundPermissionsAsync(): Promise<PermissionResponse> {
   return await ExpoLocation.getForegroundPermissionsAsync();
 }
 
 /**
  * Requests the user to grant foreground location permissions.
  */
-export async function requestForegroundPermissionsAsync(): Promise<LocationPermissionResponse> {
+export async function requestForegroundPermissionsAsync(): Promise<PermissionResponse> {
   return await ExpoLocation.requestForegroundPermissionsAsync();
 }
 

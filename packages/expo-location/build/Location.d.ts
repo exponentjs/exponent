@@ -56,11 +56,11 @@ export declare function requestPermissionsAsync(): Promise<LocationPermissionRes
 /**
  * Gets the current state of foreground location permissions.
  */
-export declare function getForegroundPermissionsAsync(): Promise<LocationPermissionResponse>;
+export declare function getForegroundPermissionsAsync(): Promise<PermissionResponse>;
 /**
  * Requests the user to grant foreground location permissions.
  */
-export declare function requestForegroundPermissionsAsync(): Promise<LocationPermissionResponse>;
+export declare function requestForegroundPermissionsAsync(): Promise<PermissionResponse>;
 /**
  * Gets the current state of background location permissions.
  */
