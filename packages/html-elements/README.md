@@ -105,7 +105,7 @@ Other features not implemented in this package can be found in different parts o
 | ------------------------------- | :------------------: | :--------------------------------------------------------------------------------------------------------------------: |
 | `<audio />`                     |       `Audio`        |                                                 [`expo-av`][ex-audio]                                                  |
 | `<button />`                    |     `<Button />`     |                                                     `react-native`                                                     |
-| `<input type="text" />`         |    `<TextView />`    |                                                     `react-native`                                                     |
+| `<input type="text" />`         |    `<TextInput />`    |                                                     `react-native`                                                     |
 | `<input type="file" />`         |    `ImagePicker`     |                                            [`expo-image-picker`][ex-ipick]                                             |
 | `<input type="file" />`         |   `DocumentPicker`   |                                           [`expo-document-picker`][ex-dpick]                                           |
 | `<canvas />`                    |     `<GLView />`     |                                     [`expo-gl`][ex-gl] & [Expo Canvas][ex-canvas]                                      |
