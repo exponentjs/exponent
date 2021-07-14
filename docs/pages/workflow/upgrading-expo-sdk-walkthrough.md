@@ -4,7 +4,9 @@ title: Upgrading Expo SDK
 
 If you are a couple of versions behind, upgrading your projects Expo SDK version can be difficult because of the amount of breaking changes and deprecations in each upgrade. Don't worry, here are all the breaking changes in each SDK version upgrade. We **strongly recommend** upgrading SDK versions incrementally if possible. Doing so will help you pinpoint breakages and issues that arise during the upgrade process.
 
-Expo maintains ~6 months of backwards compatibility. Once an SDK version has been deprecated, you will no longer be able to use the Expo Go app for development or build new binaries via `expo build`. You will still be able to publish OTA updates via `expo publish` however. Deprecations **will not** affect standalone apps you have in production.
+Expo maintains ~1 year of backwards compatibility. Once an SDK version has been deprecated, you will no longer be able to use the Expo Go app for development or build new binaries via `expo build`. You will still be able to publish OTA updates via `expo publish` however. Deprecations **will not** affect standalone apps you have in production.
+
+> If the SDK version you're using is no longer supported in the current version of Expo Go, you can always install older versions of Expo Go via `expo-cli` by running `expo client:install:[ios | android]` from your project directory (for iOS, this command only works for simulators, not physical devices).
 
 > **Note**: If you are running ExpoKit inside a native project, upgrading will require extra steps. ExpoKit is deprecated and will no longer be supported after SDK 38. We recommend [migrating existing ExpoKit projects to the bare workflow](../bare/migrating-from-expokit.md).
 
@@ -105,7 +107,7 @@ Expo maintains ~6 months of backwards compatibility. Once an SDK version has bee
 - If using the default `.babelrc`, change it to `babel.config.js`:
 
 ```javascript
-module.exports = function(api) {
+module.exports = function (api) {
   api.cache(true);
   return {
     presets: ['babel-preset-expo'],

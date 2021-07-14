@@ -44,7 +44,7 @@ After the platform compatibility table, there will be an Installation section, w
 
 <br />
 
-The `expo install` command will pick a version of the library that is compatible with your project and then use your JavaScript package manager (such as npm) to install it.
+Because projects running in Expo Go rely on the native code that is bundled into the SDK, it is important that the version of a package you have in your `package.json` is compatible with the native code it's using. To simplify this, you can use `expo install <some-expo-package>` and the proper version of that package, based on your SDK version, will be installed. In other words- `expo install` installs the appropriate JavaScript for a package based on the native code your project is using (which is indicated by your Expo SDK version).
 
 Next, under the API section the reference page will tell you how to import the library in your code:
 
