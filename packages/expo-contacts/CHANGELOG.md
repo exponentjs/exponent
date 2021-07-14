@@ -8,6 +8,8 @@
 
 ### 🎉 New features
 
+- [plugin] Added `enableIosContactNotes` property to add support for the contact notes entitlement. ([#12965](https://github.com/expo/expo/pull/12965) by [@EvanBacon](https://github.com/EvanBacon))
+
 ### 🐛 Bug fixes
 
 - Fixed Android intent XML parsing issues. ([#13401](https://github.com/expo/expo/pull/13401) by [@quicksnap](https://github.com/quicksnap))
