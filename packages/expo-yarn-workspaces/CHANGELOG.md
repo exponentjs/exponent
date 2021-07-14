@@ -6,6 +6,8 @@
 
 ### 🎉 New features
 
+- Remove `activateKeepAwake` from AppEntry template. ([#11911](https://github.com/expo/expo/pull/11911) by [@EvanBacon](https://github.com/EvanBacon))
+
 ### 🐛 Bug fixes
 
 ### 💡 Others
