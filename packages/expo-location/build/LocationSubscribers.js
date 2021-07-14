@@ -2,9 +2,11 @@ import ExpoLocation from './ExpoLocation';
 import { LocationEventEmitter } from './LocationEventEmitter';
 let nextWatchId = 0;
 class Subscriber {
+    eventName;
+    eventDataField;
+    callbacks = {};
+    eventSubscription = null;
     constructor(eventName, eventDataField) {
-        this.callbacks = {};
-        this.eventSubscription = null;
         this.eventName = eventName;
         this.eventDataField = eventDataField;
     }

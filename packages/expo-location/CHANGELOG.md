@@ -4,6 +4,8 @@
 
 ### 🛠 Breaking changes
 
+- Remove deprecated `setApiKey` method. ([#13266](https://github.com/expo/expo/pull/13266) by [@FelipeACP](https://github.com/FelipeACP))
+
 ### 🎉 New features
 
 - Use stable manifest ID where applicable. ([#12964](https://github.com/expo/expo/pull/12964) by [@wschurman](https://github.com/wschurman))

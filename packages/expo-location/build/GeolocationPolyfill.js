@@ -2,6 +2,11 @@ import { Platform } from '@unimodules/core';
 import ExpoLocation from './ExpoLocation';
 import { LocationAccuracy } from './Location.types';
 import { LocationSubscriber } from './LocationSubscribers';
+// @needsAudit
+/**
+ * Polyfills navigator.geolocation for interop with the core
+ * React Native and Web API approach to geolocation.
+ */
 export function installWebGeolocationPolyfill() {
     if (Platform.OS !== 'web') {
         // Polyfill navigator.geolocation for interop with the core react-native and web API approach to

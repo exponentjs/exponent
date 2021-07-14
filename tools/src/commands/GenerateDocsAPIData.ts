@@ -100,6 +100,7 @@ async function action({packageName, version = 'unversioned'}: ActionOptions) {
     'expo-keep-awake': ['index.ts'],
     'expo-linear-gradient': ['LinearGradient.tsx'],
     'expo-localization': ['Localization.ts'],
+    'expo-location': ['Location.ts'],
     'expo-mail-composer': ['MailComposer.ts'],
     'expo-network': ['Network.ts'],
     'expo-pedometer': ['Pedometer.ts', 'expo-sensors'],
