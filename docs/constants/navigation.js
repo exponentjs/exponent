@@ -6,17 +6,15 @@ const prevaledNavigationData = require('./navigation-data');
 // Groups -> Sections -> Pages
 const GROUPS = {
   'The Basics': ['Conceptual Overview', 'Get Started', 'Tutorial', 'Next Steps'],
-  'Managed Workflow': [
-    'Fundamentals',
-    'UI Programming',
-    'Assorted Guides',
-    'Push Notifications',
-    'Distributing Your App',
-    'Expo Accounts',
-    'Regulatory Compliance',
-  ],
+  Fundamentals: ['Fundamentals'],
+  'UI Programming': ['UI Programming'],
+  'Assorted Guides': ['Assorted Guides'],
+  'Push Notifications': ['Push Notifications'],
+  'Distributing Your App': ['Distributing Your App'],
+  'Expo Accounts': ['Expo Accounts'],
+  'Regulatory Compliance': ['Regulatory Compliance'],
   Deprecated: ['ExpoKit', 'Archived'],
-  'Bare Workflow': ['Essentials'],
+  'Bare Workflow': ['Bare Workflow'],
   'Expo SDK': ['Expo SDK'],
   'Configuration Files': ['Configuration Files'],
   'React Native': ['React Native'],
@@ -255,9 +253,9 @@ const sections = [
     ],
   },
   {
-    name: 'Essentials',
+    name: 'Bare Workflow',
     reference: [
-      'Bare Workflow Walkthrough',
+      'Walkthrough',
       'Up and Running',
       'Using Libraries',
       'Existing Apps',
@@ -399,13 +397,13 @@ const ROOT = [
   'Tutorial',
   'Conceptual Overview',
   'Fundamentals',
-  'UI Programming',
-  'Assorted Guides',
-  'Push Notifications',
   'Distributing Your App',
+  'Assorted Guides',
   'Expo Accounts',
+  'Bare Workflow',
+  'Push Notifications',
+  'UI Programming',
   'Regulatory Compliance',
-  'Essentials',
   'Configuration Files',
   'Expo SDK',
   'React Native',
@@ -415,6 +413,9 @@ const ROOT = [
 
 // These directories will not be placed in the sidebar, but will still be searchable
 const hiddenSections = ['FAQ', 'Troubleshooting'];
+
+//These sections will NOT be expanded by default in the sidebar
+const unexpandedSections = ['Deprecated', 'Regulatory Compliance', 'UI Programming'];
 
 const sortAccordingToReference = (arr, reference) => {
   reference = Array.from(reference).reverse();
@@ -502,4 +503,5 @@ module.exports = {
   featurePreview: sortedFeaturePreview,
   reference: { ...sortedReference, latest: sortedReference['v' + packageVersion] },
   hiddenSections,
+  unexpandedSections,
 };

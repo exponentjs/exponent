@@ -5,6 +5,7 @@ import * as React from 'react';
 import stripVersionFromPath from '~/common/stripVersionFromPath';
 import { paragraph } from '~/components/base/typography';
 import ChevronDown from '~/components/icons/ChevronDown';
+import { unexpandedSections } from '~/constants/navigation';
 import * as Constants from '~/constants/theme';
 import { NavigationRoute, Url } from '~/types/common';
 
@@ -58,7 +59,7 @@ export default class DocumentationSidebarGroup extends React.Component<Props, { 
 
     // default to always open
     this.state = {
-      isOpen: props.info.name === 'Deprecated' ? isOpen : true,
+      isOpen: unexpandedSections.includes(props.info.name) ? isOpen : true,
     };
   }
 

@@ -11,8 +11,7 @@ const { isEasInFeaturePreview, isDevClientInFeaturePreview } = require('./Featur
 const DIR_MAPPING = {
   introduction: 'Conceptual Overview',
   guides: 'Assorted Guides',
-  'managed-workflow': 'Managed Workflow',
-  bare: 'Essentials',
+  bare: 'Bare Workflow',
   tutorials: 'Tutorials',
   sdk: 'Expo SDK',
   config: 'Configuration Files',
