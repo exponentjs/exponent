@@ -69,6 +69,48 @@ export default class App extends React.Component {
 }
 ```
 
+## Navigate to a particular screen if a push notification was tapped
+
+```
+import React, { useEffect } from 'react';
+import { View, Text } from 'react-native';
+import * as Notifications from 'expo-notifications';
+
+// the first screen component to render in our route configuration
+export default function HomeScreen({ navigation }) {
+  // A React hook always returning the notification response that was received most recently
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
+
+  useEffect(() => {
+    // if a user taps on a notification and there is data in it...
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.notification.request.content.data &&
+      lastNotificationResponse.actionIdentifier ===
+        Notifications.DEFAULT_ACTION_IDENTIFIER
+    ) {
+      // deconstruct the data we need from the push notification
+      const {
+        questionSetId,
+        questionId
+      } = lastNotificationResponse.notification.request.content.data;
+
+      // use that data to navigate to the screen we want
+      navigation.navigate('QuestionScreen', {
+        questionSetId,
+        questionId
+      });
+    }
+  }, [lastNotificationResponse]);
+
+  return (
+    <View>
+      <Text>HomeScreen</Text>
+    </View>
+  );
+}
+```
+
 ## Foreground Notification Behavior
 
 **Important Note**: To set the behavior for when notifications are received while your app is **foregrounded**, use [`Notifications.setNotificationHandler`](../versions/latest/sdk/notifications.md#setnotificationhandlerhandler-notificationhandler--null-void). You can use the callback to set options like:
