@@ -1,26 +1,29 @@
 const path = require('path');
 
-const testDirectory = `__tests__`;
+const snapshotsDirectory = '__snapshots__';
 module.exports = platform => {
-  const customPath = path.join(testDirectory, '__snapshots__');
   const getExt = ext => `${ext}.${platform}`;
   return {
     resolveSnapshotPath: (testPath, snapshotExtension) => {
-      const snapshotFilePath =
-        testPath.replace(testDirectory, customPath) + getExt(snapshotExtension);
+      const snapshotFilename = path.basename(testPath) + getExt(snapshotExtension);
+      const snapshotFilePath = path.posix.join(
+        path.dirname(testPath),
+        snapshotsDirectory,
+        snapshotFilename
+      );
       return snapshotFilePath;
     },
 
     resolveTestPath: (snapshotFilePath, snapshotExtension) => {
       const testPath = snapshotFilePath
-        .replace(customPath, testDirectory)
+        .replace(snapshotsDirectory, '')
         .slice(0, -getExt(snapshotExtension).length);
-      return testPath;
+      return path.posix.normalize(testPath);
     },
 
     testPathForConsistencyCheck: path.posix.join(
       'consistency_check',
-      testDirectory,
+      '__tests__',
       'example.test.js'
     ),
   };
