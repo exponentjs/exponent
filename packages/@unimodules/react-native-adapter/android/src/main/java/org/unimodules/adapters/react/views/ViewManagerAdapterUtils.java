@@ -3,10 +3,12 @@ package org.unimodules.adapters.react.views;
 import android.util.Log;
 import android.view.View;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Dynamic;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReadableMapKeySetIterator;
 import com.facebook.react.common.MapBuilder;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +40,19 @@ public class ViewManagerAdapterUtils {
     return builder.build();
   }
 
+  /* package */ static Map<String, String> getNativeProps(Map<String, String> props, ViewManager viewManager) {
+    // Somehow Java compiler thinks getPropSetterInfos() returns list of Objects.
+    // ¯\_(ツ)_/¯
+    for (Object obj: viewManager.getPropSetterInfos().entrySet()) {
+      Map.Entry<String, ViewManager.PropSetterInfo> entry = (Map.Entry<String, ViewManager.PropSetterInfo>) obj;
+      ViewManager.PropSetterInfo propSetterInfo = entry.getValue();
+      if (propSetterInfo.isAnimated()) {
+        props.put(entry.getKey(), propSetterInfo.getExpectedValueClass().getName());
+      }
+    }
+    return props;
+  }
+
   /* package */ static <V extends View> void setProxiedProperties(String viewManagerAdapterName, ViewManager<V> viewManager, V view, ReadableMap proxiedProperties) {
     ReadableMapKeySetIterator keyIterator = proxiedProperties.keySetIterator();
     while (keyIterator.hasNextKey()) {
@@ -53,6 +68,29 @@ public class ViewManagerAdapterUtils {
       } catch (Exception e) {
         Log.e(viewManagerAdapterName, "Error when setting prop " + key + ". " + e.getMessage());
       }
+    }
+  }
+
+  /* package */ static <V extends View> void setAnimatedProperties(String viewManagerAdapterName, ViewManager<V> viewManager, V view, ReactStylesDiffMap props) {
+    Map<String, Object> propsMap = null;
+    Map<String, Object> animatedProps = null;
+
+    // Somehow Java compiler thinks getPropSetterInfos() returns list of Objects.
+    // ¯\_(ツ)_/¯
+    for (Object obj: viewManager.getPropSetterInfos().entrySet()) {
+      Map.Entry<String, ViewManager.PropSetterInfo> entry = (Map.Entry<String, ViewManager.PropSetterInfo>) obj;
+      ViewManager.PropSetterInfo propSetterInfo = entry.getValue();
+      if (propSetterInfo.isAnimated()) {
+        propsMap = propsMap == null ? props.toMap() : propsMap;
+        if (propsMap.containsKey(entry.getKey())) {
+          animatedProps = animatedProps == null ? new HashMap<String, Object>() : animatedProps;
+          animatedProps.put(entry.getKey(), propsMap.get(entry.getKey()));
+        }
+      }
+    }
+
+    if (animatedProps != null) {
+      setProxiedProperties(viewManagerAdapterName, viewManager, view, Arguments.makeNativeMap(animatedProps));
     }
   }
 }

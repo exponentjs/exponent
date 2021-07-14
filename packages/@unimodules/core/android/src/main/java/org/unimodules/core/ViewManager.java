@@ -20,13 +20,16 @@ public abstract class ViewManager<V extends View> implements RegistryLifecycleLi
    */
   public class PropSetterInfo {
     private Class<?> mExpectedPropertyClass;
-    PropSetterInfo(Class<?>[] parameterTypes) {
+    private boolean mAnimated;
+    PropSetterInfo(Class<?>[] parameterTypes, boolean animated) {
       mExpectedPropertyClass = parameterTypes[parameterTypes.length - 1];
+      mAnimated = animated;
     }
 
     public Class<?> getExpectedValueClass() {
       return mExpectedPropertyClass;
     }
+    public boolean isAnimated() { return mAnimated; }
   }
 
   public enum ViewManagerType {
@@ -61,7 +64,10 @@ public abstract class ViewManager<V extends View> implements RegistryLifecycleLi
 
     Map<String, PropSetterInfo> propSetterInfos = new HashMap<>();
     for (Map.Entry<String, Method> entry : getPropSetters().entrySet()) {
-      propSetterInfos.put(entry.getKey(), new PropSetterInfo(entry.getValue().getParameterTypes()));
+      Method method = entry.getValue();
+      ExpoProp propAnnotation = method.getAnnotation(ExpoProp.class);
+      boolean animated = propAnnotation != null ? propAnnotation.animated() : false;
+      propSetterInfos.put(entry.getKey(), new PropSetterInfo(method.getParameterTypes(), animated));
     }
 
     mPropSetterInfos = propSetterInfos;

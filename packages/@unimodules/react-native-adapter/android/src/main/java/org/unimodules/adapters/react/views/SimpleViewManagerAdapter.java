@@ -6,10 +6,12 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.uimanager.ThemedReactContext;
 import com.facebook.react.uimanager.SimpleViewManager;
 import com.facebook.react.uimanager.annotations.ReactProp;
+import com.facebook.react.uimanager.ReactStylesDiffMap;
 
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import org.unimodules.core.ModuleRegistry;
 import org.unimodules.core.ViewManager;
@@ -53,6 +55,17 @@ public class SimpleViewManagerAdapter<M extends ViewManager<V>, V extends View> 
   @Override
   public Map<String, Object> getExportedCustomDirectEventTypeConstants() {
     return ViewManagerAdapterUtils.getExportedCustomDirectEventTypeConstants(mViewManager);
+  }
+
+  @Override
+  public Map<String, String> getNativeProps() {
+    return ViewManagerAdapterUtils.getNativeProps(super.getNativeProps(), mViewManager);
+  }
+
+  @Override
+  public void updateProperties(@NonNull V view, ReactStylesDiffMap props) {
+    super.updateProperties(view, props);
+    ViewManagerAdapterUtils.setAnimatedProperties(getName(), mViewManager, view, props);
   }
 
   @Override
