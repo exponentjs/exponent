@@ -24,6 +24,7 @@ In order to use [Background Location Methods](#background-location-methods), the
 
 - `Permissions.LOCATION` permission must be granted. On iOS it must be granted with `Always` option — see [Permissions.LOCATION](permissions.md#permissionslocation) for more details.
 - `"location"` background mode must be specified in `Info.plist` file. See [background tasks configuration guide](task-manager.md#configuration). **(_iOS only_)**
+- [`ACCESS_BACKGROUND_LOCATION`](https://developer.android.com/training/location/background#checklist) permission must be added to your app manifest [`android.permissions`](../config/app.md#permissions) list. **(_Android only_)**
 - Background location task must be defined in the top-level scope, using [TaskManager.defineTask](task-manager.md#taskmanagerdefinetasktaskname-task).
 
 In order to use [Geofencing Methods](#geofencing-methods), the following requirements apply:
@@ -31,8 +32,11 @@ In order to use [Geofencing Methods](#geofencing-methods), the following require
 - `Permissions.LOCATION` permission must be granted. On iOS it must be granted with `Always` option — see [Permissions.LOCATION](permissions.md#permissionslocation) for more details.
 - Geofencing task must be defined in the top-level scope, using [TaskManager.defineTask](task-manager.md#taskmanagerdefinetasktaskname-task).
 - On iOS, there is a [limit of 20](https://developer.apple.com/documentation/corelocation/monitoring_the_user_s_proximity_to_geographic_regions) `regions` that can be simultaneously monitored.
+- [`ACCESS_BACKGROUND_LOCATION`](https://developer.android.com/training/location/background#checklist) permission must be added to your app manifest [`android.permissions`](../config/app.md#permissions) list. **(_Android only_)**
 
 On Android, This module requires the permissions for approximate and exact device location. It also needs the foreground service permission to subscribe to location updates, while the app is in use. The `ACCESS_COARSE_LOCATION`, `ACCESS_FINE_LOCATION`, and `FOREGROUND_SERVICE` permissions are automatically added.
+
+> **Note:** on Android, you have to [submit your app for review and request access to use the background location permission](https://support.google.com/googleplay/android-developer/answer/9799150?hl=en). This applies to both [Background Location Methods](#background-location-methods) and [Geofencing Methods](#geofencing-methods).
 
 ## Usage
 
