@@ -66,7 +66,14 @@ export default function App() {
       return;
     }
 
-    Sharing.shareAsync(selectedImage.localUri);
+    /* @info When the platform OS (operating system) is web, provide the remoteUri */
+    if (Platform.OS === 'web') {
+      Sharing.shareAsync(selectedImage.remoteUri);/
+    } else {
+      Sharing.shareAsync(selectedImage.localUri);/
+    } /* @end */
+
+
   };
 
   /* the rest of the app is unchanged */
