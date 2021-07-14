@@ -182,6 +182,45 @@ Let's assume that our `SlackIcon` class is located in `my-project/components/Sla
 
 We also set the `fadeDuration` (an Android specific property) to `0` because we usually want the icon to appear immediately rather than fade in over several hundred milliseconds.
 
+## Animated spinner
+An example of how to add animation to Spinner icons
+
+```js
+import React, { useEffect } from 'react';
+import { View, StyleSheet, Animated, Easing } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+
+const Spinner = () => {
+  const spinValue = new Animated.Value(0);
+
+  useEffect(() => {
+    Animated.loop(Animated.timing(spinValue, {
+      toValue: 1, duration: 1000, easing: Easing.linear, useNativeDriver: true
+    })).start()
+  }, [])
+  const rotateAnimation = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '360deg']
+  })
+  return (
+    <View>
+      <Animated.View style={{ transform: [{ rotate: rotateAnimation }] }}>
+        <FontAwesome name="spinner" style={styles.spinnerIcon}></FontAwesome>
+      </Animated.View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  spinnerIcon: {
+    color: '#076b22',
+    fontSize: 50,
+  }
+})
+export default Spinner;
+```
+
+
 ## Button Component
 
 A convenience component for creating buttons with an icon on the left side.
