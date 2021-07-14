@@ -6,13 +6,9 @@
     "moduleResolution": "node",
     "esModuleInterop": true,
     "types": ["jest", "jest-require"],
-    "typeRoots": [
-      "./ts-declarations",
-      "node_modules/@types"
-    ],
-    "sourceMap": true,
+    "typeRoots": ["./ts-declarations", "node_modules/@types"],
+    "inlineSourceMap": true,
     "declaration": true,
-    "inlineSources": true,
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "strictFunctionTypes": true,
