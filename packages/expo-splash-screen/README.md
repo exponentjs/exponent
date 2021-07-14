@@ -195,6 +195,45 @@ const styles = StyleSheet.create({
 });
 ```
 
+### Example with hooks: Use `SplashScreen` to replace the `<AppLoading />` component
+
+`App.tsx`
+```tsx
+import React, { useState, useEffect } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
+
+// Your main App component
+import Main from './components/Main';
+
+const App = () => {
+  const [isLoadingComplete, setLoadingComplete] = useState(false);
+
+  const appLoading = async () => {
+    try {
+      // keep showing the SplashScreen 
+      await SplashScreen.preventAutoHideAsync();
+      // do any other app initialization like loading resources etc.
+      loadResourcesAsync();
+    } catch (error) {
+      // handle error
+    } finally {
+      setLoadingComplete(true);
+      // hide the SplashScreen after all initialization is done.
+      await SplashScreen.hideAsync();
+    }
+  };
+
+  useEffect(() => {
+    appLoading();
+  }, []);
+
+  return isLoadingComplete ? <Main /> : null;
+};
+
+const loadResourcesAsync = async () => {
+  // Cache images, fonts etc.
+}
+```
 
 ## 💻 Installation in managed Expo projects
 
