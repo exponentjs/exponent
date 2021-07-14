@@ -1,6 +1,6 @@
-![demo](demo.gif "demo")
+https://user-images.githubusercontent.com/379606/119428009-fb40c200-bcc0-11eb-8328-fb19e5d3557c.mp4
 
-*NOTE: GIF above looks weird some times because it's a GIF, the real thing is nice, I promise...*
+*NOTE: The recording above looks weird some times because of artifacts, the real thing is nice, I promise...*
 
 # expo-processing
 

@@ -24,17 +24,39 @@
 
 Scale the image uniformly (maintaining the image's aspect ratio) so that both dimensions the width and height of the image will be equal to or less than the corresponding dimension of the device's screen.
 
-| Android                                                   | iOS                                                        |
-|-----------------------------------------------------------|------------------------------------------------------------|
-| <img src="./assets/demo-android-contain.gif" height="350" /> | <img src="./assets/demo-ios-contain.gif" height="350" />  |
+<table>
+  <thead><tr><td>Android</td><td>iOS</td></tr></thead>
+  <tbody><tr>
+<td>
+
+https://user-images.githubusercontent.com/379606/120575867-aeeb3580-c3d6-11eb-825d-19a847fe30f5.mp4
+</td>
+<td>
+
+https://user-images.githubusercontent.com/379606/120575885-b6124380-c3d6-11eb-8485-75a11832962c.mp4
+</td>
+    </tr>
+  </tbody>
+</table>
 
 #### `COVER` resize mode
 
 Scale the image uniformly (maintaining the image's aspect ratio) so that both the width and height of the image will be equal to or larger than the corresponding dimension of the device's screen.
 
-| Android                                                   | iOS                                                        |
-|-----------------------------------------------------------|------------------------------------------------------------|
-| <img src="./assets/demo-android-cover.gif" height="350" /> | <img src="./assets/demo-ios-cover.gif" height="350" />  |
+<table>
+  <thead><tr><td>Android</td><td>iOS</td></tr></thead>
+  <tbody><tr>
+<td>
+
+https://user-images.githubusercontent.com/379606/120575871-b1e62600-c3d6-11eb-9435-5dee19791294.mp4
+</td>
+<td>
+
+https://user-images.githubusercontent.com/379606/120575890-b7437080-c3d6-11eb-9c0a-3c563d1ee02a.mp4
+</td>
+    </tr>
+  </tbody>
+</table>
 
 #### `NATIVE` resize mode
 
@@ -43,9 +65,16 @@ Scale the image uniformly (maintaining the image's aspect ratio) so that both th
 By using this resize mode your app will will leverage Android's ability to present a static bitmap while the application is starting up.
 Android (unlike iOS) does not support stretching of the provided image during launch, so the application will present the given image centered on the screen at its original dimensions.
 
-| Android                                                   |
-|-----------------------------------------------------------|
-| <img src="./assets/demo-android-native.gif" height="350" /> |
+<table>
+  <thead><tr><td>Android</td></tr></thead>
+  <tbody><tr>
+<td>
+
+https://user-images.githubusercontent.com/379606/120575878-b3afe980-c3d6-11eb-80c1-72441c22e8be.mp4
+</td>
+    </tr>
+  </tbody>
+</table>
 
 > Animation above presents one of our [known issues](#native-mode-pushes-splash-image-up-a-little-bit)
 
