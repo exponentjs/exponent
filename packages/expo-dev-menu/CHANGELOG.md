@@ -8,13 +8,32 @@
 
 ### 🐛 Bug fixes
 
-- [plugin] Use Node module resolution to find package paths for Podfile ([#13382](https://github.com/expo/expo/pull/13382) by [@fson](https://github.com/fson))
-- Fixed WebSocket handlers weren't registered properly on iOS. ([#13403](https://github.com/expo/expo/pull/13403) by [@lukmccall](https://github.com/lukmccall))
-- Fix crash from inspector request failures. ([#13393](https://github.com/expo/expo/pull/13393) by [@kudo](https://github.com/kudo))
-- Order dev menu items consistently across platforms. ([#13449](https://github.com/expo/expo/pull/13449) by [@lukmccall](https://github.com/lukmccall))
+### 💡 Others
+
+## 0.7.5 — 2021-07-08
+
+### 🐛 Bug fixes
+
 - Fixed web compatibility. ([#13535](https://github.com/expo/expo/pull/13535) by [@lukmccall](https://github.com/lukmccall))
 
-### 💡 Others
+## 0.7.4 — 2021-06-30
+
+### 🐛 Bug fixes
+
+- Order dev menu items consistently across platforms. ([#13449](https://github.com/expo/expo/pull/13449) by [@lukmccall](https://github.com/lukmccall))
+
+## 0.7.3 — 2021-06-28
+
+### 🐛 Bug fixes
+
+- Fixed WebSocket handlers weren't registered properly on iOS. ([#13403](https://github.com/expo/expo/pull/13403) by [@lukmccall](https://github.com/lukmccall))
+- Fix crash from inspector request failures. ([#13393](https://github.com/expo/expo/pull/13393) by [@kudo](https://github.com/kudo))
+
+## 0.7.2 — 2021-06-24
+
+### 🐛 Bug fixes
+
+- [plugin] Use Node module resolution to find package paths for Podfile ([#13382](https://github.com/expo/expo/pull/13382) by [@fson](https://github.com/fson))
 
 ## 0.7.0 — 2021-06-10
 

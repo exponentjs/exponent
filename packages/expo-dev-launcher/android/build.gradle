@@ -23,7 +23,7 @@ android {
     minSdkVersion safeExtGet('minSdkVersion', 21)
     targetSdkVersion safeExtGet('targetSdkVersion', 30)
     versionCode 9
-    versionName "0.5.1"
+    versionName "0.6.4"
   }
   lintOptions {
     abortOnError false

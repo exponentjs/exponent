@@ -4,15 +4,23 @@
 
 ### 🛠 Breaking changes
 
-- Added method to reset Updates module state. ([#13346](https://github.com/expo/expo/pull/13346) by [@esamelson](https://github.com/esamelson))
-
 ### 🎉 New features
+
+### 🐛 Bug fixes
+
+### 💡 Others
+
+## 0.2.2 — 2021-07-05
 
 ### 🐛 Bug fixes
 
 - Remove unnecessary gradle dependency on unimodules-core. ([#13481](https://github.com/expo/expo/pull/13481) by [@esamelson](https://github.com/esamelson))
 
-### 💡 Others
+## 0.2.1 — 2021-06-24
+
+### 🛠 Breaking changes
+
+- Added method to reset Updates module state. ([#13346](https://github.com/expo/expo/pull/13346) by [@esamelson](https://github.com/esamelson))
 
 ## 0.1.0 — 2021-06-10
 
