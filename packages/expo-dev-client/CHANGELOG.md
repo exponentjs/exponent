@@ -8,9 +8,25 @@
 
 ### 🐛 Bug fixes
 
+### 💡 Others
+
+## 0.4.4 — 2021-07-08
+
+_This version does not introduce any user-facing changes._
+
+## 0.4.3 — 2021-06-30
+
+_This version does not introduce any user-facing changes._
+
+## 0.4.2 — 2021-06-30
+
+### 🐛 Bug fixes
+
 - Pin versions of expo-dev-launcher, expo-dev-menu, and expo-dev-menu-interface packages. ([#13430](https://github.com/expo/expo/pull/13430) by [@esamelson](https://github.com/esamelson))
 
-### 💡 Others
+## 0.4.1 — 2021-06-24
+
+_This version does not introduce any user-facing changes._
 
 ## 0.3.0 — 2021-06-10
 
