@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { ViewProps } from 'react-native';
 import { NativeLinearGradientPoint } from './NativeLinearGradient.types';
 /**
  * An object `{ x: number; y: number }` or array `[x, y]` that represents the point
@@ -16,7 +16,7 @@ export declare type LinearGradientPoint = {
      */
     y: number;
 } | NativeLinearGradientPoint;
-export declare type LinearGradientProps = {
+export declare type LinearGradientProps = ViewProps & {
     /**
      * An array of colors that represent stops in the gradient. At least two colors are required
      * (for a single-color background, use the `style.backgroundColor` prop on a `View` component).
@@ -46,7 +46,7 @@ export declare type LinearGradientProps = {
      * **On web**, this only changes the angle of the gradient because CSS gradients don't support changing the end position.
      */
     end?: LinearGradientPoint | null;
-} & React.ComponentProps<typeof View>;
+};
 /**
  * Renders a native view that transitions between multiple colors in a linear direction.
  */
