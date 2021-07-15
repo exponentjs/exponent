@@ -607,6 +607,7 @@ export default createRunOncePlugin(
 - **Unit test your plugin**: Write Jest tests for complex modifications. If your plugin requires access to the filesystem, use a mock system (we strongly recommend [`memfs`][memfs]), you can see examples of this in the [`expo-notifications`](https://github.com/expo/expo/blob/fc3fb2e81ad3a62332fa1ba6956c1df1c3186464/packages/expo-notifications/plugin/src/__tests__/withNotificationsAndroid-test.ts#L34) plugin tests.
   - Notice the root [`/__mocks__`](https://github.com/expo/expo/tree/master/packages/expo-notifications/plugin/__mocks__) folder and [`plugin/jest.config.js`](https://github.com/expo/expo/blob/master/packages/expo-notifications/plugin/jest.config.js).
 - A TypeScript plugin is always better than a JavaScript plugin. Check out the [`expo-module-script` plugin][ems-plugin] tooling for more info.
+- Do not modify the `sdkVersion` via a config plugin, this can break commands like `expo install` and cause other unexpected issues.
 
 ### Versioning
 
