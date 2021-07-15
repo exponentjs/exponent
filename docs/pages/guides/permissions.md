@@ -10,7 +10,7 @@ In Expo Go, there isn't much you need to think about to interact with permission
 
 ### Managed workflow
 
-To request permissions on iOS, you have to describe why the permissions are requested and [install the library](#permissions-and-required-packages-on-ios) that can request this permission. In the managed workflow, you can do that by customizing the `ios.infoPlist` property in your [`app.json` file](../../../workflow/configuration.md#ios).
+To request permissions on iOS, you have to describe why the permissions are requested and [install the library](#permissions-and-required-packages-on-ios) that can request this permission. In the managed workflow, you can do that by customizing the `ios.infoPlist` property in your [`app.json` file](../../versions/latest/config/app/#ios).
 
 You can find the full list of available properties in [Apple's InfoPlistKeyReference](https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CocoaKeys.html#//apple_ref/doc/uid/TP40009251-SW1). Apple also documents the basic guidelines for the structure of the message in the [Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/ios/app-architecture/requesting-permission/).
 
@@ -26,13 +26,13 @@ You can find the full list of available properties in [Apple's InfoPlistKeyRefer
 
 ### Managed workflow
 
-On Android, permissions are little bit simpler than iOS. In the managed workflow, permissions are controlled via the `android.permissions` property in your [`app.json` file](../../workflow/configuration.md#android). In the bare workflow, they have to be defined in your `AndroidManifest.xml`.
+On Android, permissions are little bit simpler than iOS. In the managed workflow, permissions are controlled via the `android.permissions` property in your [`app.json` file](../../versions/latest/config/app/#android). In the bare workflow, they have to be defined in your `AndroidManifest.xml`.
 
 Some Expo and React Native modules include permissions by default. If you use `expo-location`, for example, both the `ACCESS_COARSE_LOCATION` and `ACCESS_FINE_LOCATION` are implied and added to your app's permissions automatically.
 
-To limit the permissions your managed workflow app requires, set the `android.permissions` property in your [`app.json` file](../../workflow/configuration.md#android) to list only the permissions you need, and Expo will also include the minimum permissions it requires to run. See the [`Permission types`](#permission-types) below to learn about which Android permissions are added. You can find a full list of all available permissions in the [Android Manifest.permissions reference](https://developer.android.com/reference/android/Manifest.permission).
+To limit the permissions your managed workflow app requires, set the `android.permissions` property in your [`app.json` file](../../versions/latest/config/app/#android) to list only the permissions you need, and Expo will also include the minimum permissions it requires to run. See the [`Permission types`](#permission-types) below to learn about which Android permissions are added. You can find a full list of all available permissions in the [Android Manifest.permissions reference](https://developer.android.com/reference/android/Manifest.permission).
 
-- [See the `android.permissions` documentation](../config/app.md#permissions) to learn about which permissions are always included.
+- [See the `android.permissions` documentation](../../versions/latest/config/app.md#permissions) to learn about which permissions are always included.
 - Apps using dangerous or signature permissions without valid reasons _may be rejected by Google_. Make sure you follow the [Android permissions best practices](https://developer.android.com/training/permissions/usage-notes) when submitting your app.
 - By default, the permissions implied by the modules you installed are added to the `AndroidManifest.xml` at build time. To exclude permissions, you have to define the `android.permissions` manifest property.
 
