@@ -67,6 +67,15 @@ describe('<App />', () => {
 
 Now run `yarn test` or `npm run test`, if all went well you should see 1 test passed! Read more on [expect and conditional matchers](https://jestjs.io/docs/en/expect).
 
+For TypeScript users, your test file is named `App.test.tsx`, and you also have to configure Jest's [`moduleFileExtensions`](https://jestjs.io/docs/en/configuration#modulefileextensions-arraystring) to let Jest import `App.tsx` instead of `app.json` in `import App from './App'`.
+
+```js
+"jest": {
+  "preset": "jest-expo",
+  "moduleFileExtensions": ["ts", "tsx", "js", "json", "jsx", "node"]
+}
+```
+
 ## Snapshot Test
 
 Now let's add a snapshot test for `App.js`. **What is a snapshot test, and why is it useful?** Snapshot tests are used to make sure the UI stays consistent, especially when a project is working with global styles that are potentially shared across components. Read more about it on Jest's site [snapshot testing](https://jestjs.io/docs/en/snapshot-testing).
