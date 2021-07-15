@@ -6,7 +6,7 @@ import android.text.TextUtils
 import org.unimodules.core.arguments.ReadableArguments
 import java.util.*
 
-class CalendarEvenBuilder(
+class CalendarEventBuilder(
   private val eventDetails: ReadableArguments
 ) {
   private val eventValues = ContentValues()

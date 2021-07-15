@@ -328,7 +328,7 @@ class CalendarModule(
 
   @Throws(Exception::class)
   private fun saveCalendar(details: ReadableArguments): Int {
-    val calendarEventBuilder = CalendarEvenBuilder(details)
+    val calendarEventBuilder = CalendarEventBuilder(details)
 
     calendarEventBuilder
       .putEventString(CalendarContract.Calendars.NAME, "name")
@@ -395,7 +395,7 @@ class CalendarModule(
 
   @Throws(EventNotSavedException::class, ParseException::class, SecurityException::class, InvalidArgumentException::class)
   private fun saveEvent(details: ReadableArguments): Int {
-    val calendarEventBuilder = CalendarEvenBuilder(details)
+    val calendarEventBuilder = CalendarEventBuilder(details)
     if (details.containsKey("startDate")) {
       val startCal = Calendar.getInstance()
       val startDate = details["startDate"]
