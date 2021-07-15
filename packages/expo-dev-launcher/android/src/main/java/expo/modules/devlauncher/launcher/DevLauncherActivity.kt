@@ -15,12 +15,15 @@ import com.facebook.react.bridge.ReactContext
 import expo.interfaces.devmenu.DevMenuManagerInterface
 import expo.interfaces.devmenu.DevMenuManagerProviderInterface
 import expo.modules.devlauncher.DevLauncherController
+import expo.modules.devlauncher.koin.DevLauncherKoinComponent
 import expo.modules.devlauncher.splashscreen.DevLauncherSplashScreen
 import expo.modules.devlauncher.splashscreen.DevLauncherSplashScreenProvider
+import org.koin.core.component.inject
 
 const val SEARCH_FOR_ROOT_VIEW_INTERVAL = 20L
 
-class DevLauncherActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener {
+class DevLauncherActivity : ReactActivity(), ReactInstanceManager.ReactInstanceEventListener, DevLauncherKoinComponent {
+  private val controller: DevLauncherControllerInterface by inject()
   private var devMenuManager: DevMenuManagerInterface? = null
   private var splashScreen: DevLauncherSplashScreen? = null
   private var rootView: ViewGroup? = null
@@ -32,7 +35,7 @@ class DevLauncherActivity : ReactActivity(), ReactInstanceManager.ReactInstanceE
   override fun createReactActivityDelegate(): ReactActivityDelegate {
     return object : ReactActivityDelegate(this, mainComponentName) {
 
-      override fun getReactNativeHost() = DevLauncherController.instance.devClientHost
+      override fun getReactNativeHost() = controller.devClientHost
 
       override fun getLaunchOptions() = Bundle().apply {
         putBoolean("isSimulator", isSimulator)
@@ -56,7 +59,7 @@ class DevLauncherActivity : ReactActivity(), ReactInstanceManager.ReactInstanceE
 
   override fun onPostCreate(savedInstanceState: Bundle?) {
     super.onPostCreate(savedInstanceState)
-
+    controller.maybeSynchronizeDevMenuDelegate()
     reactInstanceManager.currentReactContext?.let {
       onReactContextInitialized(it)
       return
@@ -85,7 +88,7 @@ class DevLauncherActivity : ReactActivity(), ReactInstanceManager.ReactInstanceE
   }
 
   private fun setUpDevMenuDelegateIfPresent(context: ReactContext) {
-    DevLauncherController.instance.maybeInitDevMenuDelegate(context)
+    controller.maybeInitDevMenuDelegate(context)
 
     val devMenuManagerProvider = context
       .catalystInstance

@@ -9,8 +9,11 @@ import com.facebook.react.devsupport.RedBoxHandler
 import com.facebook.react.devsupport.interfaces.DevBundleDownloadListener
 import com.facebook.react.packagerconnection.RequestHandler
 import expo.modules.devlauncher.DevLauncherController
+import expo.modules.devlauncher.koin.DevLauncherKoinComponent
+import expo.modules.devlauncher.launcher.DevLauncherControllerInterface
 import expo.modules.devlauncher.launcher.errors.DevLauncherAppError
 import expo.modules.devlauncher.launcher.errors.DevLauncherErrorActivity
+import org.koin.core.component.inject
 
 class DevLauncherDevSupportManager(
   applicationContext: Context?,
@@ -30,7 +33,8 @@ class DevLauncherDevSupportManager(
   devBundleDownloadListener,
   minNumShakes,
   customPackagerCommandHandlers
-) {
+), DevLauncherKoinComponent {
+  private val controller: DevLauncherControllerInterface by inject()
   override fun showNewJavaError(message: String?, e: Throwable) {
     if (!DevLauncherController.wasInitialized()) {
       Log.e("DevLauncher", "DevLauncher wasn't initialized. Couldn't intercept native error handling.")
@@ -43,7 +47,7 @@ class DevLauncherDevSupportManager(
       return
     }
 
-    DevLauncherController.instance.onAppLoadedWithError()
+    controller.onAppLoadedWithError()
     DevLauncherErrorActivity.showError(activity, DevLauncherAppError(message, e))
   }
 }

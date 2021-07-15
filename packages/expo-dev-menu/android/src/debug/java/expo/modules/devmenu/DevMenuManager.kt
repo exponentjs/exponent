@@ -39,6 +39,8 @@ import expo.modules.devmenu.detectors.ShakeDetector
 import expo.modules.devmenu.detectors.ThreeFingerLongPressDetector
 import expo.modules.devmenu.modules.DevMenuSettings
 import expo.modules.devmenu.react.DevMenuPackagerCommandHandlersSwapper
+import expo.modules.devmenu.tests.DevMenuDisabledTestInterceptor
+import expo.modules.devmenu.tests.DevMenuTestInterceptor
 import expo.modules.devmenu.websockets.DevMenuCommandHandlersProvider
 import java.lang.ref.WeakReference
 
@@ -56,6 +58,7 @@ object DevMenuManager : DevMenuManagerInterface, LifecycleEventListener {
   private var currentReactInstanceManager: WeakReference<ReactInstanceManager?> = WeakReference(null)
   private var currentScreenName: String? = null
   private val expoApiClient = DevMenuExpoApiClient()
+  var testInterceptor: DevMenuTestInterceptor = DevMenuDisabledTestInterceptor()
 
   //region helpers
 
@@ -206,6 +209,11 @@ object DevMenuManager : DevMenuManagerInterface, LifecycleEventListener {
     maybeInitDevMenuHost(reactContext.currentActivity?.application
       ?: reactContext.applicationContext as Application)
     maybeStartDetectors(devMenuHost.getContext())
+
+    settings = testInterceptor.overrideSettings()
+    if (settings != null) {
+      return
+    }
 
     settings = if (reactContext.hasNativeModule(DevMenuSettings::class.java)) {
       reactContext.getNativeModule(DevMenuSettings::class.java)!!

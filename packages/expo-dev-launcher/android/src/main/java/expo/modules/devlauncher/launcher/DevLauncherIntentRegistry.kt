@@ -5,9 +5,19 @@ import kotlin.properties.Delegates
 
 typealias DevLauncherPendingIntentListener = (Intent) -> Unit
 
-class DevLauncherIntentRegistry {
+interface DevLauncherIntentRegistryInterface {
+  var intent: Intent?
+
+  fun subscribe(listener: DevLauncherPendingIntentListener)
+
+  fun unsubscribe(listener: DevLauncherPendingIntentListener)
+
+  fun consumePendingIntent(): Intent?
+}
+
+class DevLauncherIntentRegistry : DevLauncherIntentRegistryInterface {
   private val pendingIntentListeners = mutableListOf<DevLauncherPendingIntentListener>()
-  var intent by Delegates.observable<Intent?>(null) { _, _, newValue ->
+  override var intent by Delegates.observable<Intent?>(null) { _, _, newValue ->
     newValue?.let { intent ->
       pendingIntentListeners.forEach {
         it.invoke(intent)
@@ -15,15 +25,15 @@ class DevLauncherIntentRegistry {
     }
   }
 
-  fun subscribe(listener: DevLauncherPendingIntentListener) {
+  override fun subscribe(listener: DevLauncherPendingIntentListener) {
     pendingIntentListeners.add(listener)
   }
 
-  fun unsubscribe(listener: DevLauncherPendingIntentListener) {
+  override fun unsubscribe(listener: DevLauncherPendingIntentListener) {
     pendingIntentListeners.remove(listener)
   }
 
-  fun consumePendingIntent(): Intent? {
+  override fun consumePendingIntent(): Intent? {
     val pendingIntent = intent
     intent = null
     return pendingIntent

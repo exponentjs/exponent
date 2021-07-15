@@ -10,26 +10,37 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.ReactNativeHost
 import com.facebook.react.ReactPackage
 import com.facebook.react.bridge.ReactContext
+import expo.interfaces.devmenu.DevMenuManagerInterface
 import expo.interfaces.devmenu.DevMenuManagerProviderInterface
-import expo.modules.devlauncher.helpers.*
+import expo.modules.devlauncher.helpers.getAppUrlFromDevLauncherUrl
+import expo.modules.devlauncher.helpers.getFieldInClassHierarchy
+import expo.modules.devlauncher.helpers.isDevLauncherUrl
+import expo.modules.devlauncher.helpers.runBlockingOnMainThread
+import expo.modules.devlauncher.koin.DevLauncherKoinComponent
+import expo.modules.devlauncher.koin.DevLauncherKoinContext
+import expo.modules.devlauncher.koin.devLauncherKoin
+import expo.modules.devlauncher.koin.optInject
 import expo.modules.devlauncher.launcher.DevLauncherActivity
 import expo.modules.devlauncher.launcher.DevLauncherClientHost
-import expo.modules.devlauncher.launcher.DevLauncherIntentRegistry
+import expo.modules.devlauncher.launcher.DevLauncherControllerInterface
+import expo.modules.devlauncher.launcher.DevLauncherIntentRegistryInterface
 import expo.modules.devlauncher.launcher.DevLauncherLifecycle
 import expo.modules.devlauncher.launcher.DevLauncherReactActivityDelegateSupplier
 import expo.modules.devlauncher.launcher.DevLauncherRecentlyOpenedAppsRegistry
-import expo.modules.devlauncher.launcher.loaders.DevLauncherLocalAppLoader
-import expo.modules.devlauncher.launcher.loaders.DevLauncherPublishedAppLoader
-import expo.modules.devlauncher.launcher.loaders.DevLauncherReactNativeAppLoader
+import expo.modules.devlauncher.launcher.loaders.DevLauncherAppLoaderFactoryInterface
 import expo.modules.devlauncher.launcher.manifest.DevLauncherManifest
 import expo.modules.devlauncher.launcher.manifest.DevLauncherManifestParser
 import expo.modules.devlauncher.launcher.menu.DevLauncherMenuDelegate
 import expo.modules.devlauncher.react.activitydelegates.DevLauncherReactActivityNOPDelegate
 import expo.modules.devlauncher.react.activitydelegates.DevLauncherReactActivityRedirectDelegate
+import expo.modules.devlauncher.tests.DevLauncherTestInterceptor
 import expo.modules.updatesinterface.UpdatesInterface
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
+import org.koin.core.component.get
+import org.koin.core.component.inject
+import org.koin.dsl.module
 
 // Use this to load from a development server for the development client launcher UI
 //  private final String DEV_LAUNCHER_HOST = "10.0.0.175:8090";
@@ -41,30 +52,40 @@ private const val NEW_ACTIVITY_FLAGS = Intent.FLAG_ACTIVITY_NEW_TASK or
 
 private var MenuDelegateWasInitialized = false
 
-class DevLauncherController private constructor(
-  private val context: Context,
-  internal val appHost: ReactNativeHost
-) {
-  val devClientHost = DevLauncherClientHost((context as Application), DEV_LAUNCHER_HOST)
-  private val httpClient = OkHttpClient()
-  private val lifecycle = DevLauncherLifecycle()
+class DevLauncherController private constructor()
+  : DevLauncherKoinComponent, DevLauncherControllerInterface {
+  private val context: Context by lazy {
+    DevLauncherKoinContext.app.koin.get()
+  }
+  override val appHost: ReactNativeHost by inject()
+  private val httpClient: OkHttpClient by inject()
+  private val lifecycle: DevLauncherLifecycle by inject()
+  private val pendingIntentRegistry: DevLauncherIntentRegistryInterface by inject()
+  val internalUpdatesInterface: UpdatesInterface? by optInject()
+  private var devMenuManager: DevMenuManagerInterface? = null
+  var updatesInterface: UpdatesInterface?
+    get() = internalUpdatesInterface
+    set(value) = DevLauncherKoinContext.app.koin.loadModules(listOf(module {
+      single { value }
+    }))
+
+  override val devClientHost = DevLauncherClientHost((context as Application), DEV_LAUNCHER_HOST)
+
   private val recentlyOpedAppsRegistry = DevLauncherRecentlyOpenedAppsRegistry(context)
-  var manifest: DevLauncherManifest? = null
+  override var manifest: DevLauncherManifest? = null
     private set
-  var updatesInterface: UpdatesInterface? = null
-  val pendingIntentRegistry = DevLauncherIntentRegistry()
-  var latestLoadedApp: Uri? = null
+  override var latestLoadedApp: Uri? = null
   var useDeveloperSupport = true
 
-  internal enum class Mode {
+  enum class Mode {
     LAUNCHER, APP
   }
 
-  internal var mode = Mode.LAUNCHER
+  override var mode = Mode.LAUNCHER
 
   private var appIsLoading = false
 
-  suspend fun loadApp(url: Uri, mainActivity: ReactActivity? = null) {
+  override suspend fun loadApp(url: Uri, mainActivity: ReactActivity?) {
     synchronized(this) {
       if (appIsLoading) {
         return
@@ -78,34 +99,12 @@ class DevLauncherController private constructor(
       val manifestParser = DevLauncherManifestParser(httpClient, url)
       val appIntent = createAppIntent()
 
-      updatesInterface?.reset()
-      useDeveloperSupport = true
+      internalUpdatesInterface?.reset()
 
-      val appLoader = if (!manifestParser.isManifestUrl()) {
-        // It's (maybe) a raw React Native bundle
-        DevLauncherReactNativeAppLoader(url, appHost, context)
-      } else {
-        if (updatesInterface == null) {
-          manifest = manifestParser.parseManifest()
-          if (!manifest!!.isUsingDeveloperTool()) {
-            throw Exception("expo-updates is not properly installed or integrated. In order to load published projects with this development client, follow all installation and setup instructions for both the expo-dev-client and expo-updates packages.")
-          }
-          DevLauncherLocalAppLoader(manifest!!, appHost, context)
-        } else {
-          val configuration = createUpdatesConfigurationWithUrl(url)
-          val update = updatesInterface!!.loadUpdate(configuration, context) {
-            manifest = DevLauncherManifest.fromJson(it.toString().reader())
-            return@loadUpdate !manifest!!.isUsingDeveloperTool()
-          }
-          if (manifest!!.isUsingDeveloperTool()) {
-            DevLauncherLocalAppLoader(manifest!!, appHost, context)
-          } else {
-            useDeveloperSupport = false
-            val localBundlePath = update.launchAssetPath
-            DevLauncherPublishedAppLoader(manifest!!, localBundlePath, appHost, context)
-          }
-        }
-      }
+      val appLoaderFactory = get<DevLauncherAppLoaderFactoryInterface>()
+      val appLoader = appLoaderFactory.createAppLoader(url, manifestParser)
+      useDeveloperSupport = appLoaderFactory.shouldUseDeveloperSupport()
+      manifest = appLoaderFactory.getManifest()
 
       val appLoaderListener = appLoader.createOnDelegateWillBeCreatedListener()
       lifecycle.addListener(appLoaderListener)
@@ -130,7 +129,7 @@ class DevLauncherController private constructor(
     }
   }
 
-  fun onAppLoaded(context: ReactContext) {
+  override fun onAppLoaded(context: ReactContext) {
     // App can be started from deep link.
     // That's why, we maybe need to initialized dev menu here.
     maybeInitDevMenuDelegate(context)
@@ -139,15 +138,15 @@ class DevLauncherController private constructor(
     }
   }
 
-  fun onAppLoadedWithError() {
+  override fun onAppLoadedWithError() {
     synchronized(this) {
       appIsLoading = false
     }
   }
-  
-  fun getRecentlyOpenedApps(): Map<String, String?> = recentlyOpedAppsRegistry.getRecentlyOpenedApps()
 
-  fun navigateToLauncher() {
+  override fun getRecentlyOpenedApps(): Map<String, String?> = recentlyOpedAppsRegistry.getRecentlyOpenedApps()
+
+  override fun navigateToLauncher() {
     ensureHostWasCleared(appHost)
     synchronized(this) {
       appIsLoading = false
@@ -158,7 +157,7 @@ class DevLauncherController private constructor(
     context.applicationContext.startActivity(createLauncherIntent())
   }
 
-  private fun handleIntent(intent: Intent?, activityToBeInvalidated: ReactActivity?): Boolean {
+  override fun handleIntent(intent: Intent?, activityToBeInvalidated: ReactActivity?): Boolean {
     intent
       ?.data
       ?.let { uri ->
@@ -197,7 +196,14 @@ class DevLauncherController private constructor(
     }
   }
 
-  fun maybeInitDevMenuDelegate(context: ReactContext) {
+  override fun maybeSynchronizeDevMenuDelegate() {
+    val devMenuManager = this.devMenuManager
+    if (MenuDelegateWasInitialized && devMenuManager != null) {
+      devMenuManager.synchronizeDelegate()
+    }
+  }
+
+  override fun maybeInitDevMenuDelegate(context: ReactContext) {
     if (MenuDelegateWasInitialized) {
       return
     }
@@ -212,6 +218,7 @@ class DevLauncherController private constructor(
 
     val devMenuManager = devMenuManagerProvider?.getDevMenuManager() ?: return
     devMenuManager.setDelegate(DevLauncherMenuDelegate(instance))
+    this.devMenuManager = devMenuManager
   }
 
   @UiThread
@@ -222,7 +229,7 @@ class DevLauncherController private constructor(
     }
   }
 
-  private fun getCurrentReactActivityDelegate(activity: ReactActivity, delegateSupplierDevLauncher: DevLauncherReactActivityDelegateSupplier): ReactActivityDelegate {
+  override fun getCurrentReactActivityDelegate(activity: ReactActivity, delegateSupplierDevLauncher: DevLauncherReactActivityDelegateSupplier): ReactActivityDelegate {
     return if (mode == Mode.LAUNCHER) {
       DevLauncherReactActivityRedirectDelegate(activity, this::redirectFromStartActivity)
     } else {
@@ -281,27 +288,40 @@ class DevLauncherController private constructor(
     }.apply { addFlags(NEW_ACTIVITY_FLAGS) }
 
   companion object {
-    private var sInstance: DevLauncherController? = null
     private var sLauncherClass: Class<*>? = null
     internal var sAdditionalPackages: List<ReactPackage>? = null
 
     @JvmStatic
-    fun wasInitialized() = sInstance != null
-    
+    fun wasInitialized() =
+      DevLauncherKoinContext.app.koin.getOrNull<DevLauncherControllerInterface>() != null
+
     @JvmStatic
-    val instance: DevLauncherController
-      get() = checkNotNull(sInstance) {
+    val instance: DevLauncherControllerInterface
+      get() = checkNotNull(
+        DevLauncherKoinContext.app.koin.getOrNull()
+      ) {
         "DevelopmentClientController.getInstance() was called before the module was initialized"
       }
 
     @JvmStatic
     fun initialize(context: Context, appHost: ReactNativeHost) {
-      check(sInstance == null) { "DevelopmentClientController was initialized." }
-      sInstance = DevLauncherController(context, appHost)
+      val testInterceptor = DevLauncherKoinContext.app.koin.get<DevLauncherTestInterceptor>()
+      if (!testInterceptor.allowReinitialization()) {
+        check(wasInitialized()) { "DevelopmentClientController was initialized." }
+      }
+
+      MenuDelegateWasInitialized = false
+      DevLauncherKoinContext.app.koin.loadModules(listOf(
+        module {
+          single { context }
+          single { appHost }
+        }
+      ), allowOverride = true)
+      DevLauncherKoinContext.app.koin.declare<DevLauncherControllerInterface>(DevLauncherController())
     }
 
     @JvmStatic
-    fun initialize(context: Context, appHost: ReactNativeHost, additionalPackages: List<ReactPackage>?, launcherClass: Class<*>? = null) {
+    fun initialize(context: Context, appHost: ReactNativeHost, additionalPackages: List<ReactPackage>? = null, launcherClass: Class<*>? = null) {
       initialize(context, appHost)
       sAdditionalPackages = additionalPackages
       sLauncherClass = launcherClass
@@ -309,13 +329,20 @@ class DevLauncherController private constructor(
 
     @JvmStatic
     fun wrapReactActivityDelegate(activity: ReactActivity, devLauncherReactActivityDelegateSupplier: DevLauncherReactActivityDelegateSupplier): ReactActivityDelegate {
-      instance.lifecycle.delegateWillBeCreated(activity)
-      return instance.getCurrentReactActivityDelegate(activity, devLauncherReactActivityDelegateSupplier)
+      devLauncherKoin()
+        .get<DevLauncherLifecycle>()
+        .delegateWillBeCreated(activity)
+
+      return devLauncherKoin()
+        .get<DevLauncherControllerInterface>()
+        .getCurrentReactActivityDelegate(activity, devLauncherReactActivityDelegateSupplier)
     }
 
     @JvmStatic
     fun tryToHandleIntent(activity: ReactActivity, intent: Intent): Boolean {
-      return instance.handleIntent(intent, activityToBeInvalidated = activity)
+      return devLauncherKoin()
+        .get<DevLauncherControllerInterface>()
+        .handleIntent(intent, activityToBeInvalidated = activity)
     }
   }
 }

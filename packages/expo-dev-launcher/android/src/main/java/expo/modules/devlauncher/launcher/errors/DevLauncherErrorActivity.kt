@@ -11,10 +11,13 @@ import androidx.fragment.app.FragmentPagerAdapter
 import com.facebook.react.ReactActivity
 import expo.modules.devlauncher.DevLauncherController
 import expo.modules.devlauncher.databinding.ErrorActivityContentViewBinding
+import expo.modules.devlauncher.koin.DevLauncherKoinComponent
+import expo.modules.devlauncher.launcher.DevLauncherControllerInterface
 import expo.modules.devlauncher.launcher.errors.fragments.DevLauncherErrorConsoleFragment
 import expo.modules.devlauncher.launcher.errors.fragments.DevLauncherErrorFragment
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import org.koin.core.component.inject
 import java.lang.ref.WeakReference
 import java.util.*
 
@@ -28,7 +31,12 @@ interface DevLauncherErrorActivityInterface {
   fun reload()
 }
 
-class DevLauncherErrorActivity : FragmentActivity(), DevLauncherErrorActivityInterface {
+class DevLauncherErrorActivity
+  : FragmentActivity(),
+  DevLauncherErrorActivityInterface,
+  DevLauncherKoinComponent {
+  val controller: DevLauncherControllerInterface by inject()
+
   private class ViewPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
     override fun getCount() = 2
 
@@ -66,7 +74,7 @@ class DevLauncherErrorActivity : FragmentActivity(), DevLauncherErrorActivityInt
       errorQueue.clear()
     }
 
-    DevLauncherController.instance.navigateToLauncher()
+    controller.navigateToLauncher()
   }
 
   override fun reload() {
@@ -74,19 +82,18 @@ class DevLauncherErrorActivity : FragmentActivity(), DevLauncherErrorActivityInt
       errorQueue.clear()
     }
 
-    val appUrl = DevLauncherController.instance.latestLoadedApp
+    val appUrl = controller.latestLoadedApp
 
     if (appUrl == null) {
-      DevLauncherController.instance.navigateToLauncher()
+      controller.navigateToLauncher()
       return
     }
 
     GlobalScope.launch {
-      DevLauncherController
-        .instance
+      controller
         .loadApp(
           appUrl,
-          DevLauncherController.instance.appHost.reactInstanceManager.currentReactContext?.currentActivity as? ReactActivity?
+          controller.appHost.reactInstanceManager.currentReactContext?.currentActivity as? ReactActivity?
         )
     }
   }

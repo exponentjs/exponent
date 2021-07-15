@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.facebook.react.ReactNativeHost
 import expo.modules.devlauncher.helpers.injectReactInterceptor
+import expo.modules.devlauncher.launcher.DevLauncherControllerInterface
 import expo.modules.devlauncher.launcher.manifest.DevLauncherManifest
 
 /**
@@ -13,8 +14,9 @@ import expo.modules.devlauncher.launcher.manifest.DevLauncherManifest
 class DevLauncherLocalAppLoader(
   private val manifest: DevLauncherManifest,
   private val appHost: ReactNativeHost,
-  private val context: Context
-) : DevLauncherExpoAppLoader(manifest, appHost, context) {
+  private val context: Context,
+  controller: DevLauncherControllerInterface
+) : DevLauncherExpoAppLoader(manifest, appHost, context, controller) {
   override fun injectBundleLoader(): Boolean {
     return injectReactInterceptor(context, appHost, Uri.parse(manifest.bundleUrl))
   }
