@@ -119,7 +119,8 @@ export const RECORDING_OPTIONS_PRESET_HIGH_QUALITY: RecordingOptions = {
     bitRate: 128000,
   },
   ios: {
-    extension: '.caf',
+    extension: '.m4a',
+    outputFormat: RECORDING_OPTION_IOS_OUTPUT_FORMAT_MPEG4AAC,
     audioQuality: RECORDING_OPTION_IOS_AUDIO_QUALITY_MAX,
     sampleRate: 44100,
     numberOfChannels: 2,
