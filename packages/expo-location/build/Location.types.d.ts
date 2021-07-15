@@ -167,6 +167,7 @@ export declare type LocationGeocodedLocation = {
 export declare type LocationGeocodedAddress = {
     city: string | null;
     district: string | null;
+    streetNumber: string | null;
     street: string | null;
     region: string | null;
     subregion: string | null;

@@ -297,6 +297,7 @@ UM_EXPORT_METHOD_AS(reverseGeocodeAsync,
         NSDictionary *address = @{
                                   @"city": UMNullIfNil(placemark.locality),
                                   @"district": UMNullIfNil(placemark.subLocality),
+                                  @"streetNumber": UMNullIfNil(placemark.subThoroughfare),
                                   @"street": UMNullIfNil(placemark.thoroughfare),
                                   @"region": UMNullIfNil(placemark.administrativeArea),
                                   @"subregion": UMNullIfNil(placemark.subAdministrativeArea),

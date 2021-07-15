@@ -96,6 +96,7 @@ public class LocationHelpers {
 
     map.putString("city", address.getLocality());
     map.putString("district", address.getSubLocality());
+    map.putString("streetNumber", address.getSubThoroughfare());
     map.putString("street", address.getThoroughfare());
     map.putString("region", address.getAdminArea());
     map.putString("subregion", address.getSubAdminArea());

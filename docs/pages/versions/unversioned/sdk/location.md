@@ -309,6 +309,7 @@ Returns a promise resolving to an array (in most cases its size is 1) of address
 
 - **city (_string_ | _null_)** — City name of the address.
 - **district (_string_ | _null_)** — Additional city-level information like district name.
+- **streetNumber (_string_ | _null_)** — Street number for the address.
 - **street (_string_ | _null_)** — Street name of the address.
 - **region (_string_ | _null_)** — The state or province associated with the address.
 - **subregion (_string_ | _null_)** — Additional information about administrative area.
