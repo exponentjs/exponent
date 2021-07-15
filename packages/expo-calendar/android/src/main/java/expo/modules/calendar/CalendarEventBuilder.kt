@@ -6,10 +6,12 @@ import android.text.TextUtils
 import org.unimodules.core.arguments.ReadableArguments
 import java.util.*
 
-class CalendarEvenFactory(
+class CalendarEventBuilder(
   private val eventDetails: ReadableArguments
 ) {
-  val eventValues = ContentValues()
+  private val eventValues = ContentValues()
+
+  fun getAsLong(key: String): Long = eventValues.getAsLong(key)
 
   fun put(key: String, value: String) = apply {
     eventValues.put(key, value)
@@ -80,9 +82,11 @@ class CalendarEvenFactory(
     }
   }
 
-  fun checkDetailsContainsRequiredKey(key: String) = apply {
+  private fun checkDetailsContainsRequiredKey(key: String) = apply {
     if (!eventDetails.containsKey(key)) {
       throw Exception("new calendars require $key")
     }
   }
+
+  fun build() = eventValues
 }
