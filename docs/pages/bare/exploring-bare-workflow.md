@@ -67,7 +67,7 @@ Expo for web also works on bare projects. Here we will just import one simple co
 
 ## Releasing to App Store and Play Store
 
-This is entirely up to you! The Expo build service does not yet support builds for the bare workflow.
+You can use ```eos``` command for your bare apps.
 
 ## That's it!
 
