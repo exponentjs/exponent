@@ -49,11 +49,11 @@
   "dependencies": {
     "@expo/react-native-action-sheet": "^3.8.0",
     "@react-native-async-storage/async-storage": "~1.15.0",
-    "@react-native-community/slider": "3.0.3",
-    "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/datetimepicker": "3.5.2",
     "@react-native-community/netinfo": "6.0.0",
+    "@react-native-community/slider": "3.0.3",
     "@react-native-community/viewpager": "5.0.11",
+    "@react-native-masked-view/masked-view": "0.2.4",
     "@react-native-picker/picker": "1.16.1",
     "@react-native-segmented-control/segmented-control": "2.3.0",
     "@react-navigation/bottom-tabs": "~5.11.1",

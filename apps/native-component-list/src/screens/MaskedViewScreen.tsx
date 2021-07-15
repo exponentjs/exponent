@@ -1,4 +1,4 @@
-import MaskedView from '@react-native-community/masked-view';
+import MaskedView from '@react-native-masked-view/masked-view';
 import React from 'react';
 import { Animated, Easing, Image, View } from 'react-native';
 

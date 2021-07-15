@@ -1,4 +1,4 @@
-import MaskedView from '@react-native-community/masked-view';
+import MaskedView from '@react-native-masked-view/masked-view';
 import * as GL from 'expo-gl';
 import React from 'react';
 import { Text, View } from 'react-native';

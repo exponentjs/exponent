@@ -22,7 +22,6 @@
     "@expo/sdk-runtime-versions": "^1.0.0",
     "@expo/vector-icons": "^12.0.4",
     "@react-native-async-storage/async-storage": "~1.15.0",
-    "@react-native-community/masked-view": "0.1.10",
     "@react-native-community/netinfo": "6.0.0",
     "@react-navigation/bottom-tabs": "~5.11.1",
     "@react-navigation/material-bottom-tabs": "~5.3.9",
