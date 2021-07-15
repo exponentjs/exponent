@@ -20,7 +20,7 @@ type SchemeConfig = {
   scheme?: string | string[];
 };
 
-function getSchemes(config: SchemeConfig): string[] {
+function getSchemes(config: SchemeConfig | null | undefined): string[] {
   if (config) {
     if (Array.isArray(config.scheme)) {
       const validate = (value: any): value is string => {
@@ -64,16 +64,19 @@ export function collectManifestSchemes(): string[] {
   // to have them only work with `eas build`.
   const platformManifest =
     (Platform.select<any>({
-      ios: Constants.manifest?.ios,
-      android: Constants.manifest?.android,
+      ios: Constants.manifest?.ios ?? Constants.manifest2?.extra?.expoClient?.ios,
+      android: Constants.manifest?.android ?? Constants.manifest2?.extra?.expoClient?.android,
       web: {},
     }) as SchemeConfig) ?? {};
 
-  const schemes = getSchemes(Constants.manifest as any);
+  const schemes = getSchemes(Constants.manifest ?? Constants.manifest2?.extra?.expoClient);
 
   // Add the detached scheme after the manifest scheme for legacy ExpoKit support.
   if (Constants.manifest?.detach?.scheme) {
     schemes.push(Constants.manifest.detach.scheme);
+  }
+  if (Constants.manifest2?.extra?.expoClient?.detach?.scheme) {
+    schemes.push(Constants.manifest2.extra.expoClient.detach.scheme);
   }
 
   // Add the unimplemented platform schemes last.
@@ -87,9 +90,13 @@ function getNativeAppIdScheme(): string | null {
   // The native app id has been added to builds for a long time to support Google Sign-In.
   return (
     Platform.select({
-      ios: Constants.manifest?.ios?.bundleIdentifier,
+      ios:
+        Constants.manifest?.ios?.bundleIdentifier ??
+        Constants.manifest2?.extra?.expoClient?.ios?.bundleIdentifier,
       // TODO: This may change to android.applicationId in the future.
-      android: Constants.manifest?.android?.package,
+      android:
+        Constants.manifest?.android?.package ??
+        Constants.manifest2?.extra?.expoClient?.android?.package,
     }) ?? null
   );
 }

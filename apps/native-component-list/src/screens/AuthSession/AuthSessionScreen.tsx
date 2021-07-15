@@ -64,7 +64,13 @@ export default function AuthSessionScreen() {
             value={language}
             setValue={setLanguage}
           />
-          <H4>ID: {Constants.manifest?.originalFullName || Constants.manifest?.id || 'unset'}</H4>
+          <H4>
+            ID:{' '}
+            {Constants.manifest?.originalFullName ||
+              Constants.manifest2?.extra?.expoClient?.originalFullName ||
+              Constants.manifest?.id ||
+              'unset'}
+          </H4>
         </View>
         <H2>Services</H2>
         <AuthSessionProviders

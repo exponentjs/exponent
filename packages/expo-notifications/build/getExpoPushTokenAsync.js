@@ -8,7 +8,10 @@ const productionBaseUrl = 'https://exp.host/--/api/v2/';
 export default async function getExpoPushTokenAsync(options = {}) {
     const devicePushToken = options.devicePushToken || (await getDevicePushTokenAsync());
     const deviceId = options.deviceId || (await getDeviceIdAsync());
-    const experienceId = options.experienceId || Constants.manifest?.originalFullName || Constants.manifest?.id;
+    const experienceId = options.experienceId ||
+        Constants.manifest?.originalFullName ||
+        Constants.manifest2?.extra?.expoClient?.originalFullName ||
+        Constants.manifest?.id;
     if (!experienceId) {
         throw new CodedError('ERR_NOTIFICATIONS_NO_EXPERIENCE_ID', "No experienceId found. If it can't be inferred from the manifest (eg. in bare workflow), you have to pass it in yourself.");
     }

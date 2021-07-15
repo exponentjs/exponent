@@ -53,7 +53,10 @@ function callAnalyticsModule(funcName: string, ...args) {
         clientId: clientIdForJS ?? Constants.installationId,
         sessionId: Constants.sessionId,
         strictNativeEmulation: true,
-        appName: Constants.manifest?.name || 'Unnamed Expo project',
+        appName:
+          Constants.manifest?.name ||
+          Constants.manifest2?.extra?.expoClient?.name ||
+          'Unnamed Expo project',
         appVersion: Constants.nativeAppVersion || undefined,
         headers: {
           // Google Analaytics seems to ignore certain user-agents. (e.g. "okhttp/3.12.1")

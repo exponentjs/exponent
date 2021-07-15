@@ -54,13 +54,15 @@ export async function requestReview(): Promise<void> {
  * On Web this will return `null`.
  */
 export function storeUrl(): string | null {
-  const { manifest } = Constants;
-  // eslint-disable-next-line no-undef
+  const { manifest, manifest2 } = Constants;
   if (Platform.OS === 'ios' && manifest?.ios) {
     return manifest.ios.appStoreUrl ?? null;
-    // eslint-disable-next-line no-undef
+  } else if (Platform.OS === 'ios' && manifest2?.extra?.expoClient?.ios) {
+    return manifest2.extra.expoClient.ios.appStoreUrl ?? null;
   } else if (Platform.OS === 'android' && manifest?.android) {
     return manifest.android.playStoreUrl ?? null;
+  } else if (Platform.OS === 'android' && manifest2?.extra?.expoClient?.android) {
+    return manifest2.extra.expoClient.android.playStoreUrl ?? null;
   }
   return null;
 }

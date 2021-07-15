@@ -5,8 +5,6 @@ import { CreateURLOptions } from 'expo-linking';
 import { resolveScheme } from 'expo-linking/build/Schemes';
 import qs, { ParsedQs } from 'qs';
 
-const { manifest } = Constants;
-
 export class SessionUrlProvider {
   private static readonly BASE_URL = `https://auth.expo.io`;
   private static readonly SESSION_PATH = 'expo-auth-session';
@@ -49,7 +47,10 @@ export class SessionUrlProvider {
       }
     }
 
-    const legacyExpoProjectId = manifest?.originalFullName || manifest?.id;
+    const legacyExpoProjectId =
+      Constants.manifest?.originalFullName ||
+      Constants.manifest2?.extra?.expoClient?.originalFullName ||
+      Constants.manifest?.id;
 
     if (!legacyExpoProjectId) {
       let nextSteps = '';
@@ -76,7 +77,8 @@ export class SessionUrlProvider {
   }
 
   private static getHostAddressQueryParams(): ParsedQs | undefined {
-    let hostUri: string = Constants.manifest?.hostUri;
+    let hostUri: string | undefined =
+      Constants.manifest?.hostUri ?? Constants.manifest2?.extra?.expoClient?.hostUri;
     if (
       !hostUri &&
       (ExecutionEnvironment.StoreClient === Constants.executionEnvironment || resolveScheme({}))
@@ -88,6 +90,10 @@ export class SessionUrlProvider {
         // we have to remove the /--/ on the end since this will be inserted again later
         hostUri = SessionUrlProvider.removeScheme(Constants.linkingUri).replace(/\/--(\/.*)?$/, '');
       }
+    }
+
+    if (!hostUri) {
+      return undefined;
     }
 
     const uriParts = hostUri?.split('?');

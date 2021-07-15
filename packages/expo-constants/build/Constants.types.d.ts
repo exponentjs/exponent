@@ -42,15 +42,19 @@ export interface Manifest {
     launchAsset: ManifestAsset;
     assets: ManifestAsset[];
     metadata: object;
+    extra?: {
+        expoClient?: ExpoClientConfig;
+        expoGo?: ExpoGoConfig;
+    };
 }
-/**
- * A classic manifest https://docs.expo.io/guides/how-expo-works/#expo-manifest
- */
-export interface AppManifest extends ExpoConfig {
-    /** Published Apps Only */
-    releaseId?: string;
-    revisionId?: string;
-    releaseChannel?: string;
+export interface ExpoGoConfig {
+    mainModuleName?: string;
+    debuggerHost?: string;
+    logUrl?: string;
+    developer?: {
+        tool?: string;
+        [key: string]: any;
+    };
     packagerOpts?: {
         hostType?: string;
         dev?: boolean;
@@ -61,14 +65,15 @@ export interface AppManifest extends ExpoConfig {
         lanType?: string;
         [key: string]: any;
     };
-    developer?: {
-        tool?: string;
-        [key: string]: any;
-    };
+}
+export interface ExpoClientConfig extends ExpoConfig {
+    /** Published Apps Only */
+    releaseId?: string;
+    revisionId?: string;
+    releaseChannel?: string;
     bundleUrl: string;
-    debuggerHost?: string;
-    mainModuleName?: string;
-    logUrl?: string;
+    hostUri?: string;
+    publishedTime?: string;
     /**
      * The Expo account name and slug for this project.
      * @deprecated - Prefer `projectId` or `originalFullName` instead for identification and `scopeKey` for
@@ -97,6 +102,21 @@ export interface AppManifest extends ExpoConfig {
      * between accounts or renamed.
      */
     projectId?: string;
+}
+/**
+ * A classic manifest https://docs.expo.io/guides/how-expo-works/#expo-manifest
+ */
+export interface AppManifest extends ExpoClientConfig, ExpoGoConfig {
+    packagerOpts?: {
+        hostType?: string;
+        dev?: boolean;
+        strict?: boolean;
+        minify?: boolean;
+        urlType?: string;
+        urlRandomness?: string;
+        lanType?: string;
+        [key: string]: any;
+    };
     [key: string]: any;
 }
 export interface PlatformManifest {
@@ -175,4 +195,11 @@ export interface Constants extends NativeConstants {
      * suppresses important warning about missing manifest.
      */
     __unsafeNoWarnManifest?: AppManifest;
+    /**
+     * @warning do not use this property. Use `manifest2` by default.
+     *
+     * In certain cases accessing manifest via this property
+     * suppresses important warning about missing manifest.
+     */
+    __unsafeNoWarnManifest2?: Manifest;
 }

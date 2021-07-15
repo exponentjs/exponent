@@ -3,7 +3,6 @@ import Constants, { ExecutionEnvironment } from 'expo-constants';
 import * as Linking from 'expo-linking';
 import { resolveScheme } from 'expo-linking/build/Schemes';
 import qs from 'qs';
-const { manifest } = Constants;
 export class SessionUrlProvider {
     getDefaultReturnUrl(urlPath, options) {
         const queryParams = SessionUrlProvider.getHostAddressQueryParams();
@@ -39,7 +38,9 @@ export class SessionUrlProvider {
                 return '';
             }
         }
-        const legacyExpoProjectId = manifest?.originalFullName || manifest?.id;
+        const legacyExpoProjectId = Constants.manifest?.originalFullName ||
+            Constants.manifest2?.extra?.expoClient?.originalFullName ||
+            Constants.manifest?.id;
         if (!legacyExpoProjectId) {
             let nextSteps = '';
             if (__DEV__) {
@@ -62,7 +63,7 @@ export class SessionUrlProvider {
         return redirectUrl;
     }
     static getHostAddressQueryParams() {
-        let hostUri = Constants.manifest?.hostUri;
+        let hostUri = Constants.manifest?.hostUri ?? Constants.manifest2?.extra?.expoClient?.hostUri;
         if (!hostUri &&
             (ExecutionEnvironment.StoreClient === Constants.executionEnvironment || resolveScheme({}))) {
             if (!Constants.linkingUri) {
@@ -73,6 +74,9 @@ export class SessionUrlProvider {
                 // we have to remove the /--/ on the end since this will be inserted again later
                 hostUri = SessionUrlProvider.removeScheme(Constants.linkingUri).replace(/\/--(\/.*)?$/, '');
             }
+        }
+        if (!hostUri) {
+            return undefined;
         }
         const uriParts = hostUri?.split('?');
         try {

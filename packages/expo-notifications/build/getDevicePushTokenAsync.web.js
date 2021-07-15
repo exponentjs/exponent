@@ -17,25 +17,31 @@ function guardPermission() {
     }
 }
 async function _subscribeDeviceToPushNotificationsAsync() {
+    const vapidPublicKey = 
     // @ts-ignore: TODO: not on the schema
-    if (!Constants.manifest.notification?.vapidPublicKey) {
+    Constants.manifest?.notification?.vapidPublicKey ??
+        // @ts-ignore: TODO: not on the schema
+        Constants.manifest2?.extra?.expoClient?.notification?.vapidPublicKey;
+    if (!vapidPublicKey) {
         throw new CodedError('ERR_NOTIFICATIONS_PUSH_WEB_MISSING_CONFIG', 'You must provide `notification.vapidPublicKey` in `app.json` to use push notifications on web. Learn more: https://docs.expo.io/versions/latest/guides/using-vapid/.');
     }
+    const serviceWorkerPath = 
     // @ts-ignore: TODO: not on the schema
-    if (!Constants.manifest.notification?.serviceWorkerPath) {
+    Constants.manifest?.notification.serviceWorkerPath ??
+        // @ts-ignore: TODO: not on the schema
+        Constants.manifest2?.extra?.expoClient?.notification?.serviceWorkerPath;
+    if (!serviceWorkerPath) {
         throw new CodedError('ERR_NOTIFICATIONS_PUSH_MISSING_CONFIGURATION', 'You must specify `notification.serviceWorkerPath` in `app.json` to use push notifications on the web. Please provide the path to the service worker that will handle notifications.');
     }
     guardPermission();
     let registration = null;
     try {
-        registration = await navigator.serviceWorker.register(
-        // @ts-ignore: TODO: not on the schema
-        Constants.manifest.notification.serviceWorkerPath);
+        registration = await navigator.serviceWorker.register(serviceWorkerPath);
     }
     catch (error) {
         throw new CodedError('ERR_NOTIFICATIONS_PUSH_REGISTRATION_FAILED', 
         // @ts-ignore: TODO: not on the schema
-        `Could not register this device for push notifications because the service worker (${Constants.manifest.notification.serviceWorkerPath}) could not be registered: ${error}`);
+        `Could not register this device for push notifications because the service worker (${serviceWorkerPath}) could not be registered: ${error}`);
     }
     await navigator.serviceWorker.ready;
     if (!registration.active) {
@@ -44,7 +50,7 @@ async function _subscribeDeviceToPushNotificationsAsync() {
     const subscribeOptions = {
         userVisibleOnly: true,
         // @ts-ignore: TODO: not on the schema
-        applicationServerKey: _urlBase64ToUint8Array(Constants.manifest.notification.vapidPublicKey),
+        applicationServerKey: _urlBase64ToUint8Array(vapidPublicKey),
     };
     let pushSubscription = null;
     try {
@@ -68,7 +74,9 @@ async function _subscribeDeviceToPushNotificationsAsync() {
     // We wrap it with `fromExpoWebClient` to make sure other message
     // will not override content such as `notificationIcon`.
     // https://stackoverflow.com/a/35729334/2603230
-    const notificationIcon = (Constants.manifest?.notification || {}).icon;
+    const notificationIcon = (Constants.manifest?.notification ??
+        Constants.manifest2?.extra?.expoClient?.notification ??
+        {}).icon;
     await registration.active.postMessage(JSON.stringify({ fromExpoWebClient: { notificationIcon } }));
     return subscriptionObject;
 }

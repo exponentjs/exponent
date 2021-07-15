@@ -90,7 +90,18 @@ const constants = {
      * `expo-asset` uses it to prevent users from seeing mentioned warning.
      */
     get __unsafeNoWarnManifest() {
-        return getManifest(true);
+        const maybeManifest = getManifest(true);
+        if (!maybeManifest || !isAppManifest(maybeManifest)) {
+            return null;
+        }
+        return maybeManifest;
+    },
+    get __unsafeNoWarnManifest2() {
+        const maybeManifest = getManifest(true);
+        if (!maybeManifest || !isManifest(maybeManifest)) {
+            return null;
+        }
+        return maybeManifest;
     },
     get __rawManifest_TEST() {
         return rawManifest;

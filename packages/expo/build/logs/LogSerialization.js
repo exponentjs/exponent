@@ -165,7 +165,9 @@ function _captureConsoleStackTrace() {
     }
 }
 function _getProjectRoot() {
-    return Constants.manifest?.developer?.projectRoot ?? null;
+    return (Constants.manifest?.developer?.projectRoot ??
+        Constants.manifest2?.extra?.expoGo?.developer?.projectRoot ??
+        null);
 }
 export default {
     serializeLogDataAsync,

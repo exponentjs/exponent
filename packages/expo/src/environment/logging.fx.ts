@@ -24,10 +24,34 @@ if (__DEV__) {
         Constants.manifest.logUrl = logUrl;
       }
     }
+  } else if (
+    // If this is defined then we can be define Constants.manifest.logUrl without worrying about the warning.
+    Constants.__unsafeNoWarnManifest2 &&
+    // Only attempt to set the URL if `Constants.__unsafeNoWarnManifest.logUrl` is not defined.
+    !Constants.__unsafeNoWarnManifest2.extra?.expoGo?.logUrl
+  ) {
+    const devServerInfo = getDevServer();
+    // Ensure the URL is remote and not local. i.e `file://`
+    if (devServerInfo.bundleLoadedFromServer) {
+      // url: `http://localhost:8081/`
+      const url = !devServerInfo.url.endsWith('/') ? `${devServerInfo.url}/` : devServerInfo.url;
+      // The standard Expo logUrl is `http://localhost:19000/logs`, this code assumes that the `logs` endpoint doesn't change.
+
+      const logUrl = url + 'logs';
+      if (Constants.__unsafeNoWarnManifest2.extra?.expoGo) {
+        Constants.__unsafeNoWarnManifest2.extra.expoGo.logUrl = logUrl;
+      }
+      if (Constants.manifest2?.extra?.expoGo) {
+        Constants.manifest2.extra.expoGo.logUrl = logUrl;
+      }
+    }
   }
   // TODO: Maybe warn that console logging will not be enabled.
 
-  if (Constants.__unsafeNoWarnManifest?.logUrl) {
+  if (
+    Constants.__unsafeNoWarnManifest?.logUrl ||
+    Constants.__unsafeNoWarnManifest2?.extra?.expoGo?.logUrl
+  ) {
     // Enable logging to the Expo dev tools only if this JS is not running in a web browser (ex: the
     // remote debugger). In Expo Web we don't show console logs in the CLI, so there's no special case needed.
     if (!isRunningInWebBrowser()) {
