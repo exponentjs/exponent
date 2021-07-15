@@ -10,6 +10,8 @@
 
 ### 💡 Others
 
+- Rewrote from Java to Kotlin. ([#13611](https://github.com/expo/expo/pull/13611) by [@M1ST4KE](https://github.com/m1st4ke))
+
 ## 10.1.0 — 2021-06-16
 
 ### 🐛 Bug fixes
