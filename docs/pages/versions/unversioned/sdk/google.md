@@ -82,13 +82,14 @@ If you choose to provide your own `redirectUrl`, it should start with the value 
 
 **LogInResult**
 
-| Name         | Type                                           | Description                                                  |
-| ------------ | ---------------------------------------------- | ------------------------------------------------------------ |
-| type         | <InlineCode>'cancel' \| 'success'</InlineCode> | Denotes the summary of the user event.                       |
-| accessToken  | <InlineCode>string \| undefined</InlineCode>   | Used for accessing data from Google, invalidate to "log out" |
-| idToken      | <InlineCode>string \| null</InlineCode>        | ID token                                                     |
-| refreshToken | <InlineCode>string \| null</InlineCode>        | Refresh the other tokens.                                    |
-| user         | `GoogleUser`                                   | An object with data regarding the authenticated user.        |
+| Name                      | Type                                           | Description                                                  |
+| ------------------------- | -----------------------------------------------| ------------------------------------------------------------ |
+| type                      | <InlineCode>'cancel' \| 'success'</InlineCode> | Denotes the summary of the user event.                       |
+| accessToken               | <InlineCode>string \| undefined</InlineCode>   | Used for accessing data from Google, invalidate to "log out" |
+| accessTokenExpirationDate | <InlineCode>string \| null</InlineCode>        | Approximate expiration date and time of the access token     |
+| idToken                   | <InlineCode>string \| null</InlineCode>        | ID token                                                     |
+| refreshToken              | <InlineCode>string \| null</InlineCode>        | Refresh the other tokens.                                    |
+| user                      | `GoogleUser`                                   | An object with data regarding the authenticated user.        |
 
 **GoogleUser**
 

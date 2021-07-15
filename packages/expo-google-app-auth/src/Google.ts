@@ -79,6 +79,7 @@ export type LogInResult =
   | {
       type: 'success';
       accessToken: string | null;
+      accessTokenExpirationDate: string | null;
       idToken: string | null;
       refreshToken: string | null;
       user: GoogleUser;
@@ -230,6 +231,7 @@ export async function logInAsync(config: GoogleLogInConfig): Promise<LogInResult
     return {
       type: 'success',
       accessToken: logInResult.accessToken,
+      accessTokenExpirationDate: logInResult.accessTokenExpirationDate,
       idToken: logInResult.idToken,
       refreshToken: logInResult.refreshToken,
       user: {

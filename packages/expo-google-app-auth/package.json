@@ -34,7 +34,8 @@
     "preset": "expo-module-scripts"
   },
   "devDependencies": {
-    "expo-module-scripts": "^2.0.0"
+    "expo-module-scripts": "^2.0.0",
+    "fetch-mock-jest": "^1.5.1"
   },
   "dependencies": {
     "expo-app-auth": "~10.2.0"

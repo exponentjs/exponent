@@ -1,3 +1,5 @@
+import fetchMock from 'fetch-mock-jest';
+
 // clientIds must be  defined this way (digitdigit-digitdigit)
 // or else Google.isValidGUID will fail
 const CONFIG = {
@@ -23,6 +25,7 @@ function mockConstants(constants: { [key: string]: any } = {}): void {
 describe('Android, managed workflow', () => {
   afterEach(() => {
     jest.resetModules();
+    fetchMock.mockReset();
   });
 
   it(`client id used in Expo Client development app`, () => {
@@ -51,11 +54,23 @@ describe('Android, managed workflow', () => {
       expect.objectContaining({ clientId: RESULTING_CLIENT_IDS.androidStandaloneAppClientId })
     );
   });
+
+  it(`Google.logInAsync's returned LogInResult should use AppAuth's accessTokenExpirationDate`, async () => {
+    const AppAuth = require('expo-app-auth');
+    const { logInAsync } = require('../Google');
+    fetchMock.get('*', {});
+    jest
+      .spyOn(AppAuth, 'authAsync')
+      .mockResolvedValueOnce({ accessTokenExpirationDate: '2021-06-18T16:10:26.653Z' });
+    const actual = await logInAsync(CONFIG);
+    expect(actual.accessTokenExpirationDate).toEqual('2021-06-18T16:10:26.653Z');
+  });
 });
 
 describe('Android Bare', () => {
   afterEach(() => {
     jest.resetModules();
+    fetchMock.mockReset();
   });
 
   it(`standalone id used in bare app`, () => {
@@ -67,5 +82,16 @@ describe('Android Bare', () => {
     expect(AppAuth.authAsync).toHaveBeenCalledWith(
       expect.objectContaining({ clientId: RESULTING_CLIENT_IDS.androidStandaloneAppClientId })
     );
+  });
+
+  it(`Google.logInAsync's returned LogInResult should use AppAuth's accessTokenExpirationDate`, async () => {
+    const AppAuth = require('expo-app-auth');
+    const { logInAsync } = require('../Google');
+    fetchMock.get('*', {});
+    jest
+      .spyOn(AppAuth, 'authAsync')
+      .mockResolvedValueOnce({ accessTokenExpirationDate: '2021-06-18T16:10:26.653Z' });
+    const actual = await logInAsync(CONFIG);
+    expect(actual.accessTokenExpirationDate).toEqual('2021-06-18T16:10:26.653Z');
   });
 });

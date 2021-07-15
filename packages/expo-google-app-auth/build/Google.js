@@ -113,6 +113,7 @@ export async function logInAsync(config) {
         return {
             type: 'success',
             accessToken: logInResult.accessToken,
+            accessTokenExpirationDate: logInResult.accessTokenExpirationDate,
             idToken: logInResult.idToken,
             refreshToken: logInResult.refreshToken,
             user: {

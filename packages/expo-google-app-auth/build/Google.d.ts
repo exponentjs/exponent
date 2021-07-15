@@ -69,6 +69,7 @@ export declare type LogInResult = {
 } | {
     type: 'success';
     accessToken: string | null;
+    accessTokenExpirationDate: string | null;
     idToken: string | null;
     refreshToken: string | null;
     user: GoogleUser;
