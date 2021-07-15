@@ -105,6 +105,29 @@ let toast = Toast.show('Request failed to send.', {
 setTimeout(function hideToast() {
   Toast.hide(toast);
 }, 500);
+
+// You can also pass in additional options such as
+let toast = Toast.show('Request was sent.', {
+  containerStyle: {padding:3}, // StyleProp<ViewStyle>
+  duration:3000, // number // milliseconds
+  visible: true, // boolean
+  position:80, // number
+  animation:true, // boolean
+  shadow:true, // boolean
+  backgroundColor:'#27AE60', // string
+  opacity:1, // number
+  shadowColor:'#000000', // string
+  textColor:'#FFFFFF', // string
+  textStyle:{fontFamily:"Nunito_700Bold",fontSize: 16}, // StyleProp<TextStyle> // Only if you have imported that font family
+  delay:3, // number
+  keyboardAvoiding: true, // boolaean
+  hideOnPress:true, // boolaean
+  onHide: ()=>{}, // function
+  onHidden: ()=>{}, // function
+  onShow: ()=>{}, // function
+  onShown: ()=>{}, // function
+  onPress: ()=>{}, // function
+});
 ```
 
 `react-native-root-toast` also has a component API if you want to manage your toasts declaratively.
