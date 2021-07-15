@@ -11,6 +11,7 @@ All projects after _SDK 32_ come with web support by default. To add web support
 - Install the latest version of the Expo CLI: `npm i -g expo-cli`
 - Add web dependencies: `expo install react-native-web react-dom`
   - Ensure your project has at least `expo@^33.0.0` installed.
+  - If your project has at least `expo@^39.0.0` installed then you will need to install `react-native-web@~0.13`
 - Start your project with `expo start` then press `w` to start Webpack and open the project in the browser.
 
 **Tips**
