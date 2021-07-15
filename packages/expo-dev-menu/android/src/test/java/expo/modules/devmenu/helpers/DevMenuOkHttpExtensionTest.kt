@@ -14,7 +14,10 @@ import org.robolectric.RobolectricTestRunner
 
 @RunWith(RobolectricTestRunner::class)
 internal class DevMenuOkHttpExtensionTest {
-  private var server = MockWebServer()
+  private var server = let {
+    System.setProperty("javax.net.ssl.trustStore", "NONE")
+    MockWebServer()
+  }
   private val client = OkHttpClient()
 
   @Before

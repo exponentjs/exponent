@@ -4,6 +4,9 @@ applyNativeModulesSettingsGradle(settings)
 include(":unimodules-test-core")
 project(":unimodules-test-core").projectDir = new File("../../../packages/unimodules-test-core/android")
 
+include(":expo-dev-client")
+project(":expo-dev-client").projectDir = new File("../../../packages/expo-dev-client/android")
+
 // Include Expo modules
 apply from: '../../../packages/@unimodules/react-native-adapter/scripts/autolinking.gradle'
 useExpoModules()

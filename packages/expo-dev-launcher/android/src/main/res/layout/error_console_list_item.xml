@@ -6,7 +6,8 @@
   android:gravity="top"
   android:orientation="vertical"
   android:paddingTop="10dp"
-  android:paddingBottom="10dp">
+  android:paddingBottom="10dp"
+  android:tag="DevLauncherErrorScreenDetails">
 
   <TextView
     android:id="@+id/error_console_item_message"

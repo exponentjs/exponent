@@ -191,7 +191,7 @@ class LauncherMainScreen extends React.Component<Props, State> {
             where it should be dispatched. The next loaded project will handle the received deep
             link.
           </Text>
-          <Text style={styles.pendingDeepLink}> {this.state.pendingDeepLink} </Text>
+          <Text style={styles.pendingDeepLink}>{this.state.pendingDeepLink}</Text>
         </View>
       </View>
     );
@@ -270,7 +270,7 @@ class LauncherMainScreen extends React.Component<Props, State> {
     }
 
     return (
-      <View style={styles.container}>
+      <View style={styles.container} testID="DevLauncherMainScreen">
         <ScrollView
           style={styles.scrollView}
           refreshControl={

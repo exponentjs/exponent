@@ -39,6 +39,7 @@ export default ({ onPress }: Props) => {
         Or, enter the URL of a local bundler manually:
       </MainText>
       <TextInput
+        testID="DevLauncherURLInput"
         style={[styles.urlTextInput, { borderColor, color }]}
         placeholder="exp://192..."
         placeholderTextColor="#b0b0ba"
@@ -52,6 +53,7 @@ export default ({ onPress }: Props) => {
         }}
       />
       <Button
+        testID="DevLauncherLoadAppButton"
         disabled={!isValid || !textInputUrl}
         onPress={() => onPress(textInputUrl)}
         label="Connect to URL"

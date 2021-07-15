@@ -1,6 +1,6 @@
 {
   "name": "expo-dev-client",
-  "version": "0.3.0",
+  "version": "0.4.4",
   "description": "Expo Development Client",
   "main": "build/DevClient.js",
   "types": "build/DevClient.d.ts",

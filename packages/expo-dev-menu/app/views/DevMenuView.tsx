@@ -27,7 +27,7 @@ class DevMenuView extends React.PureComponent<Props, undefined> {
 
   renderItems() {
     return (
-      <View>
+      <View testID="DevMenuMainScreen">
         <DevMenuGroup items={this.context.devMenuItems} />
         <MainOptions />
         <ListFooter label="This development menu will not be present in any release builds of this project." />

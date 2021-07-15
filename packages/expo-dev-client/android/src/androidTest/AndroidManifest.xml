@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="expo.modules.devclient">
+
+  <application>
+    <activity
+      android:name="com.expo.modules.devclient.activities.DevClientBundledAppActivity"
+      android:launchMode="singleTask"
+      android:screenOrientation="portrait"
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+  </application>
+</manifest>

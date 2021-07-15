@@ -1,0 +1,109 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven'
+
+buildscript {
+  // Simple helper that allows the root project to override versions declared by this library.
+  ext.safeExtGet = { prop, fallback ->
+    rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+  }
+
+  repositories {
+    mavenCentral()
+  }
+
+  dependencies {
+    classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${safeExtGet('kotlinVersion', '1.4.21')}")
+  }
+}
+
+android {
+  compileSdkVersion safeExtGet('compileSdkVersion', 30)
+  defaultConfig {
+    minSdkVersion safeExtGet('minSdkVersion', 21)
+    targetSdkVersion safeExtGet('targetSdkVersion', 30)
+    versionCode 1
+    versionName "0.4.4"
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+  }
+  lintOptions {
+    abortOnError false
+  }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+
+  buildTypes {
+    buildTypes.each {
+      it.buildConfigField 'String', 'VERSION', "\"${defaultConfig.versionName}\""
+    }
+
+    releaseWithDevLauncher {
+      initWith release
+      matchingFallbacks = ['release', 'debug']
+    }
+  }
+
+  sourceSets {
+    releaseWithDevLauncher {
+      setRoot 'src/debug'
+    }
+  }
+
+  buildFeatures {
+    viewBinding true
+  }
+}
+
+repositories {
+  // ref: https://www.baeldung.com/maven-local-repository
+  mavenLocal()
+  maven {
+    // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
+    url "$rootDir/../node_modules/react-native/android"
+  }
+  maven {
+    // Android JSC is installed from npm
+    url "$rootDir/../node_modules/jsc-android/dist"
+  }
+  google()
+  jcenter()
+}
+
+dependencies {
+  androidTestImplementation project(":expo-dev-menu-interface")
+  androidTestImplementation project(":expo-updates-interface")
+  androidTestImplementation project(":expo-dev-menu")
+  androidTestImplementation project(":expo-dev-launcher")
+
+  //noinspection GradleDynamicVersion
+  androidTestImplementation 'com.facebook.react:react-native:+'  // From node_modules
+
+  androidTestImplementation('androidx.test.espresso:espresso-core:3.4.0')
+  androidTestImplementation('androidx.test:core:1.4.0')
+  androidTestImplementation('androidx.test:core-ktx:1.4.0')
+  androidTestImplementation('androidx.test.ext:junit:1.1.3')
+  androidTestImplementation('androidx.test.ext:junit-ktx:1.1.3')
+  androidTestImplementation('androidx.test:runner:1.4.0')
+  androidTestImplementation('androidx.test:rules:1.4.0')
+
+  androidTestImplementation 'org.webkit:android-jsc:+'
+
+  androidTestImplementation "io.insert-koin:koin-test:3.1.2"
+  androidTestImplementation "io.insert-koin:koin-test-junit4:3.1.2"
+
+  androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
+  androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
+
+  androidTestImplementation "androidx.appcompat:appcompat:1.1.0"
+
+  androidTestImplementation "com.google.truth:truth:1.1.2"
+  androidTestImplementation 'io.mockk:mockk-android:1.10.6'
+}
+

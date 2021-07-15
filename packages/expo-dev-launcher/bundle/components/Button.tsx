@@ -8,9 +8,10 @@ type Props = {
   label: string;
   onPress: () => void;
   disabled?: boolean;
+  testID?: string;
 };
 
-export default ({ label, onPress, disabled }: Props) => {
+export default ({ label, onPress, disabled, testID }: Props) => {
   const themeName = useThemeName();
   const backgroundColor = themeName === 'dark' ? Colors.dark.tint : Colors.light.tint;
 
@@ -19,7 +20,9 @@ export default ({ label, onPress, disabled }: Props) => {
       disabled={disabled}
       style={[styles.buttonContainer, { backgroundColor }]}
       onPress={onPress}>
-      <Text style={styles.buttonText}>{label}</Text>
+      <Text testID={testID} style={styles.buttonText}>
+        {label}
+      </Text>
     </TouchableOpacity>
   );
 };

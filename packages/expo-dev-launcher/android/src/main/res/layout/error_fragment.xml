@@ -23,6 +23,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="30dp"
+      android:tag="DevLauncherErrorScreen"
       android:text="@string/error_header"
       android:textColor="@color/white"
       android:textSize="24sp" />
@@ -56,6 +57,7 @@
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:src="@drawable/dev_laucher_ic_home_white_36dp"
+        android:tag="DevLauncherErrorScreenGoToLauncher"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="15sp" />
 
@@ -66,6 +68,7 @@
         android:layout_weight="1"
         android:background="@android:color/transparent"
         android:src="@drawable/dev_launcher_ic_refresh_white_36dp"
+        android:tag="DevLauncherErrorScreenReload"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="15sp" />
     </LinearLayout>
@@ -84,6 +87,7 @@
     android:paddingTop="20dp"
     android:paddingRight="20dp"
     android:paddingBottom="20dp"
+    android:tag="DevLauncherErrorScreenGoToDetails"
     android:text="@string/view_error_log"
     android:textColor="@color/errorLogButton"
     android:textSize="13sp" />
