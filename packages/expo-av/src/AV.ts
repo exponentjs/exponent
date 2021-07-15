@@ -35,12 +35,12 @@ export type AVPlaybackNativeSource = {
 export type AVPlaybackStatus =
   | {
       isLoaded: false;
-      androidImplementation?: string;
+      androidImplementation: 'MediaPlayer' | undefined;
       error?: string; // populated exactly once when an error forces the object to unload
     }
   | {
       isLoaded: true;
-      androidImplementation?: string;
+      androidImplementation: 'MediaPlayer' | undefined;
 
       uri: string;
 
