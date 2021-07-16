@@ -62,4 +62,5 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
+          arch: x86_64
           script: bin/expotools android-native-unit-tests --type instrumented
