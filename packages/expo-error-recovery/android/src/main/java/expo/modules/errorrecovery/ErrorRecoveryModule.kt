@@ -24,7 +24,7 @@ open class ErrorRecoveryModule(context: Context) : ExportedModule(context) {
   }
 
   override fun getConstants(): Map<String, Any?> {
-    return mapOf("recoveredProps" to consumeRecoveryProps())
+    return mapOf(RECOVERY_STORE_KEY to consumeRecoveryProps())
   }
 
   protected open fun setRecoveryProps(props: String) {

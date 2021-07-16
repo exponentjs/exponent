@@ -78,10 +78,10 @@ repositories {
 
 dependencies {
   unimodule 'unimodules-core'
-
+  testImplementation "org.robolectric:robolectric:4.5.1"
   api 'androidx.test:core:1.2.0'
   api 'junit:junit:4.12'
-  api 'io.mockk:mockk:1.9.3'
+  api 'io.mockk:mockk:1.10.0'
 
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${safeExtGet('kotlinVersion', '1.4.21')}"
 }

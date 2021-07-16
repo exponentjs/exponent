@@ -73,7 +73,9 @@ if (new File(rootProject.projectDir.parentFile, 'package.json').exists()) {
 }
 
 dependencies {
-  unimodule 'unimodules-core'
+  testImplementation 'junit:junit:4.12'
+  testImplementation "org.robolectric:robolectric:4.3.1"
 
+  unimodule 'unimodules-core'
   implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${safeExtGet('kotlinVersion', '1.4.21')}"
 }
