@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Added missing definition on type LocalAuthenticationResult.
+
 ### 💡 Others
 
 - Rewrite module from Java to Kotlin. ([#13582](https://github.com/expo/expo/pull/13582) by [@mstach60161](https://github.com/mstach60161))

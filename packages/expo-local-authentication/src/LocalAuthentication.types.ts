@@ -1,4 +1,4 @@
-export type LocalAuthenticationResult = { success: true } | { success: false; error: string };
+export type LocalAuthenticationResult = { success: true } | { success: false; error: string; message: string };
 
 export enum AuthenticationType {
   FINGERPRINT = 1,

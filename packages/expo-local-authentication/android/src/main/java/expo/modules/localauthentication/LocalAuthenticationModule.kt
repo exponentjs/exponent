@@ -170,6 +170,7 @@ class LocalAuthenticationModule(context: Context) : ExportedModule(context), Act
         this.promise?.resolve(Bundle().apply {
           putBoolean("success", false)
           putString("error", "app_cancel")
+          putString("message", "isAuthenitcating returned false")
         })
         this.promise = promise
         return@Runnable
