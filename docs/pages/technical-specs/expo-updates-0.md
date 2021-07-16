@@ -31,7 +31,7 @@ Expo Updates is a protocol for assembling and delivering updates to apps running
 An app running a conformant Expo Updates client library MUST load the most recent update saved in the client library's cache, possibly after filtering by the contents of the manifest's [_metadata_](#manifest-response-body).
 
 The following describes how a conformant Expo Updates client library MUST retrieve a new update from a conformant server:
-1. The client library will make a [request](#request) for the most recent manifest, with constraints specified in the headers. 
+1. The client library will make a [request](#request) for the most recent manifest, with constraints specified in the headers.
 2. If a new manifest is downloaded, the client library will proceed to make additional requests to download and store any missing assets specified in the manifest.
 3. The client library will edit its local state to reflect that a new update has been added to the local cache. It will also update the local state with the new `expo-manifest-filters` and `expo-server-defined-headers` found in the response [headers](#manifest-response-headers).
 
@@ -44,7 +44,7 @@ A conformant client library MUST make a GET request with the headers:
     * iOS MUST be `expo-platform: ios`.
     * Android MUST be `expo-platform: android`.
     * If it is not one of these platforms, the server SHOULD return a 400 or a 404
-2. `expo-runtime-version` MUST be a runtime version compatible with the client. A runtime version stipulates the native code setup a client is running. It should be set when the client is built. For example, in an iOS client, the value may be set in a plist file. 
+2. `expo-runtime-version` MUST be a runtime version compatible with the client. A runtime version stipulates the native code setup a client is running. It should be set when the client is built. For example, in an iOS client, the value may be set in a plist file.
 3. Any headers stipulated by a previous responses' [server defined headers](#manifest-response-headers).
 
 A conformant client library MUST also send at least one of `accept: application/expo+json` or `accept: application/json`, though SHOULD send `accept: application/expo+json, application/json` with the order following the preference ordering for the accept header specified in [RFC 7231](https://tools.ietf.org/html/rfc7231#section-5.3.2).
@@ -95,6 +95,7 @@ The body of the response MUST be a manifest, which is defined as JSON conforming
 ```typescript
 export type Manifest = {
   id: string;
+  scopeKey: string;
   createdAt: string;
   runtimeVersion: string;
   launchAsset: Asset;
@@ -111,6 +112,8 @@ type Asset = {
 }
 ```
   * `id`: The ID MUST uniquely specify the manifest.
+  * `scopeKey`: A stable, unique, immutable string for scoping client-side data belonging to this project.
+   * will not change when a project is transferred between accounts or renamed.
   * `createdAt`: The date and time at which the update was created is essential as the client library selects the most recent update (subject to any constraints supplied by the `expo-manifest-filters` header). The datetime should be formatted according to [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601).
   * `runtimeVersion`: Can be any string defined by the developer. It stipulates what native code setup is required to run the associated update.
   * `launchAsset`: A special asset that is the entry point of the application code.
@@ -121,11 +124,27 @@ type Asset = {
     * `contentType`: The MIME type of the file as defined by [RFC 2045](https://tools.ietf.org/html/rfc2045). e.g. `application/javascript`, `image/jpeg`.
     * `url`: Location at which the file may be fetched.
   * `metadata`: The metadata associated with an update. It is a string-valued dictionary. The server MAY send back anything it wishes to be used for filtering the updates. The metadata MUST pass the filter defined in the accompanying `expo-manifest-filters` header.
-  * `extra`: For storage of optional "extra" information such as third-party configuration. For example, if the update is hosted on Expo Application Services (EAS), the EAS project ID may be included:
+  * `extra`: For storage of optional "extra" information such as third-party configuration. For example, if the update is hosted on Expo Application Services (EAS), things like the EAS project ID, Expo Client config, and Expo Go config may be included:
   ```typescript
   extra: {
     eas: {
       projectId: '00000000-0000-0000-0000-000000000000'
+    },
+    expoClient: {
+      description: '...',
+      backgroundColor: '#000000',
+      notification: {
+        ...
+      },
+      ...
+    },
+    expoGo: {
+      mainModuleName: '...',
+      debuggerHost: '...',
+      developer: {
+        ...
+      },
+      ...
     }
     ...
   }
@@ -154,7 +173,7 @@ content-type: application/javascript
 ```
 
 An asset is RECOMMENDED to be served with a `cache-control` header set to a long duration as an asset located at a given URL must not change. For example:
-	
+
 ```
 cache-control: public, max-age=31536000, immutable
 ```
