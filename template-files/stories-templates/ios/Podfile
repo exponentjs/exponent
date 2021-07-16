@@ -1,0 +1,17 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../../../packages/@unimodules/react-native-adapter/scripts/autolinking'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '11.0'
+
+target '{{ targetName }}' do
+  use_expo_modules!
+
+  config = use_native_modules!
+
+  pod 'expo-dev-menu', path: '../../../packages/expo-dev-menu', :configurations => :debug
+  pod 'expo-dev-menu-interface', path: '../../../packages/expo-dev-menu-interface', :configurations => :debug
+  pod 'expo-dev-launcher', path: '../../../packages/expo-dev-launcher', :configurations => :debug
+
+  use_react_native!(:path => config["reactNativePath"])
+end

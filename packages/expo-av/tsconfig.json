@@ -5,5 +5,5 @@
     "outDir": "./build"
   },
   "include": ["./src"],
-  "exclude": ["**/__mocks__/*", "**/__tests__/*"]
+  "exclude": ["**/__mocks__/*", "**/__tests__/*", "**/__stories__/**", "**.stories.tsx"]
 }

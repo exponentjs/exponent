@@ -36,6 +36,24 @@
     "expo-modules-core": "~0.1.1"
   },
   "devDependencies": {
+    "@expo/vector-icons": "^12.0.5",
+    "@react-native-community/slider": "^3.0.3",
+    "@react-native-segmented-control/segmented-control": "^2.4.0",
+    "deep-object-diff": "^1.1.0",
     "expo-module-scripts": "^2.0.0"
+  },
+  "expoStories": {
+    "packages": [
+      "expo-av",
+      "expo-file-system",
+      "expo-font"
+    ],
+    "extraNodeModules": {
+      "@expo/vector-icons": "^12.0.5",
+      "@react-native-community/slider": "^3.0.3",
+      "@react-native-segmented-control/segmented-control": "^2.4.0",
+      "deep-object-diff": "^1.1.0",
+      "expo-module-scripts": "^2.0.0"
+    }
   }
 }

@@ -15,6 +15,7 @@
     "packages": [
       "apps/*",
       "apps/test-suite/puppeteer-test",
+      "story-loaders/*",
       "home",
       "packages/*",
       "packages/@unimodules/*",

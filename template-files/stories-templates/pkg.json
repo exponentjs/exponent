@@ -1,0 +1,114 @@
+{
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "postinstall": "expo-yarn-workspaces postinstall",
+    "stories": "node_modules/expo-stories/bin/index.js start"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.5.5",
+    "expo": "~42.0.0-alpha.0",
+    "expo-splash-screen": "~0.11.0",
+    "expo-status-bar": "~1.0.4",
+    "expo-dev-client": "~0.3.0",
+    "expo-stories": "*",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "0.63.2",
+    "react-native-gesture-handler": "~1.10.2",
+    "react-native-reanimated": "~2.2.0",
+    "react-native-screens": "~3.4.0",
+    "react-native-unimodules": "~0.14.1",
+    "react-native-web": "~0.13.7",
+    "@unimodules/react-native-adapter": "^6.4.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "concurrently": "^6.2.0",
+    "expo-module-scripts": "^2.0.0",
+    "expo-yarn-workspaces": "^1.5.2",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "babel-preset-expo": "~8.4.0"
+  },
+  "expo-yarn-workspaces": {
+    "symlinks": [
+      "expo-constants",
+      "expo-updates",
+      "expo-stories",
+      "@unimodules/react-native-adapter"
+    ]
+  },
+  "expo": {
+    "autolinking": {
+      "ios": {
+        "flags": {
+          "inhibit_warnings": false
+        }
+      },
+      "exclude": [
+        "expo-analytics-amplitude",
+        "expo-analytics-segment",
+        "expo-app-auth",
+        "expo-av",
+        "expo-background-fetch",
+        "expo-barcode-scanner",
+        "expo-battery",
+        "expo-brightness",
+        "expo-calendar",
+        "expo-camera",
+        "expo-cellular",
+        "expo-contacts",
+        "expo-crypto",
+        "expo-device",
+        "expo-document-picker",
+        "expo-error-recovery",
+        "expo-face-detector",
+        "expo-facebook",
+        "expo-file-system",
+        "expo-firebase-analytics",
+        "expo-firebase-core",
+        "expo-font",
+        "expo-gl",
+        "expo-gl-cpp",
+        "expo-google-sign-in",
+        "expo-haptics",
+        "expo-image-loader",
+        "expo-image-manipulator",
+        "expo-image-picker",
+        "expo-in-app-purchases",
+        "expo-intent-launcher",
+        "expo-linear-gradient",
+        "expo-local-authentication",
+        "expo-localization",
+        "expo-location",
+        "expo-mail-composer",
+        "expo-media-library",
+        "expo-network",
+        "expo-notifications",
+        "expo-permissions",
+        "expo-print",
+        "expo-screen-capture",
+        "expo-screen-orientation",
+        "expo-secure-store",
+        "expo-sensors",
+        "expo-sharing",
+        "expo-sms",
+        "expo-speech",
+        "expo-sqlite",
+        "expo-store-review",
+        "expo-task-manager",
+        "expo-tracking-transparency",
+        "expo-video-thumbnails",
+        "expo-ads-admob",
+        "expo-ads-facebook",
+        "expo-branch",
+        "expo-module-template",
+        "expo-payments-stripe",
+        "expo-web-browser"
+      ]
+    }
+  }
+}

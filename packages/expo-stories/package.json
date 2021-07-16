@@ -1,0 +1,51 @@
+{
+  "name": "expo-stories",
+  "version": "1.0.0",
+  "main": "build/index.js",
+  "bin": "bin/index.js",
+  "types": "types.d.ts",
+  "license": "MIT",
+  "files": [
+    "bin",
+    "metro-config.js",
+    "webpack-config",
+    "types.d.ts"
+  ],
+  "scripts": {
+    "build": "expo-module build",
+    "clean": "expo-module clean",
+    "lint": "expo-module lint",
+    "test": "expo-module test",
+    "prepare": "expo-module prepare",
+    "prepublishOnly": "expo-module prepublishOnly",
+    "expo-module": "expo-module"
+  },
+  "peerDependencies": {
+    "expo": "~41.0.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-web": "~0.13.12"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.9.0",
+    "expo-module-scripts": "^2.0.0",
+    "@types/react": "~16.9.35",
+    "@types/react-native": "~0.63.2",
+    "@types/ws": "^7.4.5",
+    "typescript": "~4.0.0"
+  },
+  "dependencies": {
+    "@expo/styleguide-native": "^0.3.1",
+    "@types/express": "^4.17.12",
+    "acorn-loose": "^8.1.0",
+    "body-parser": "^1.19.0",
+    "commander": "^8.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "glob": "^7.1.7",
+    "react-native-svg": "^12.1.1",
+    "sane": "^5.0.1",
+    "ws": "^7.5.1"
+  }
+}
