@@ -18,7 +18,6 @@ import org.unimodules.core.interfaces.ActivityProvider;
 import org.unimodules.core.interfaces.ExpoMethod;
 import org.unimodules.core.interfaces.LifecycleEventListener;
 import org.unimodules.core.interfaces.services.UIManager;
-
 import androidx.annotation.Nullable;
 
 public class SMSModule extends ExportedModule implements LifecycleEventListener {
@@ -30,9 +29,15 @@ public class SMSModule extends ExportedModule implements LifecycleEventListener 
   private ModuleRegistry mModuleRegistry;
   private Promise mPendingPromise;
   private boolean mSMSComposerOpened = false;
+  private String mDefaultSmsPackage = null;
 
   SMSModule(Context context) {
     super(context);
+  }
+
+  SMSModule(Context context, String defaultSmsPackage) {
+    super(context);
+    mDefaultSmsPackage = defaultSmsPackage;
   }
 
   @Override
@@ -93,7 +98,13 @@ public class SMSModule extends ExportedModule implements LifecycleEventListener 
       smsIntent.setData(Uri.parse("smsto:" + constructRecipients(addresses)));
     }
 
-    String defaultSMSPackage = Telephony.Sms.getDefaultSmsPackage(getContext());
+    String defaultSMSPackage;
+    if (mDefaultSmsPackage == null) {
+      defaultSMSPackage = Telephony.Sms.getDefaultSmsPackage(getContext());
+    } else {
+      defaultSMSPackage = mDefaultSmsPackage;
+    }
+
     if (defaultSMSPackage != null){
       smsIntent.setPackage(defaultSMSPackage);
     } else {
@@ -109,6 +120,7 @@ public class SMSModule extends ExportedModule implements LifecycleEventListener 
     mPendingPromise = promise;
 
     ActivityProvider activityProvider = mModuleRegistry.getModule(ActivityProvider.class);
+
     activityProvider.getCurrentActivity().startActivity(smsIntent);
 
     mSMSComposerOpened = true;

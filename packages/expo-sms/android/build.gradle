@@ -73,6 +73,8 @@ if (new File(rootProject.projectDir.parentFile, 'package.json').exists()) {
 }
 
 dependencies {
+  testImplementation "org.robolectric:robolectric:4.5.1"
+  testImplementation 'junit:junit:4.12'
   unimodule "unimodules-core"
 
   implementation 'androidx.annotation:annotation:1.1.0'
