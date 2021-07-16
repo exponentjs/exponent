@@ -12,10 +12,12 @@
 - (void)PDFFromWebView:(WKWebView *)webView completionHandler:(void (^)(NSError * _Nullable, NSData * _Nullable, int))handler
 {
   UM_WEAKIFY(self);
-  [webView evaluateJavaScript:@"document.body.scrollHeight;" completionHandler:^(id jsValue, NSError * _Nullable error) {
+  [webView evaluateJavaScript:@"window.innerHeight + ' ' + document.documentElement.scrollHeight" completionHandler:^(id jsResult, NSError * _Nullable error) {
     UM_ENSURE_STRONGIFY(self);
-    CGFloat scrollHeight = [jsValue doubleValue];
-    CGFloat pageHeight = webView.bounds.size.height;
+    NSString *jsResultString = jsResult;
+    NSArray *items = [jsResultString componentsSeparatedByString:@" "];
+    CGFloat pageHeight = [items[0] doubleValue];
+    CGFloat scrollHeight = [items[1] doubleValue];
     int numberOfPages = ceil(scrollHeight / pageHeight);
 
     // Ensure all content is loaded by scrolling to the end of webpage
@@ -23,7 +25,7 @@
 
     NSMutableData *pdfData = [NSMutableData data];
     UIGraphicsBeginPDFContextToData(pdfData, webView.bounds, nil);
-    [self takeSnapshotForPage:0 ofPages:numberOfPages ofWebView:webView withScrollHeight:scrollHeight withCompletionHandler:^(NSError * _Nullable error) {
+    [self takeSnapshotForPage:0 ofPages:numberOfPages ofWebView:webView withCompletionHandler:^(NSError * _Nullable error) {
       UIGraphicsEndPDFContext();
       if (error) {
         handler(error, nil, 0);
@@ -34,7 +36,7 @@
   }];
 }
 
-- (void)takeSnapshotForPage:(int)pageIndex ofPages:(int)pagesCount ofWebView:(WKWebView *)webView withScrollHeight:(CGFloat)scrollHeight withCompletionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler
+- (void)takeSnapshotForPage:(int)pageIndex ofPages:(int)pagesCount ofWebView:(WKWebView *)webView withCompletionHandler:(void (^ _Nullable)(NSError * _Nullable error))completionHandler
 {
   if (pageIndex >= pagesCount) {
     completionHandler(nil);
@@ -50,7 +52,7 @@
         CGRect printRect = UIGraphicsGetPDFContextBounds();
         UIGraphicsBeginPDFPage();
         [snapshotImage drawInRect:printRect];
-        [self takeSnapshotForPage:(pageIndex + 1) ofPages:pagesCount ofWebView:webView withScrollHeight:scrollHeight withCompletionHandler:completionHandler];
+        [self takeSnapshotForPage:(pageIndex + 1) ofPages:pagesCount ofWebView:webView withCompletionHandler:completionHandler];
       } else {
         completionHandler(error);
       }

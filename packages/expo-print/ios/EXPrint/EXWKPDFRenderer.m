@@ -3,7 +3,6 @@
 #import <EXPrint/EXWKPDFRenderer.h>
 #import <UMCore/UMDefines.h>
 #import <EXPrint/EXWKSnapshotPDFRenderer.h>
-#import <EXPrint/EXWKViewPDFRenderer.h>
 
 @interface EXWKPDFRenderer () <WKNavigationDelegate>
 
@@ -22,11 +21,7 @@
   _pageSize = pageSize;
   _onRenderingFinished = handler;
   _webView = [self createWebView];
-  if (@available(iOS 11.0, *)) {
-    _renderer = [[EXWKSnapshotPDFRenderer alloc] init];
-  } else {
-    _renderer = [[EXWKViewPDFRenderer alloc] init];
-  }
+  _renderer = [[EXWKSnapshotPDFRenderer alloc] init];
   _htmlNavigation = [_webView loadHTMLString:htmlString baseURL:nil];
 }
 

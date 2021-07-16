@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix calculating the number of pages when printing HTML on iOS. ([#13633](https://github.com/expo/expo/pull/13633) by [@dsokal](https://github.com/dsokal))
+
 ### 💡 Others
 
 - Rewrite print module from Java to Kotlin. ([#13538](https://github.com/expo/expo/pull/13538) by [@mstach60161](https://github.com/mstach60161))
