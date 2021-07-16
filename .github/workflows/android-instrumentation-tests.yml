@@ -24,7 +24,7 @@ concurrency:
 
 jobs:
   test:
-    runs-on: macos-10.15
+    runs-on: macos-11
     steps:
       - name: 👀 Check out repository
         uses: actions/checkout@v2
@@ -62,5 +62,4 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          emulator-build: 7425822 # workaround for emulator boot timeout - https://github.com/ReactiveCircus/android-emulator-runner/issues/160
           script: bin/expotools android-native-unit-tests --type instrumented
