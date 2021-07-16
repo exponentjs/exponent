@@ -63,4 +63,5 @@ jobs:
         with:
           api-level: 30
           arch: x86_64
+          target: google_apis
           script: bin/expotools android-native-unit-tests --type instrumented
