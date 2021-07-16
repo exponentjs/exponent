@@ -31,4 +31,16 @@ public interface Package {
   default List<? extends org.unimodules.core.interfaces.SingletonModule> createSingletonModules(Context context) {
     return Collections.emptyList();
   }
+
+  default List<? extends ApplicationLifecycleListener> createApplicationLifecycleListeners(Context context) {
+    return Collections.emptyList();
+  }
+
+  default List<? extends ReactNativeHostHandler> createReactNativeHostHandlers(Context context) {
+    return Collections.emptyList();
+  }
+
+  default List<? extends ReactActivityLifecycleListener> createReactActivityLifecycleListeners(Context activityContext) {
+    return Collections.emptyList();
+  }
 }
