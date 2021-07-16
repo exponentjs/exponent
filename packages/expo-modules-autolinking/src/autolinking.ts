@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import glob from 'fast-glob';
 import findUp from 'find-up';
 import fs from 'fs-extra';
+import { createRequire } from 'module';
 import path from 'path';
 
 import { requireAndResolveExpoModuleConfig } from './ExpoModuleConfig';
@@ -18,6 +19,22 @@ import {
 const EXPO_MODULE_CONFIG_FILENAMES = ['unimodule.json', 'expo-module.config.json'];
 
 /**
+ * Path to the `package.json` of the closest project in the current working dir.
+ */
+const projectPackageJsonPath = findUp.sync('package.json', { cwd: process.cwd() }) as string;
+
+// This won't happen in usual scenarios, but we need to unwrap the optional path :)
+if (!projectPackageJsonPath) {
+  throw new Error(`Couldn't find up the "package.json" from path "${process.cwd()}"`);
+}
+
+/**
+ * Custom `require` that resolves from the current working dir instead of this script path.
+ * **Requires Node v12.2.0**
+ */
+const projectRequire = createRequire(projectPackageJsonPath);
+
+/**
  * Resolves autolinking search paths. If none is provided, it accumulates all node_modules when
  * going up through the path components. This makes workspaces work out-of-the-box without any configs.
  */
@@ -28,13 +45,6 @@ export async function resolveSearchPathsAsync(
   return searchPaths && searchPaths.length > 0
     ? searchPaths.map(searchPath => path.resolve(cwd, searchPath))
     : await findDefaultPathsAsync(cwd);
-}
-
-/**
- * Finds project's package.json and returns its path.
- */
-export async function findPackageJsonPathAsync(): Promise<string | null> {
-  return (await findUp('package.json', { cwd: process.cwd() })) ?? null;
 }
 
 /**
@@ -110,7 +120,69 @@ export async function findModulesAsync(providedOptions: SearchOptions): Promise<
       }
     }
   }
-  return results;
+
+  // It doesn't make much sense to strip modules if there is only one search path.
+  // Workspace root usually doesn't specify all its dependencies (see Expo Go),
+  // so in this case we should link everything.
+  if (options.searchPaths.length <= 1) {
+    return results;
+  }
+  return filterToProjectDependencies(results);
+}
+
+/**
+ * Filters out packages that are not the dependencies of the project.
+ */
+function filterToProjectDependencies(results: SearchResults) {
+  const filteredResults: SearchResults = {};
+  const visitedPackages = new Set<string>();
+
+  // Helper for traversing the dependency hierarchy.
+  function visitPackage(packageJsonPath: string) {
+    const packageJson = require(packageJsonPath);
+
+    // Prevent getting into the recursive loop.
+    if (visitedPackages.has(packageJson.name)) {
+      return;
+    }
+    visitedPackages.add(packageJson.name);
+
+    // Iterate over the dependencies to find transitive modules.
+    for (const dependencyName in packageJson.dependencies) {
+      const dependencyResult = results[dependencyName];
+
+      if (!filteredResults[dependencyName]) {
+        let dependencyPackageJsonPath: string;
+
+        if (dependencyResult) {
+          filteredResults[dependencyName] = dependencyResult;
+          dependencyPackageJsonPath = path.join(dependencyResult.path, 'package.json');
+        } else {
+          try {
+            dependencyPackageJsonPath = projectRequire.resolve(`${dependencyName}/package.json`);
+          } catch (error) {
+            // Some packages don't include package.json in its `exports` field,
+            // but none of our packages do that, so it seems fine to just ignore that type of error.
+            // Related issue: https://github.com/react-native-community/cli/issues/1168
+            if (error.code !== 'ERR_PACKAGE_PATH_NOT_EXPORTED') {
+              console.warn(
+                chalk.yellow(`⚠️  Cannot resolve the path to "${dependencyName}" package.`)
+              );
+            }
+            continue;
+          }
+        }
+
+        // Visit the dependency package.
+        visitPackage(dependencyPackageJsonPath);
+      }
+    }
+  }
+
+  // Visit project's package.
+  visitPackage(projectPackageJsonPath);
+
+  return filteredResults;
 }
 
 /**
@@ -122,8 +194,7 @@ export async function findModulesAsync(providedOptions: SearchOptions): Promise<
 export async function mergeLinkingOptionsAsync<OptionsType extends SearchOptions>(
   providedOptions: OptionsType
 ): Promise<OptionsType> {
-  const packageJsonPath = await findPackageJsonPathAsync();
-  const packageJson = packageJsonPath ? require(packageJsonPath) : {};
+  const packageJson = require(projectPackageJsonPath);
   const baseOptions = packageJson.expo?.autolinking;
   const platformOptions = providedOptions.platform && baseOptions?.[providedOptions.platform];
   const finalOptions = Object.assign(

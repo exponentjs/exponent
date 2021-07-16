@@ -13,6 +13,7 @@ function registerSearchCommand(commandName, fn) {
         .command(`${commandName} [paths...]`)
         .option('-i, --ignore-paths <ignorePaths...>', 'Paths to ignore when looking up for modules.', (value, previous) => (previous !== null && previous !== void 0 ? previous : []).concat(value))
         .option('-e, --exclude <exclude...>', 'Package names to exclude when looking up for modules.', (value, previous) => (previous !== null && previous !== void 0 ? previous : []).concat(value))
+        .option('-p, --platform [platform]', 'The platform that the resulted modules must support. Available options: "ios", "android"', 'ios')
         .action(async (searchPaths, providedOptions) => {
         const options = await autolinking_1.mergeLinkingOptionsAsync({
             ...providedOptions,
@@ -26,7 +27,7 @@ function registerSearchCommand(commandName, fn) {
  * Registers a command that searches for modules and then resolves them for specific platform.
  */
 function registerResolveCommand(commandName, fn) {
-    return registerSearchCommand(commandName, fn).option('-p, --platform [platform]', 'The platform that the resulted modules must support. Available options: "ios", "android"', 'ios');
+    return registerSearchCommand(commandName, fn);
 }
 module.exports = async function (args) {
     // Searches for available expo modules.

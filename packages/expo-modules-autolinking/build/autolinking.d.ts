@@ -5,10 +5,6 @@ import { GenerateOptions, ModuleDescriptor, ResolveOptions, SearchOptions, Searc
  */
 export declare function resolveSearchPathsAsync(searchPaths: string[] | null, cwd: string): Promise<string[]>;
 /**
- * Finds project's package.json and returns its path.
- */
-export declare function findPackageJsonPathAsync(): Promise<string | null>;
-/**
  * Looks up for workspace's `node_modules` paths.
  */
 export declare function findDefaultPathsAsync(cwd: string): Promise<string[]>;
