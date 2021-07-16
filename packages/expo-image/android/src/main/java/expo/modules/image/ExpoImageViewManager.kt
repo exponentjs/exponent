@@ -18,6 +18,7 @@ import expo.modules.image.events.ImageLoadEvent
 import expo.modules.image.events.ImageLoadStartEvent
 import expo.modules.image.events.ImageProgressEvent
 import expo.modules.image.okhttp.OkHttpClientProgressInterceptor
+import expo.modules.image.svg.SVGSoftwareLayerSetter
 
 private val BORDER_LOCATIONS = intArrayOf(
   Spacing.ALL,
@@ -30,7 +31,7 @@ private val BORDER_LOCATIONS = intArrayOf(
 )
 
 class ExpoImageViewManager(applicationContext: ReactApplicationContext) : SimpleViewManager<ExpoImageView>() {
-  private val mRequestManager: RequestManager = Glide.with(applicationContext)
+  private val mRequestManager: RequestManager = Glide.with(applicationContext).addDefaultRequestListener(SVGSoftwareLayerSetter())
   private val mProgressInterceptor: OkHttpClientProgressInterceptor = OkHttpClientProgressInterceptor
   override fun getName() = "ExpoImage"
 

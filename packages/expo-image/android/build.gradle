@@ -8,6 +8,7 @@ def DEFAULT_OKHTTP_VERSION = '3.14.9'
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'maven'
+apply plugin: 'kotlin-kapt'
 
 buildscript {
   // Simple helper that allows the root project to override versions declared by this library.
@@ -84,7 +85,8 @@ dependencies {
 
   implementation "com.github.zjupure:webpdecoder:2.0.${GLIDE_VERSION}"
   api "com.github.bumptech.glide:glide:${GLIDE_VERSION}"
-  annotationProcessor "com.github.bumptech.glide:compiler:${GLIDE_VERSION}"
+  kapt "com.github.bumptech.glide:compiler:${GLIDE_VERSION}"
+  api 'com.caverock:androidsvg-aar:1.4'
 
   api 'com.github.bumptech.glide:okhttp3-integration:4.11.0'
   api "com.squareup.okhttp3:okhttp:${safeExtGet("okHttpVersion", DEFAULT_OKHTTP_VERSION)}"

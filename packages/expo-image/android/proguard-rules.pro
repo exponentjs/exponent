@@ -12,6 +12,7 @@
 # https://bumptech.github.io/glide/doc/configuration.html#applications
 
 -keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public class expo.modules.image.svg.SVGModule
 -keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
 
 -keep public class com.bumptech.glide.integration.webp.WebpImage { *; }

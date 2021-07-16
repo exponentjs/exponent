@@ -121,7 +121,7 @@ class ExpoImageView(context: ReactContext, private val requestManager: RequestMa
       requestManager
         .load(sourceToLoad)
         .apply(options)
-        .listener(eventsManager)
+        .addListener(eventsManager)
         .run {
           val fitCenter = FitCenter()
           this
@@ -131,6 +131,11 @@ class ExpoImageView(context: ReactContext, private val requestManager: RequestMa
         .into(this)
       requestManager
         .`as`(BitmapFactory.Options::class.java)
+        // Remove any default listeners from this request
+        // (an example would be an SVGSoftwareLayerSetter
+        // added in ExpoImageViewManager).
+        // This request won't load the image, only the size.
+        .listener(null)
         .load(sourceToLoad)
         .into(eventsManager)
     }

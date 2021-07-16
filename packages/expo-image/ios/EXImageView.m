@@ -41,8 +41,7 @@ static NSString * const sourceHeightKey = @"height";
     _cornerRadii = [EXImageCornerRadii new];
     _borders = [EXImageBorders new];
     _cachedBorderLayers = [NSMutableDictionary dictionary];
-    
-    _imageView = [[SDAnimatedImageView alloc]initWithFrame:self.bounds];
+    _imageView = [[SDAnimatedImageView alloc] initWithFrame:self.bounds];
     _imageView.contentMode = [EXImageTypes resizeModeToContentMode:_resizeMode];
     _imageView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _imageView.layer.masksToBounds = YES;
@@ -84,11 +83,11 @@ static NSString * const sourceHeightKey = @"height";
 {
   if (_needsReload) {
     _needsReload = NO;
-    [self updateImage];
+    [self updateImageWith:self.frame.size];
   }
 }
 
-- (void)updateImage
+- (void)updateImageWith:(CGSize)imageSize
 {
   // We want to call onError, onLoadEnd for the previous image load
   // before calling onLoadStart for the next image load.
@@ -120,7 +119,13 @@ static NSString * const sourceHeightKey = @"height";
   if (scale && scale.doubleValue != 1.0) {
     [context setValue:scale forKey:SDWebImageContextImageScaleFactor];
   }
-  
+  if([[imageURL pathExtension] isEqualToString:@"svg"]) {
+    // We need to set size for the svg image which prevents using viewPort
+    // This solution is rather naive, it should be done by downloading the image first,
+    // checking if svg coder can decode the NSData and then creating image view
+    // with context options
+    [context setObject: @(imageSize) forKey: SDWebImageContextImageThumbnailPixelSize];
+  }
   [_imageView sd_setImageWithURL:imageURL
                 placeholderImage:nil
                          options:SDWebImageAvoidAutoSetImage
