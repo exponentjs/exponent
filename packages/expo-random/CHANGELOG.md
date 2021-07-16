@@ -8,6 +8,8 @@
 
 ### 🐛 Bug fixes
 
+- Fix bug causing synchronous calls to break React Native Debugger. ([#13616](https://github.com/expo/expo/pull/13616) by [@stdavis](https://github.com/stdavis))
+
 ### 💡 Others
 
 ## 11.2.0 — 2021-06-16
