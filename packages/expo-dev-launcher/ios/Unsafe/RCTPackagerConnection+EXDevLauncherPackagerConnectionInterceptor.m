@@ -61,7 +61,10 @@ static RCTReconnectingWebSocket *createSocketForURL(NSURL * url)
   newSocket.delegate = (id<RCTReconnectingWebSocketDelegate>)self;
   [newSocket start];
   
-  [self setValue:url.absoluteString forKey:@"_serverHostForSocket"];
+  @try {
+    // _serverHostForSocket was removed in RN 0.64
+    [self setValue:url.absoluteString forKey:@"_serverHostForSocket"];
+  } @catch(id exception) {}
   [self setValue:newSocket forKey:@"_socket"];
 }
 
